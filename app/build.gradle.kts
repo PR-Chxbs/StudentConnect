@@ -1,6 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // ------ PR added ------
+
+    // dagger
+    kotlin("kapt")
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -43,4 +49,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // ------ PR added ------
+
+    // dagger
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    // navigation
+    implementation(libs.navigation.compose)
+
+    // hilt
+    implementation(libs.hilt.navigation.compose)
 }
