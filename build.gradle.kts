@@ -2,9 +2,4 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-
-    // ------ PR added ------
-
-    // dagger
-    alias(libs.plugins.hilt) apply false
 }
