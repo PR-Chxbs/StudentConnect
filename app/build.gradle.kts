@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -49,4 +52,8 @@ dependencies {
     // Retrofit 2
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+
+    // Google
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
