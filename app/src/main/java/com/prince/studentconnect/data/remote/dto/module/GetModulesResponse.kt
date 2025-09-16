@@ -1,7 +1,7 @@
 package com.prince.studentconnect.data.remote.dto.module
 
 data class GetModulesResponse(
-    val modules: Array<com.prince.studentconnect.data.remote.dto.module.Module>
+    val modules: Array<Module>
 )
 
 data class Module(

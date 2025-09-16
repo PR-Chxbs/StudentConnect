@@ -6,8 +6,8 @@ data class GetUserResponse(
     val last_name: String,
     val role: String,
     val bio: String,
-    val campus: com.prince.studentconnect.data.remote.dto.user.Campus,
-    val course: com.prince.studentconnect.data.remote.dto.user.Course,
+    val campus: Campus,
+    val course: Course,
     val profile_picture_url: String
 )
 

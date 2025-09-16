@@ -1,7 +1,7 @@
 package com.prince.studentconnect.data.remote.dto.course
 
 data class GetCoursesResponse(
-    val courses: Array<com.prince.studentconnect.data.remote.dto.course.Course>
+    val courses: Array<Course>
 )
 
 data class Course(
@@ -9,7 +9,7 @@ data class Course(
     val name: String,
     val description: String,
     val duration_years: Int,
-    val campus: com.prince.studentconnect.data.remote.dto.course.Campus
+    val campus: Campus
 )
 
 data class Campus(

@@ -1,7 +1,7 @@
 package com.prince.studentconnect.data.remote.dto.conversation
 
 data class GetMessagesResponse(
-    val messages: Array<com.prince.studentconnect.data.remote.dto.conversation.Message>
+    val messages: Array<Message>
 )
 
 data class Message(

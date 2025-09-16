@@ -8,7 +8,7 @@ data class GetConversationResponse(
     val visibility: String,
     val max_members: Int,
     val member_count: Int,
-    val members: Array<com.prince.studentconnect.data.remote.dto.conversation.Member>,
+    val members: Array<Member>,
     val date_created: String
 )
 

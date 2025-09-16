@@ -10,7 +10,7 @@ data class GetAnEventResponse(
     val recurrence_rule: String,
     val reminder_at: String,
     val created_at: String,
-    val participants: Array<com.prince.studentconnect.data.remote.dto.event.Participant>
+    val participants: Array<Participant>
 )
 
 data class Participant(

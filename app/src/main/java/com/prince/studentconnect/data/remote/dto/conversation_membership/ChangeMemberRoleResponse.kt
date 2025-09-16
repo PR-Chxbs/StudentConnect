@@ -1,4 +1,4 @@
-package com.prince.studentconnect.dto.conversation_membership
+package com.prince.studentconnect.data.remote.dto.conversation_membership
 
 data class ChangeMemberRoleResponse(
     val conversation_member_id: Int,

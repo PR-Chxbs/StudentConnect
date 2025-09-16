@@ -1,7 +1,7 @@
 package com.prince.studentconnect.data.remote.dto.event
 
 data class GetEventsResponse(
-    val events: Array<com.prince.studentconnect.data.remote.dto.event.Event>
+    val events: Array<Event>
 )
 
 data class Event(
