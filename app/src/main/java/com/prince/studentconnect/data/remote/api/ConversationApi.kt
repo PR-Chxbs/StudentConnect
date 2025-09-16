@@ -1,12 +1,12 @@
 package com.prince.studentconnect.data.remote.api
 
-import com.prince.studentconnect.dto.conversation_membership.ChangeMemberRoleRequest
-import com.prince.studentconnect.dto.conversation_membership.ChangeMemberRoleResponse
-import com.prince.studentconnect.dto.conversation_membership.GetConversationMembersResponse
-import com.prince.studentconnect.dto.conversation_membership.JoinConversationRequest
-import com.prince.studentconnect.dto.conversation_membership.JoinConversationResponse
-import com.prince.studentconnect.dto.conversation_membership.RejoinConversationRequest
-import com.prince.studentconnect.dto.conversation_membership.RejoinConversationResponse
+import com.prince.studentconnect.data.remote.dto.conversation_membership.ChangeMemberRoleRequest
+import com.prince.studentconnect.data.remote.dto.conversation_membership.ChangeMemberRoleResponse
+import com.prince.studentconnect.data.remote.dto.conversation_membership.GetConversationMembersResponse
+import com.prince.studentconnect.data.remote.dto.conversation_membership.JoinConversationRequest
+import com.prince.studentconnect.data.remote.dto.conversation_membership.JoinConversationResponse
+import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinConversationRequest
+import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinConversationResponse
 import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberRequest
 import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberResponse
 import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationRequest
@@ -27,38 +27,37 @@ import retrofit2.http.Query
 interface ConversationApi {
     @POST("conversations")
     suspend fun createConversation(
-        @Body request: com.prince.studentconnect.data.remote.dto.conversation.CreateConversationRequest
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.CreateConversationResponse>
+        @Body request: CreateConversationRequest
+    ): Response<CreateConversationResponse>
 
     @POST("conversations/{conversation_id}/members")
     suspend fun addConversationMember(
-        @Body request: com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberRequest,
+        @Body request: AddConversationMemberRequest,
         @Path("conversation_id") conversationId: Int
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberResponse>
+    ): Response<AddConversationMemberResponse>
 
     @DELETE("conversations/{conversation_id}/members/{user_id}")
     suspend fun removeConversationMember(
         @Path("conversation_id") conversationId: Int,
         @Path("user_id") userId: String
-    ): Response<Any>
+    ): Response<Unit>
 
     @GET("conversations/{conversation_id}")
     suspend fun getConversation(
         @Path("conversation_id") conversationId: Int,
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.GetConversationResponse>
+    ): Response<GetConversationResponse>
 
     @POST("conversations/{conversation_id}/messages")
     suspend fun sendMessage(
-        @Body request: com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest,
+        @Body request: SendMessageRequest,
         @Path("conversation_id") conversationId: Int
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse>
+    ): Response<SendMessageResponse>
 
-    @POST("conversations/{conversation_id}/messages/{message_id}")
+    @DELETE("conversations/{conversation_id}/messages/{message_id}")
     suspend fun deleteMessage(
-        @Body request: com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest,
         @Path("conversation_id") conversationId: Int,
         @Path("message_id") messageId: Int
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse>
+    ): Response<Unit>
 
     @GET("conversations/{conversation_id}/messages")
     suspend fun getMessagesInConversation(
@@ -66,7 +65,7 @@ interface ConversationApi {
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null,
         @Query("limit") limit: Int? = null
-    ): Response<com.prince.studentconnect.data.remote.dto.conversation.GetMessagesResponse>
+    ): Response<GetMessagesResponse>
 
     // ----------- Conversation membership -----------
 

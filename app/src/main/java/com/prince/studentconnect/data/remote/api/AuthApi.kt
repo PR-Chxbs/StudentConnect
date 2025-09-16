@@ -10,6 +10,6 @@ interface AuthApi {
 
     @POST("auth/verify")
     suspend fun verifyToken(
-        @Body request: com.prince.studentconnect.data.remote.dto.auth.VerifyTokenRequest
-    ): Response<com.prince.studentconnect.data.remote.dto.auth.VerifyTokenResponse>
+        @Body request: VerifyTokenRequest
+    ): Response<VerifyTokenResponse>
 }

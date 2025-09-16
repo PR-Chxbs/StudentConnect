@@ -16,21 +16,21 @@ interface CourseApi {
     @GET("courses")
     suspend fun getCourses(
         @Query("campus_id") campusId: Int? = null
-    ): Response<com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse>
+    ): Response<GetCoursesResponse>
 
     @POST("courses")
     suspend fun addCourse(
-        @Body request: com.prince.studentconnect.data.remote.dto.course.CreateCourseRequest
-    )
+        @Body request: CreateCourseRequest
+    ): Response<Any>
 
     @PUT("courses/{course_id}")
     suspend fun updateCourse(
-        @Body request: com.prince.studentconnect.data.remote.dto.course.UpdateCourseRequest,
+        @Body request: UpdateCourseRequest,
         @Path("course_id") courseId: Int
-    )
+    ): Response<Any>
 
     @DELETE("courses/{course_id}")
     suspend fun deleteCourse(
         @Path("course_id") courseId: Int
-    )
+    ): Response<Any>
 }

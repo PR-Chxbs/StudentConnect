@@ -18,29 +18,29 @@ interface UserApi {
     @GET("users/{user_id}")
     suspend fun getUser(
         @Path("user_id") userId: String
-    ): Response<com.prince.studentconnect.data.remote.dto.user.GetUserResponse>
+    ): Response<GetUserResponse>
 
     @GET("users")
     suspend fun getUsers(
         @Query("role") role: String? = null,
         @Query("campus_id") campusId: Int? = null,
         @Query("course_id") courseId: Int? = null
-    ): Response<com.prince.studentconnect.data.remote.dto.user.GetUsersResponse>
+    ): Response<GetUsersResponse>
 
     @PUT("users/{user_id}")
     suspend fun updateUser(
-        @Body request: com.prince.studentconnect.data.remote.dto.user.UpdateUserRequest,
+        @Body request: UpdateUserRequest,
         @Path("user_id") userId: String
-    )
+    ): Response<Any>
 
     @DELETE("users/{user_id}")
     suspend fun deleteUser(
         @Path("user_id") userId: String
-    )
+    ): Response<Any>
 
     @PATCH("users/{user_id}/role")
     suspend fun updateUserRole(
-        @Body request: com.prince.studentconnect.data.remote.dto.user.UpdateUserRoleRequest,
+        @Body request: UpdateUserRoleRequest,
         @Path("user_id") userId: String
-    )
+    ): Response<Any>
 }

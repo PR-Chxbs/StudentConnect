@@ -1,5 +1,6 @@
 package com.prince.studentconnect.data.remote.api
 
+import com.prince.studentconnect.data.remote.dto.event.PatchEventRequest
 import com.prince.studentconnect.data.remote.dto.event.CreateEventRequest
 import com.prince.studentconnect.data.remote.dto.event.CreateEventResponse
 import com.prince.studentconnect.data.remote.dto.event.GetAnEventResponse
@@ -21,23 +22,23 @@ import retrofit2.http.Query
 interface EventApi {
     @POST("events")
     suspend fun createEvent(
-        @Body request: com.prince.studentconnect.data.remote.dto.event.CreateEventRequest
-    ): Response<com.prince.studentconnect.data.remote.dto.event.CreateEventResponse>
+        @Body request: CreateEventRequest
+    ): Response<CreateEventResponse>
 
     @GET("events/{event_id}")
     suspend fun getEvent(
         @Path("event_id") eventId: Int
-    ): Response<com.prince.studentconnect.data.remote.dto.event.GetAnEventResponse>
+    ): Response<GetAnEventResponse>
 
     @PUT("events/{event_id}")
     suspend fun updateEvent(
-        @Body request: com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest,
+        @Body request: UpdateEventRequest,
         @Path("event_id") eventId: Int
     ): Response<Any>
 
     @PATCH("events/{event_id}")
     suspend fun patchEvent(
-        @Body request: com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest,
+        @Body request: PatchEventRequest,
         @Path("event_id") eventId: Int
     ): Response<Any>
 
@@ -48,9 +49,9 @@ interface EventApi {
 
     @POST("events/{event_id}/participation")
     suspend fun subscribeToEvent(
-        @Body request: com.prince.studentconnect.data.remote.dto.event.SubscribeToEventRequest,
+        @Body request: SubscribeToEventRequest,
         @Path("event_id") eventId: Int
-    ): Response<com.prince.studentconnect.data.remote.dto.event.SubscribeToEventResponse>
+    ): Response<SubscribeToEventResponse>
 
     @DELETE("events/{event_id}/participation")
     suspend fun unsubscribeFromEvent(
@@ -62,17 +63,17 @@ interface EventApi {
         @Path("user_id") userId: String,
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null
-    ): Response<com.prince.studentconnect.data.remote.dto.event.GetEventsResponse>
+    ): Response<GetEventsResponse>
 
     @GET("conversation_id/{conversation_id}/events")
     suspend fun getConversationEvents(
-        @Path("conversation_id") conversation_id: String,
+        @Path("conversation_id") conversation_id: Int,
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null
-    ): Response<com.prince.studentconnect.data.remote.dto.event.GetEventsResponse>
+    ): Response<GetEventsResponse>
 
     @GET("events/{event_id}/participants")
     suspend fun getEventParticipants(
         @Path("event_id") eventId: Int,
-    ): Response<com.prince.studentconnect.data.remote.dto.event.GetParticipantsResponse>
+    ): Response<GetParticipantsResponse>
 }

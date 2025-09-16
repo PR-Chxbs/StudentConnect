@@ -13,21 +13,21 @@ import retrofit2.http.Path
 
 interface CampusApi {
     @GET("campuses")
-    suspend fun getCampuses(): Response<com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse>
+    suspend fun getCampuses(): Response<GetCampusesResponse>
 
     @POST("campuses")
     suspend fun addCampus(
-        @Body request: com.prince.studentconnect.data.remote.dto.campus.AddCampusRequest
-    )
+        @Body request: AddCampusRequest
+    ): Response<Any>
 
     @PUT("campuses/{campus_id}")
     suspend fun updateCampus(
-        @Body request: com.prince.studentconnect.data.remote.dto.campus.UpdateCampusRequest,
+        @Body request: UpdateCampusRequest,
         @Path("campus_id") campusId: Int
-    )
+    ): Response<Any>
 
     @DELETE("campuses/{campus_id}")
     suspend fun deleteCampus(
         @Path("campus_id") campusId: Int
-    )
+    ): Response<Any>
 }
