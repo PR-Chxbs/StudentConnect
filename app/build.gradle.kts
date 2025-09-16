@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
 
+    // OkHttp
+    implementation(libs.okhttp)
+
     // Google
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
