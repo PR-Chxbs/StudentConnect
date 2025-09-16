@@ -7,5 +7,6 @@ data class GetCampusesResponse(
 data class Campus(
     val campus_id: Int,
     val name: String,
-    val location: String
+    val location: String,
+    val campus_image_url: String
 )
