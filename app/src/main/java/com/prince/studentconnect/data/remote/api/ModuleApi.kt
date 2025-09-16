@@ -22,21 +22,21 @@ interface ModuleApi {
     @GET("modules/{module_id}")
     suspend fun getModule(
         @Path("module_id") moduleId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @POST("modules")
     suspend fun addModule(
         @Body request: CreateModuleRequest
-    ): Response<Any>
+    ): Response<Unit>
 
     @PUT("modules/{module_id}")
     suspend fun updateModule(
         @Body request: UpdateModuleRequest,
         @Path("module_id") moduleId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @DELETE("modules/{module_id}")
     suspend fun deleteModule(
         @Path("module_id") moduleId: Int
-    ): Response<Any>
+    ): Response<Unit>
 }

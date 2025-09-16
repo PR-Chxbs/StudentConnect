@@ -11,15 +11,15 @@ class CourseRepository(
         return courseApi.getCourses(campusId)
     }
 
-    suspend fun addCourse(createCourseRequest: CreateCourseRequest): Response<Any> {
+    suspend fun addCourse(createCourseRequest: CreateCourseRequest): Response<Unit> {
         return courseApi.addCourse(createCourseRequest)
     }
 
-    suspend fun updateCourse(updateCourseRequest: UpdateCourseRequest, courseId: Int): Response<Any> {
+    suspend fun updateCourse(updateCourseRequest: UpdateCourseRequest, courseId: Int): Response<Unit> {
         return courseApi.updateCourse(updateCourseRequest, courseId)
     }
 
-    suspend fun deleteCourse(courseId: Int): Response<Any> {
+    suspend fun deleteCourse(courseId: Int): Response<Unit> {
         return courseApi.deleteCourse(courseId)
     }
 }

@@ -21,16 +21,16 @@ interface CourseApi {
     @POST("courses")
     suspend fun addCourse(
         @Body request: CreateCourseRequest
-    ): Response<Any>
+    ): Response<Unit>
 
     @PUT("courses/{course_id}")
     suspend fun updateCourse(
         @Body request: UpdateCourseRequest,
         @Path("course_id") courseId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @DELETE("courses/{course_id}")
     suspend fun deleteCourse(
         @Path("course_id") courseId: Int
-    ): Response<Any>
+    ): Response<Unit>
 }

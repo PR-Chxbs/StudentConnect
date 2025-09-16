@@ -15,15 +15,15 @@ class UserRepository(
         return userApi.getUsers(role, campus_id, course_id)
     }
 
-    suspend fun updateUser(updateUserRequest: UpdateUserRequest, userId: String): Response<Any> {
+    suspend fun updateUser(updateUserRequest: UpdateUserRequest, userId: String): Response<Unit> {
         return userApi.updateUser(updateUserRequest, userId)
     }
 
-    suspend fun deleteUser(userId: String): Response<Any> {
+    suspend fun deleteUser(userId: String): Response<Unit> {
         return userApi.deleteUser(userId)
     }
 
-    suspend fun updateUserRole(updateUserRoleRequest: UpdateUserRoleRequest, userId: String): Response<Any> {
+    suspend fun updateUserRole(updateUserRoleRequest: UpdateUserRoleRequest, userId: String): Response<Unit> {
         return userApi.updateUserRole(updateUserRoleRequest, userId)
     }
 }

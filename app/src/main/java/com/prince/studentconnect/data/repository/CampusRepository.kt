@@ -11,15 +11,15 @@ class CampusRepository(
         return campusApi.getCampuses()
     }
 
-    suspend fun addCampus(addCampusRequest: AddCampusRequest): Response<Any> {
+    suspend fun addCampus(addCampusRequest: AddCampusRequest): Response<Unit> {
         return campusApi.addCampus(addCampusRequest)
     }
 
-    suspend fun updateCampus(updateCampusRequest: UpdateCampusRequest, campusId: Int): Response<Any> {
+    suspend fun updateCampus(updateCampusRequest: UpdateCampusRequest, campusId: Int): Response<Unit> {
         return campusApi.updateCampus(updateCampusRequest, campusId)
     }
 
-    suspend fun deleteCampus(campusId: Int): Response<Any> {
+    suspend fun deleteCampus(campusId: Int): Response<Unit> {
         return campusApi.deleteCampus(campusId)
     }
 }

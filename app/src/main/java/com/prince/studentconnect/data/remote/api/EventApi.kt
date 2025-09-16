@@ -34,18 +34,18 @@ interface EventApi {
     suspend fun updateEvent(
         @Body request: UpdateEventRequest,
         @Path("event_id") eventId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @PATCH("events/{event_id}")
     suspend fun patchEvent(
         @Body request: PatchEventRequest,
         @Path("event_id") eventId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @DELETE("events/{event_id}")
     suspend fun deleteEvent(
-        @Path("event_id") event_id: Int
-    ): Response<Any>
+        @Path("event_id") eventId: Int
+    ): Response<Unit>
 
     @POST("events/{event_id}/participation")
     suspend fun subscribeToEvent(
@@ -55,8 +55,8 @@ interface EventApi {
 
     @DELETE("events/{event_id}/participation")
     suspend fun unsubscribeFromEvent(
-        @Path("event_id") event_id: Int
-    ): Response<Any>
+        @Path("event_id") eventId: Int
+    ): Response<Unit>
 
     @GET("users/{user_id}/events")
     suspend fun getUserEvents(
@@ -67,7 +67,7 @@ interface EventApi {
 
     @GET("conversation_id/{conversation_id}/events")
     suspend fun getConversationEvents(
-        @Path("conversation_id") conversation_id: Int,
+        @Path("conversation_id") conversationId: Int,
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null
     ): Response<GetEventsResponse>

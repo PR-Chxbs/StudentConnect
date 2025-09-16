@@ -11,19 +11,19 @@ class ModuleRepository(
         return moduleApi.getModules(courseId, lecturerId)
     }
 
-    suspend fun getModule(moduleId: Int): Response<Any> {
+    suspend fun getModule(moduleId: Int): Response<Unit> {
         return moduleApi.getModule(moduleId)
     }
 
-    suspend fun addModule(createModuleRequest: CreateModuleRequest): Response<Any> {
+    suspend fun addModule(createModuleRequest: CreateModuleRequest): Response<Unit> {
         return moduleApi.addModule(createModuleRequest)
     }
 
-    suspend fun updateModule(updateModuleRequest: UpdateModuleRequest, moduleId: Int): Response<Any> {
+    suspend fun updateModule(updateModuleRequest: UpdateModuleRequest, moduleId: Int): Response<Unit> {
         return moduleApi.updateModule(updateModuleRequest, moduleId)
     }
 
-    suspend fun deleteModule(moduleId: Int): Response<Any> {
+    suspend fun deleteModule(moduleId: Int): Response<Unit> {
         return moduleApi.deleteModule(moduleId)
     }
 }

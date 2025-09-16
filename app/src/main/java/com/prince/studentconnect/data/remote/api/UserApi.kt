@@ -31,16 +31,16 @@ interface UserApi {
     suspend fun updateUser(
         @Body request: UpdateUserRequest,
         @Path("user_id") userId: String
-    ): Response<Any>
+    ): Response<Unit>
 
     @DELETE("users/{user_id}")
     suspend fun deleteUser(
         @Path("user_id") userId: String
-    ): Response<Any>
+    ): Response<Unit>
 
     @PATCH("users/{user_id}/role")
     suspend fun updateUserRole(
         @Body request: UpdateUserRoleRequest,
         @Path("user_id") userId: String
-    ): Response<Any>
+    ): Response<Unit>
 }

@@ -18,16 +18,16 @@ interface CampusApi {
     @POST("campuses")
     suspend fun addCampus(
         @Body request: AddCampusRequest
-    ): Response<Any>
+    ): Response<Unit>
 
     @PUT("campuses/{campus_id}")
     suspend fun updateCampus(
         @Body request: UpdateCampusRequest,
         @Path("campus_id") campusId: Int
-    ): Response<Any>
+    ): Response<Unit>
 
     @DELETE("campuses/{campus_id}")
     suspend fun deleteCampus(
         @Path("campus_id") campusId: Int
-    ): Response<Any>
+    ): Response<Unit>
 }
