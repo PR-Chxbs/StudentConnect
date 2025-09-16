@@ -1,11 +1,8 @@
 package com.prince.studentconnect.data.remote.dto.conversation_membership
 
+import com.prince.studentconnect.data.remote.dto.conversation.Member
+
 data class GetConversationMembersResponse(
     val members: Array<Member>
 )
 
-data class Member(
-    val user_id: String,
-    val role_in_conversation: String,
-    val status: String
-)
