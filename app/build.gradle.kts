@@ -56,7 +56,8 @@ dependencies {
     // OkHttp
     implementation(libs.okhttp)
 
-    // Google
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
+    // Supabase
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.supabase.kt)
 }
