@@ -60,4 +60,7 @@ dependencies {
     implementation(libs.supabase.gotrue)
     implementation(libs.supabase.postgrest)
     implementation(libs.supabase.storage)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 }
