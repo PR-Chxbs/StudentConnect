@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.okhttp)
 
     // Supabase
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.supabase.kt)
+    implementation(libs.supabase.gotrue)
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.storage)
 }
