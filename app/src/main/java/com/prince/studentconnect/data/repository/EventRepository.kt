@@ -15,15 +15,15 @@ class EventRepository(
         return eventApi.getEvent(eventId)
     }
 
-    suspend fun updateEvent(updateEventRequest: UpdateEventRequest, eventId: Int): Response<Any> {
+    suspend fun updateEvent(updateEventRequest: UpdateEventRequest, eventId: Int): Response<Unit> {
         return eventApi.updateEvent(updateEventRequest, eventId)
     }
 
-    suspend fun patchEvent(patchEventRequest: PatchEventRequest, eventId: Int): Response<Any> {
+    suspend fun patchEvent(patchEventRequest: PatchEventRequest, eventId: Int): Response<Unit> {
         return eventApi.patchEvent(patchEventRequest, eventId)
     }
 
-    suspend fun deleteEvent(eventId: Int): Response<Any> {
+    suspend fun deleteEvent(eventId: Int): Response<Unit> {
         return eventApi.deleteEvent(eventId)
     }
 
@@ -31,7 +31,7 @@ class EventRepository(
         return eventApi.subscribeToEvent(subscribeToEventRequest, eventId)
     }
 
-    suspend fun unsubscribeFromEvent(eventId: Int): Response<Any> {
+    suspend fun unsubscribeFromEvent(eventId: Int): Response<Unit> {
         return eventApi.unsubscribeFromEvent(eventId)
     }
 
