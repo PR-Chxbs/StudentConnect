@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 fun RootNavGraph(
     navController: NavHostController
 ) {
-    
+
     // --- Navigation ---
     NavHost(
         navController = navController,
@@ -18,7 +18,7 @@ fun RootNavGraph(
         authNavGraph(navController = navController)
         studentNavGraph(navController = navController)
         lecturerNavGraph(navController = navController)
-        //systemAdminNavGraph(navController = navController)
+        systemAdminNavGraph(navController = navController)
         //campusAdminNavGraph(navController = navController)
     }
 }
