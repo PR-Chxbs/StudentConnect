@@ -40,12 +40,12 @@ fun BottomNavBar(
                 Icon(
                     painter = painterResource(id = item.iconRes),
                     contentDescription = item.label,
-                    tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray,
+                    tint = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Gray,
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
                     text = item.label,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray,
+                    color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Gray,
                     style = MaterialTheme.typography.labelSmall
                 )
             }

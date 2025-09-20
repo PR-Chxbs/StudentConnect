@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.auth.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.material3.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +23,7 @@ fun LoginScreen(navController: NavController){
     ){
         // ----------- Replace all the below content with the actual UI -----------
 
-        Text("Login Screen")
+        Text("Login Screen", style = MaterialTheme.typography.headlineSmall)
 
         Button(
             onClick = {navController.navigate(Screen.SystemAdmin.route)},

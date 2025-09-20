@@ -19,6 +19,6 @@ fun RootNavGraph(
         studentNavGraph(navController = navController)
         lecturerNavGraph(navController = navController)
         systemAdminNavGraph(navController = navController)
-        //campusAdminNavGraph(navController = navController)
+        campusAdminNavGraph(navController = navController)
     }
 }

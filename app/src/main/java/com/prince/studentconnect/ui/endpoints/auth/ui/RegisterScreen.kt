@@ -22,7 +22,7 @@ fun RegisterScreen(navController: NavController){
     ){
         // ----------- Replace all the below content with the actual UI -----------
 
-        Text("Register Screen")
+        Text("Register Screen", style = MaterialTheme.typography.headlineSmall)
 
         Button(
             onClick = {navController.navigate(Screen.PostRegister.route)},

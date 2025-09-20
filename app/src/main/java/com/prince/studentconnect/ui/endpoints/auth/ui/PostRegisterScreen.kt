@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ fun PostRegisterScreen(navController: NavController) {
     ){
         // ----------- Replace all the below content with the actual UI -----------
 
-        Text("Post Register Screen")
+        Text("Post Register Screen", style = MaterialTheme.typography.headlineSmall)
 
         Button(
             onClick = {navController.navigate(Screen.SystemAdmin.route)},
