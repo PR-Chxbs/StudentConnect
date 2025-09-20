@@ -22,17 +22,17 @@ fun NavGraphBuilder.systemAdminNavGraph(navController: NavController) {
             ),
             BottomNavItem(
                 route = Screen.SystemAdminManageUsers.route,
-                label = "Manage Users",
+                label = "Users",
                 iconRes = R.drawable.ic_users_icon
             ),
             BottomNavItem(
                 route = Screen.SystemAdminManageCampuses.route,
-                label = "Manage Campuses",
+                label = "Campuses",
                 iconRes = R.drawable.ic_book_icon
             ),
             BottomNavItem(
                 route = Screen.SystemAdminManageInterests.route,
-                label = "Manage Interests",
+                label = "Interests",
                 iconRes = R.drawable.ic_calendar_icon
             ),
             BottomNavItem(
