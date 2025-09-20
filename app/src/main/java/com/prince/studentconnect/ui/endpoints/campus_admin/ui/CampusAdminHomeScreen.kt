@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.lecturer.ui
+package com.prince.studentconnect.ui.endpoints.campus_admin.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,18 +15,17 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LecturerCalendarScreen(
+fun CampusAdminHomeScreen(
     navController: NavController,
     bottomBar: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Lecturer Calendar") }
+                title = { Text("Campus Admin Home Screen") }
             )
         },
-        bottomBar = bottomBar,
-        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = bottomBar
     ) { innerPadding ->
 
         // ------- Placeholder content, replace with real content -------
@@ -34,9 +33,9 @@ fun LecturerCalendarScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
-            Text("Welcome to the Lecturer Calendar Screen!", style = MaterialTheme.typography.headlineSmall)
+            Text("Welcome to the Campus Admin Home Screen!", style = MaterialTheme.typography.headlineSmall)
         }
     }
 }
