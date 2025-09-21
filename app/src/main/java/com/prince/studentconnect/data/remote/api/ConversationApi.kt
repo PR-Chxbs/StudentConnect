@@ -12,6 +12,7 @@ import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMem
 import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationRequest
 import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationResponse
 import com.prince.studentconnect.data.remote.dto.conversation.GetConversationResponse
+import com.prince.studentconnect.data.remote.dto.conversation.GetConversationsResponse
 import com.prince.studentconnect.data.remote.dto.conversation.GetMessagesResponse
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
@@ -46,6 +47,14 @@ interface ConversationApi {
     suspend fun getConversation(
         @Path("conversation_id") conversationId: Int,
     ): Response<GetConversationResponse>
+
+    @GET("conversations")
+    suspend fun getConversations(
+        @Query("userId") userId: String,
+        @Query("search") search: String? = null,
+        @Query("type") type: String? = null,
+        @Query("campus_id") campusId: Int? = null
+    ): Response<GetConversationsResponse>
 
     @POST("conversations/{conversation_id}/messages")
     suspend fun sendMessage(

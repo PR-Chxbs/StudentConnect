@@ -170,6 +170,71 @@ class FakeConversationApi : ConversationApi {
         }
     }
 
+    override suspend fun getConversations(
+        userId: String,
+        search: String?,
+        type: String?,
+        campusId: Int?
+    ): Response<GetConversationsResponse> {
+        // Step 1: find conversations where this user is an active member
+        var filtered = conversations.filter { conv ->
+            conv.members.any { it.user_id == userId && it.status == "active" }
+        }
+
+        // Step 2: Apply optional search filter
+        if (!search.isNullOrBlank()) {
+            filtered = filtered.filter { conv ->
+                conv.name.contains(search, ignoreCase = true)
+            }
+        }
+
+        // Step 3: Apply optional type filter
+        if (!type.isNullOrBlank()) {
+            filtered = filtered.filter { conv ->
+                conv.type.equals(type, ignoreCase = true)
+            }
+        }
+
+        // Step 4: (Optional) campusId filter – depends on how you track campuses internally.
+        // For now, leaving it as a placeholder since InternalConversation has no campusId.
+        if (campusId != null) {
+            // TODO: filter by campus if you store it in InternalConversation
+        }
+
+        // Step 5: Map internal objects → DTO
+        val responseConversations = filtered.map { conv ->
+            Conversation(
+                conversationId = conv.conversation_id,
+                name = conv.name,
+                type = conv.type,
+                moduleId = conv.module_id ?: -1, // handle null gracefully
+                visibility = conv.visibility,
+                maxMembers = conv.max_members,
+                memberCount = conv.members.size,
+                dateCreated = conv.date_created,
+                lastMessage = conv.messages.lastOrNull()?.let { msg ->
+                    MessageA(
+                        senderId = msg.sender_id,
+                        senderName = "TODO: resolve sender name", // need User store
+                        content = msg.message_text,
+                        timestamp = msg.sent_at
+                    )
+                } ?: MessageA("", "", "", ""),
+                members = conv.members.map { member ->
+                    MemberA(
+                        userId = member.user_id,
+                        firstName = "TODO", // would need user lookup
+                        lastName = "TODO",
+                        profilePictureUrl = "" // also from User store
+                    )
+                }.toTypedArray()
+            )
+        }.toTypedArray()
+
+        return Response.success(GetConversationsResponse(responseConversations))
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun sendMessage(
         request: SendMessageRequest,

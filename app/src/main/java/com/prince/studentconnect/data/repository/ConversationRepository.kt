@@ -24,6 +24,10 @@ class ConversationRepository(
         return conversationApi.getConversation(conversationId)
     }
 
+    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<GetConversationsResponse> {
+        return conversationApi.getConversations(userId, search, type, campusId)
+    }
+
     suspend fun sendMessage(sendMessageRequest: SendMessageRequest, conversationId: Int): Response<SendMessageResponse> {
         return conversationApi.sendMessage(sendMessageRequest, conversationId)
     }
@@ -32,7 +36,7 @@ class ConversationRepository(
         return conversationApi.deleteMessage(conversationId, messageId)
     }
 
-    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String?, toDate: String?, limit: Int?): Response<GetMessagesResponse> {
+    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String? = null, toDate: String? = null, limit: Int? = null): Response<GetMessagesResponse> {
         return conversationApi.getMessagesInConversation(conversationId, fromDate, toDate, limit)
     }
 
