@@ -7,7 +7,7 @@ import com.prince.studentconnect.data.remote.api.*
 import com.prince.studentconnect.data.remote.fakeapi.*
 import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
-// import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
+import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
 import retrofit2.Retrofit
@@ -18,7 +18,7 @@ object ServiceLocator {
     // ---------------- Toggle flag ----------------
     private const val USE_FAKE_API = true // switch to false for real backend
 
-    private const val SERVER_URL: String = "https://your-api-base-url.com/"
+    private const val SERVER_URL = "https://your-api-base-url.com/"
 
     // ---------------- Retrofit ----------------
     private val retrofit: Retrofit by lazy {
@@ -54,14 +54,9 @@ object ServiceLocator {
     }
 
     // ---------------- WebSocket ----------------
-    val chatWebSocketClient: ChatWebSocketClient by lazy {
-        FakeChatWebSocketClient()
-    }
-
-    /*// ---------------- WebSocket ----------------
-    val chatWebSocketClient: ChatWebSocketClient by lazy {
+    private val chatWebSocketClient: ChatWebSocketClient by lazy {
         if (USE_FAKE_API) FakeChatWebSocketClient() else RealChatWebSocketClient(SERVER_URL)
-    }*/
+    }
 
     // ---------------- Repository ----------------
     val authRepository by lazy {

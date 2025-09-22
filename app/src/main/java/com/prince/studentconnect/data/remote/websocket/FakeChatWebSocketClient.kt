@@ -45,3 +45,24 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
         _incomingMessages.emit(fakeResponse)
     }
 }
+/*
+private val scope = CoroutineScope(Dispatchers.Default)
+override fun connect() {
+    // Fake: simulate receiving messages periodically
+    scope.launch {
+        repeat(5) { i ->
+            delay(3000L) // every 3 seconds
+            _incomingMessages.emit(
+                SendMessageResponse(
+                    message_id = i,
+                    conversation_id = 1,
+                    sender_id = "user_$i",
+                    message_text = "Fake message $i",
+                    attachment_url = null,
+                    attachment_type = null,
+                    sent_at = System.currentTimeMillis().toString()
+                )
+            )
+        }
+    }
+}*/

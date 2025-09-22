@@ -45,6 +45,12 @@ class ConversationRepository(
         return conversationApi.getMessagesInConversation(conversationId, fromDate, toDate, limit)
     }
 
+    // ----------- WebSocket -----------
+
+    suspend fun sendMessageViaWebSocket(request: SendMessageRequest) {
+        webSocketClient.sendMessage(request)
+    }
+
     fun connect() = webSocketClient.connect()
     fun disconnect() = webSocketClient.disconnect()
 
