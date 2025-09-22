@@ -1,6 +1,8 @@
 package com.prince.studentconnect.ui.endpoints.student.viewmodel
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 class ConversationViewModel(
     private val conversationRepository: ConversationRepository,
@@ -32,6 +35,7 @@ class ConversationViewModel(
 
     private val allConversations = mutableListOf<ConversationUiModel>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun instantiate(userId: String) {
         if (isInitialized) return  // don’t re-init if already done
 
@@ -60,6 +64,7 @@ class ConversationViewModel(
     }
 
     // ---------------- API loading ----------------
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadConversations(
         search: String? = null,
         type: String? = null,
@@ -78,7 +83,9 @@ class ConversationViewModel(
                     Log.d("ConversationViewModel", "loadConversations() triggered $data")
 
                     allConversations.clear()
-                    allConversations.addAll(data.map { it.toUiModel() })
+                    allConversations.addAll(data.map { it.toUiModel() }
+                        .sortedByDescending { it.latestMessageEpoch }
+                    )
 
                     _conversations.value = allConversations
                 } else {
@@ -93,6 +100,7 @@ class ConversationViewModel(
     }
 
     // ---------------- WebSocket message handling ----------------
+    @RequiresApi(Build.VERSION_CODES.O)
     fun handleIncomingMessage(message: SendMessageResponse) {
         _conversations.update { current ->
             current.map { conversation ->
@@ -100,10 +108,12 @@ class ConversationViewModel(
                     conversation.copy(
                         latestMessage = message.message_text.take(30),
                         latestMessageTimestamp = message.sent_at,
+                        latestMessageEpoch = Instant.parse(message.sent_at).toEpochMilli(),
                         unreadCount = conversation.unreadCount + 1
                     )
                 } else conversation
             }
+                .sortedByDescending { it.latestMessageEpoch } // <-- ensure newest first
         }
     }
 
@@ -162,12 +172,17 @@ data class ConversationUiModel(
     val name: String,
     val latestMessage: String,
     val latestMessageTimestamp: String,
+    val latestMessageEpoch: Long,
     val profileImages: List<String>, // single student/lecturer or 3 for group
     val unreadCount: Int = 0, // >0 means unread indicator should show
     val type: ConversationType
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun Conversation.toUiModel(): ConversationUiModel {
+
+    val instant = Instant.parse(this.lastMessage.timestamp) // backend value
+    val epochMillis = instant.toEpochMilli()
     val conversationType = ConversationType.fromValue(type)
 
     var formatLastMessage: String = if ((conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT)
@@ -190,6 +205,7 @@ fun Conversation.toUiModel(): ConversationUiModel {
         },
         latestMessage = formatLastMessage,
         latestMessageTimestamp = lastMessage.timestamp,
+        latestMessageEpoch = epochMillis,
         profileImages = when (conversationType) {
             ConversationType.GROUP, ConversationType.MODULE_DEFAULT -> members.take(3).map { it.profilePictureUrl }
             else -> listOf(members.firstOrNull()?.profilePictureUrl ?: "")

@@ -33,7 +33,8 @@ fun ConversationItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             // --- Profile Image(s) ---
             if (conversation.profileImages.size == 1) {

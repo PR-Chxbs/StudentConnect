@@ -46,25 +46,33 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun simulateMessageEmits() {
         // Simulate server sending messages periodically
+        val message = listOf(
+            listOf("Yo Prince", "Bruh...", "I need you to start focusing", "We have a submission soon", "Call me ASAP"),
+            listOf("Uhm", "John is blowing up my phone", "Talking about some assignment", "What assignment is my problem", "I should stop missing class")
+        )
+
         scope.launch {
-            repeat(5) { i ->
-                delay(3000L) // every 3 seconds
-                val fakeMessage = SendMessageResponse(
-                    message_id = i,
-                    conversation_id = 1,
-                    sender_id = "student_$i",
-                    message_text = "Fake message $i",
-                    attachment_url = null,
-                    attachment_type = null,
-                    sent_at = formatter.format(Instant.ofEpochMilli(System.currentTimeMillis()))
-                )
-                // Convert to JSON and back to simulate network parsing
-                val json = messageAdapter.toJson(fakeMessage)
-                val newLog = "New message emitted ($i): $json"
-                println(newLog)
-                Log.d("FakeChatWebSocketClient", "$newLog")
-                messageAdapter.fromJson(json)?.let { _incomingMessages.emit(it) }
+            repeat(2){ x ->
+                repeat(5) { i ->
+                    delay(3000L) // every 3 seconds
+                    val fakeMessage = SendMessageResponse(
+                        message_id = i,
+                        conversation_id = x+1,
+                        sender_id = "student_$i",
+                        message_text = message[x][i],
+                        attachment_url = null,
+                        attachment_type = null,
+                        sent_at = formatter.format(Instant.ofEpochMilli(System.currentTimeMillis()))
+                    )
+                    // Convert to JSON and back to simulate network parsing
+                    val json = messageAdapter.toJson(fakeMessage)
+                    val newLog = "New message emitted ($i): $json"
+                    println(newLog)
+                    Log.d("FakeChatWebSocketClient", "$newLog")
+                    messageAdapter.fromJson(json)?.let { _incomingMessages.emit(it) }
+                }
             }
+
 
             Log.d("FakeChatWebSocketClient", "Emitting complete${incomingMessages.collect()}")
             Log.d("FakeChatWebSocketClient", ": ${incomingMessages.collect()}")

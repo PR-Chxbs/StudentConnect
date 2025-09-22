@@ -13,7 +13,7 @@ import java.time.Instant
 class FakeConversationApi : ConversationApi {
 
     private val conversations = mutableListOf<InternalConversation>()
-    private var nextConversationId = 1
+    private var nextConversationId = 2
     private var nextMessageId = 1
     private var nextConversationMemberId = 1
 
@@ -55,7 +55,41 @@ class FakeConversationApi : ConversationApi {
         // ----- Students -----
         conversations.add(
             InternalConversation(
-                conversation_id = nextConversationId++,
+                conversation_id = 2,
+                name = "",
+                type = "private_student",
+                max_members = 2,
+                members = mutableListOf(
+                    InternalMember(
+                        user_id = "student_3",
+                        first_name = "Bob",
+                        last_name = "Johnson",
+                        profile_picture_url = "https://i.pravatar.cc/150?img=1",
+                        joined_at = "2025-09-22T08:00:00Z"
+                    ),
+                    InternalMember(
+                        user_id = "student_1",
+                        first_name = "John",
+                        last_name = "Doe",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
+                        joined_at = "2025-09-22T08:10:00Z"
+                    )
+                ),
+                date_created = "2025-09-22T08:00:00Z",
+                messages = mutableListOf(
+                    InternalMessage(
+                        message_id = nextMessageId++,
+                        sender_id = "student_3",
+                        message_text = "Make sure you have your material in place",
+                        sent_at = "2025-09-22T09:00:00Z"
+                    )
+                )
+            )
+        )
+
+        conversations.add(
+            InternalConversation(
+                conversation_id = 1,
                 name = "",
                 type = "private_student",
                 max_members = 2,
@@ -81,7 +115,7 @@ class FakeConversationApi : ConversationApi {
                         message_id = nextMessageId++,
                         sender_id = "student_1",
                         message_text = "Hey, are you ready for the test?",
-                        sent_at = "2025-09-22T09:00:00Z"
+                        sent_at = "2025-09-22T08:00:00Z"
                     )
                 )
             )
@@ -148,7 +182,7 @@ class FakeConversationApi : ConversationApi {
                         user_id = "student_3",
                         first_name = "Bob",
                         last_name = "Johnson",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/13.jpg",
+                        profile_picture_url = "https://i.pravatar.cc/150?img=1",
                         joined_at = "2025-09-21T08:10:00Z"
                     )
                 ),
