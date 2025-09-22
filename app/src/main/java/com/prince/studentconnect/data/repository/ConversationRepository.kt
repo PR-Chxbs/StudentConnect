@@ -3,11 +3,16 @@ package com.prince.studentconnect.data.repository
 import com.prince.studentconnect.data.remote.api.ConversationApi
 import com.prince.studentconnect.data.remote.dto.conversation.*
 import com.prince.studentconnect.data.remote.dto.conversation_membership.*
+import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class ConversationRepository(
-    private val conversationApi: ConversationApi
+    private val conversationApi: ConversationApi,
+    private val webSocketClient: ChatWebSocketClient
 ) {
+    val incomingMessages: Flow<SendMessageResponse> = webSocketClient.incomingMessages
+
     suspend fun createConversation(createConversationRequest: CreateConversationRequest): Response<CreateConversationResponse> {
         return conversationApi.createConversation(createConversationRequest)
     }
@@ -39,6 +44,9 @@ class ConversationRepository(
     suspend fun getMessagesInConversation(conversationId: Int, fromDate: String? = null, toDate: String? = null, limit: Int? = null): Response<GetMessagesResponse> {
         return conversationApi.getMessagesInConversation(conversationId, fromDate, toDate, limit)
     }
+
+    fun connect() = webSocketClient.connect()
+    fun disconnect() = webSocketClient.disconnect()
 
     // ----------- Conversation membership -----------
 
