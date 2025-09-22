@@ -24,13 +24,15 @@ fun ConversationItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        onClick = onClick
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        onClick = onClick,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background // overrides default
+        )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // --- Profile Image(s) ---
@@ -70,7 +72,8 @@ fun ConversationItem(
                 )
                 Text(
                     text = conversation.latestMessage,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -97,7 +100,8 @@ fun ConversationItem(
 
                 if (conversation.unreadCount > 0) {
                     Badge(
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp),
+                        containerColor = MaterialTheme.colorScheme.secondary
                     ) {
                         Text("${conversation.unreadCount}")
                     }

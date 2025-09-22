@@ -46,6 +46,7 @@ fun StudentChatScreen(
     // Load conversations once
     LaunchedEffect(Unit) {
         conversationViewModel.loadConversations()
+        conversationViewModel.simulateMessageEmits()
     }
 
     Scaffold(
@@ -160,7 +161,9 @@ fun ConversationListScreen(
         return
     }
 
-    LazyColumn {
+    LazyColumn (
+        modifier = Modifier.fillMaxSize()
+    ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
                 // TODO: Navigate to chat detail screen
