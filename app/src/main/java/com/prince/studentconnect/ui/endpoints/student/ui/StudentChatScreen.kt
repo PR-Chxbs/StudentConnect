@@ -12,21 +12,41 @@ import androidx.navigation.NavController
 import com.prince.studentconnect.ui.components.shared.SearchBar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
+import com.prince.studentconnect.ui.components.chat.ConversationItem
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentChatScreen(
     navController: NavController,
+    conversationViewModel: ConversationViewModel,
     bottomBar: @Composable () -> Unit
 ) {
     val tabs = listOf("Students", "Lecturers", "Groups")
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { tabs.size })
     val scope = rememberCoroutineScope()
+
+    val conversations by conversationViewModel.conversations.collectAsState()
+    val loading by conversationViewModel.loading.collectAsState()
+    val error by conversationViewModel.error.collectAsState()
+
+    // Load conversations once
+    LaunchedEffect(Unit) {
+        conversationViewModel.loadConversations()
+    }
 
     Scaffold(
         topBar = {
@@ -97,28 +117,55 @@ fun StudentChatScreen(
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when (page) {
-                    0 -> StudentsScreen()   // replace with your actual Students list composable
-                    1 -> LecturersScreen()  // replace with your actual Lecturers list composable
-                    2 -> GroupsScreen()     // replace with your actual Groups list composable
+                    0 -> ConversationListScreen(
+                        conversations = conversations.filter { it.type == ConversationType.PRIVATE_STUDENT },
+                        loading = loading,
+                        error = error
+                    )
+                    1 -> ConversationListScreen(
+                        conversations = conversations.filter { it.type == ConversationType.PRIVATE_LECTURER },
+                        loading = loading,
+                        error = error
+                    )
+                    2 -> ConversationListScreen(
+                        conversations = conversations.filter {
+                            it.type == ConversationType.GROUP || it.type == ConversationType.MODULE_DEFAULT
+                        },
+                        loading = loading,
+                        error = error
+                    )
                 }
             }
         }
     }
 }
 
-/* Placeholder screens — replace these with your real composables */
-@Composable fun StudentsScreen() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Students", style = MaterialTheme.typography.headlineSmall)
+@Composable
+fun ConversationListScreen(
+    conversations: List<ConversationUiModel>,
+    loading: Boolean,
+    error: String?
+) {
+    if (loading) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    if (!error.isNullOrEmpty()) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(error!!)
+        }
+        return
+    }
+
+    LazyColumn {
+        items(conversations) { conversation ->
+            ConversationItem(conversation) {
+                // TODO: Navigate to chat detail screen
+            }
+        }
     }
 }
-@Composable fun LecturersScreen() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Lecturers", style = MaterialTheme.typography.headlineSmall)
-    }
-}
-@Composable fun GroupsScreen() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Groups", style = MaterialTheme.typography.headlineSmall)
-    }
-}
+

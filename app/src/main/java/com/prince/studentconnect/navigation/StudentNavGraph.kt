@@ -13,8 +13,12 @@ import com.prince.studentconnect.ui.endpoints.student.ui.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 
-fun NavGraphBuilder.studentNavGraph(navController: NavController) {
+fun NavGraphBuilder.studentNavGraph(
+    navController: NavController,
+    conversationViewModel: ConversationViewModel
+) {
     navigation(
         startDestination = Screen.StudentHome.route,
         route = Graph.STUDENT
@@ -82,7 +86,8 @@ fun NavGraphBuilder.studentNavGraph(navController: NavController) {
                         navController = navController,
                         currentRoute = Screen.StudentMessages.route
                     )
-                }
+                },
+                conversationViewModel = conversationViewModel
             )
         }
 
