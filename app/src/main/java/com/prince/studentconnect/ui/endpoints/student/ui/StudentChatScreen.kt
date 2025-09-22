@@ -1,5 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,6 +30,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationUiMo
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentChatScreen(
