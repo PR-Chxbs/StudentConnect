@@ -1,5 +1,7 @@
 package com.prince.studentconnect.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
@@ -15,6 +17,7 @@ import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
     conversationViewModel: ConversationViewModel,
