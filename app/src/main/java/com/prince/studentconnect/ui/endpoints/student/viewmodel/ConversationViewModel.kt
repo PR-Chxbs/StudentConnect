@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.student.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
@@ -9,12 +10,16 @@ import com.prince.studentconnect.data.repository.ConversationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ConversationViewModel(
     private val conversationRepository: ConversationRepository,
-    private val userId: String // needed to update the correct conversation
 ) : ViewModel() {
+
+    private lateinit var userId: String
+    private var isInitialized = false
 
     private val _conversations = MutableStateFlow<List<ConversationUiModel>>(emptyList())
     val conversations: StateFlow<List<ConversationUiModel>> = _conversations.asStateFlow()
@@ -27,13 +32,31 @@ class ConversationViewModel(
 
     private val allConversations = mutableListOf<ConversationUiModel>()
 
-    init {
+    fun instantiate(userId: String) {
+        if (isInitialized) return  // don’t re-init if already done
+
+        Log.d("ConversationViewModel", "(Instantiate): Instantiating ConversationViewModel")
+
+        this.userId = userId
+        isInitialized = true
+
         // Start collecting WebSocket messages automatically
         viewModelScope.launch {
             conversationRepository.incomingMessages.collect { message ->
                 handleIncomingMessage(message)
             }
         }
+
+        // You could even preload conversations here if you want
+        loadConversations()
+        Log.d("ConversationViewModel", "(Instantiate): Loading conversations")
+
+        Log.d("ConversationViewModel", "(Instantiate): Conversations fetched...")
+        Log.d("ConversationViewModel", "(Instantiate): $allConversations")
+
+        // connect on startup
+        connectWebSocket()
+        Log.d("ConversationViewModel", "(Instantiate): Connecting Web Socket")
     }
 
     // ---------------- API loading ----------------
@@ -42,6 +65,8 @@ class ConversationViewModel(
         type: String? = null,
         campusId: Int? = null
     ) {
+        if (!isInitialized) return
+
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -49,6 +74,8 @@ class ConversationViewModel(
 
                 if (response.isSuccessful) {
                     val data: List<Conversation> = response.body()?.conversations?.toList() ?: emptyList()
+
+                    Log.d("ConversationViewModel", "loadConversations() triggered $data")
 
                     allConversations.clear()
                     allConversations.addAll(data.map { it.toUiModel() })
@@ -66,23 +93,22 @@ class ConversationViewModel(
     }
 
     // ---------------- WebSocket message handling ----------------
-    private fun handleIncomingMessage(message: SendMessageResponse) {
-        val updated = allConversations.map { conversation ->
-            if (conversation.id == message.conversation_id) {
-                conversation.copy(
-                    latestMessage = message.message_text.take(30),
-                    latestMessageTimestamp = message.sent_at,
-                    unreadCount = conversation.unreadCount + 1 // increment unread
-                )
-            } else conversation
+    fun handleIncomingMessage(message: SendMessageResponse) {
+        _conversations.update { current ->
+            current.map { conversation ->
+                if (conversation.id == message.conversation_id) {
+                    conversation.copy(
+                        latestMessage = message.message_text.take(30),
+                        latestMessageTimestamp = message.sent_at,
+                        unreadCount = conversation.unreadCount + 1
+                    )
+                } else conversation
+            }
         }
-        allConversations.clear()
-        allConversations.addAll(updated)
-        _conversations.value = allConversations
     }
 
     // ---------------- Filtering ----------------
-    fun showStudentConversations() {
+    /*fun showStudentConversations() {
         _conversations.value = allConversations.filter { it.type == ConversationType.PRIVATE_STUDENT }
     }
 
@@ -94,13 +120,25 @@ class ConversationViewModel(
         _conversations.value = allConversations.filter {
             it.type == ConversationType.GROUP || it.type == ConversationType.MODULE_DEFAULT
         }
-    }
+    }*/
 
     // ---------------- WebSocket lifecycle ----------------
-    fun connectWebSocket() = conversationRepository.connect()
-    fun disconnectWebSocket() = conversationRepository.disconnect()
+    fun connectWebSocket() {
+        if (isInitialized) conversationRepository.connect()
+    }
+
+    fun disconnectWebSocket() {
+        if (isInitialized) conversationRepository.disconnect()
+    }
+
+    fun simulateMessageEmits() {
+        viewModelScope.launch {
+            conversationRepository.simulateMessageEmits()
+        }
+    }
 
     fun sendMessage(content: String, conversationId: Int) {
+        if (!isInitialized) return
         viewModelScope.launch {
             val request = SendMessageRequest(
                 sender_id = userId,
@@ -110,6 +148,11 @@ class ConversationViewModel(
             )
             conversationRepository.sendMessageViaWebSocket(request)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disconnectWebSocket()
     }
 }
 
@@ -127,6 +170,16 @@ data class ConversationUiModel(
 fun Conversation.toUiModel(): ConversationUiModel {
     val conversationType = ConversationType.fromValue(type)
 
+    var formatLastMessage: String = if ((conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT)
+        && lastMessage.senderName.isNotBlank()
+    ) {
+        "${lastMessage.senderName}: ${lastMessage.content}".take(50)
+    } else {
+        lastMessage.content.take(50)
+    }
+
+    formatLastMessage = if (formatLastMessage.length >= 50) {"$formatLastMessage..."} else {formatLastMessage}
+
     return ConversationUiModel(
         id = conversationId,
         name = when (conversationType) {
@@ -135,13 +188,7 @@ fun Conversation.toUiModel(): ConversationUiModel {
             ConversationType.GROUP -> name.ifBlank { "Unnamed Group" }
             ConversationType.MODULE_DEFAULT -> name.ifBlank { "Module Chat" } // Show module name or fallback
         },
-        latestMessage = if ((conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT)
-            && lastMessage.senderName.isNotBlank()
-        ) {
-            "${lastMessage.senderName}: ${lastMessage.content.take(30)}"
-        } else {
-            lastMessage.content.take(30)
-        },
+        latestMessage = formatLastMessage,
         latestMessageTimestamp = lastMessage.timestamp,
         profileImages = when (conversationType) {
             ConversationType.GROUP, ConversationType.MODULE_DEFAULT -> members.take(3).map { it.profilePictureUrl }

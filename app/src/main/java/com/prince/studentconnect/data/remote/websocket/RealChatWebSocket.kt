@@ -65,4 +65,8 @@ class RealChatWebSocketClient(
         val jsonString = requestAdapter.toJson(request)
         webSocket?.send(jsonString)
     }
+
+    override fun simulateMessageEmits() {
+        TODO("Not yet implemented")
+    }
 }

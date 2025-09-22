@@ -9,6 +9,7 @@ interface ChatWebSocketClient {
 
     fun connect()
     fun disconnect()
+    fun simulateMessageEmits()
     suspend fun sendMessage(request: SendMessageRequest)
 }
 

@@ -53,6 +53,7 @@ class ConversationRepository(
 
     fun connect() = webSocketClient.connect()
     fun disconnect() = webSocketClient.disconnect()
+    fun simulateMessageEmits() = webSocketClient.simulateMessageEmits()
 
     // ----------- Conversation membership -----------
 

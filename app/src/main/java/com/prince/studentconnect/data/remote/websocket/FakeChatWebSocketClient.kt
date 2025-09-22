@@ -1,5 +1,9 @@
 package com.prince.studentconnect.data.remote.websocket
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
 import com.squareup.moshi.Moshi
@@ -9,7 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class FakeChatWebSocketClient : ChatWebSocketClient {
 
@@ -24,6 +32,19 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
     private val requestAdapter = moshi.adapter(SendMessageRequest::class.java)
 
     override fun connect() {
+        // f
+    }
+
+    override fun disconnect() {
+        // Nothing needed for fake
+    }
+
+    // Format Instant to ISO 8601 with UTC 'Z'
+    @RequiresApi(Build.VERSION_CODES.O)
+    val formatter = DateTimeFormatter.ISO_INSTANT
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun simulateMessageEmits() {
         // Simulate server sending messages periodically
         scope.launch {
             repeat(5) { i ->
@@ -31,23 +52,25 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
                 val fakeMessage = SendMessageResponse(
                     message_id = i,
                     conversation_id = 1,
-                    sender_id = "user_$i",
+                    sender_id = "student_$i",
                     message_text = "Fake message $i",
                     attachment_url = null,
                     attachment_type = null,
-                    sent_at = System.currentTimeMillis().toString()
+                    sent_at = formatter.format(Instant.ofEpochMilli(System.currentTimeMillis()))
                 )
                 // Convert to JSON and back to simulate network parsing
                 val json = messageAdapter.toJson(fakeMessage)
+                val newLog = "New message emitted ($i): $json"
+                println(newLog)
+                Log.d("FakeChatWebSocketClient", "$newLog")
                 messageAdapter.fromJson(json)?.let { _incomingMessages.emit(it) }
             }
+
+            Log.d("FakeChatWebSocketClient", "Emitting complete${incomingMessages.collect()}")
+            Log.d("FakeChatWebSocketClient", ": ${incomingMessages.collect()}")
         }
-    }
 
-    override fun disconnect() {
-        // Nothing needed for fake
     }
-
     override suspend fun sendMessage(request: SendMessageRequest) {
         // Simulate echo back as if server processed it
         val json = requestAdapter.toJson(request)
