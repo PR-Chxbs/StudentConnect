@@ -21,30 +21,178 @@ class FakeConversationApi : ConversationApi {
         val message_id: Int,
         val sender_id: String,
         val message_text: String,
-        val attachment_url: String?,
-        val attachment_type: String?,
+        val attachment_url: String? = null,
+        val attachment_type: String? = null,
         val sent_at: String
     )
 
     private data class InternalMember(
         val user_id: String,
+        val first_name: String = "Harry",
+        val last_name: String = "Fowls",
+        val profile_picture_url: String? = "https://randomuser.me/api/portraits/men/11.jpg",
         var role_in_conversation: String = "member",
         var status: String = "active",
         var joined_at: String,
         var left_at: String? = null
     )
 
+
     private data class InternalConversation(
         val conversation_id: Int,
         val name: String,
         val type: String,
-        val module_id: Int?,
-        val visibility: String,
+        val module_id: Int? = null,
+        val visibility: String = "private",
         val max_members: Int,
         val members: MutableList<InternalMember>,
         val date_created: String,
         val messages: MutableList<InternalMessage> = mutableListOf()
     )
+
+    // ---------------- Sample Data ----------------
+    init {
+        // ----- Students -----
+        conversations.add(
+            InternalConversation(
+                conversation_id = nextConversationId++,
+                name = "",
+                type = "private_student",
+                max_members = 2,
+                members = mutableListOf(
+                    InternalMember(
+                        user_id = "student_1",
+                        first_name = "John",
+                        last_name = "Doe",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
+                        joined_at = "2025-09-22T08:00:00Z"
+                    ),
+                    InternalMember(
+                        user_id = "student_2",
+                        first_name = "Alice",
+                        last_name = "Smith",
+                        profile_picture_url = "https://randomuser.me/api/portraits/women/12.jpg",
+                        joined_at = "2025-09-22T08:10:00Z"
+                    )
+                ),
+                date_created = "2025-09-22T08:00:00Z",
+                messages = mutableListOf(
+                    InternalMessage(
+                        message_id = nextMessageId++,
+                        sender_id = "student_1",
+                        message_text = "Hey, are you ready for the test?",
+                        sent_at = "2025-09-22T09:00:00Z"
+                    )
+                )
+            )
+        )
+
+        // ----- Lecturers -----
+        conversations.add(
+            InternalConversation(
+                conversation_id = nextConversationId++,
+                name = "",
+                type = "private_lecturer",
+                max_members = 2,
+                members = mutableListOf(
+                    InternalMember(
+                        user_id = "lecturer_1",
+                        first_name = "Dr.",
+                        last_name = "Brown",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/21.jpg",
+                        joined_at = "2025-09-20T10:00:00Z"
+                    ),
+                    InternalMember(
+                        user_id = "student_1",
+                        first_name = "John",
+                        last_name = "Doe",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
+                        joined_at = "2025-09-20T10:05:00Z"
+                    )
+                ),
+                date_created = "2025-09-20T10:00:00Z",
+                messages = mutableListOf(
+                    InternalMessage(
+                        message_id = nextMessageId++,
+                        sender_id = "lecturer_1",
+                        message_text = "Please submit your assignment by Friday.",
+                        sent_at = "2025-09-21T12:00:00Z"
+                    )
+                )
+            )
+        )
+
+        // ----- Groups -----
+        conversations.add(
+            InternalConversation(
+                conversation_id = nextConversationId++,
+                name = "Math Study Group",
+                type = "group",
+                max_members = 5,
+                members = mutableListOf(
+                    InternalMember(
+                        user_id = "student_1",
+                        first_name = "John",
+                        last_name = "Doe",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
+                        joined_at = "2025-09-21T08:00:00Z"
+                    ),
+                    InternalMember(
+                        user_id = "student_2",
+                        first_name = "Alice",
+                        last_name = "Smith",
+                        profile_picture_url = "https://randomuser.me/api/portraits/women/12.jpg",
+                        joined_at = "2025-09-21T08:05:00Z"
+                    ),
+                    InternalMember(
+                        user_id = "student_3",
+                        first_name = "Bob",
+                        last_name = "Johnson",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/13.jpg",
+                        joined_at = "2025-09-21T08:10:00Z"
+                    )
+                ),
+                date_created = "2025-09-21T08:00:00Z",
+                messages = mutableListOf(
+                    InternalMessage(
+                        message_id = nextMessageId++,
+                        sender_id = "student_2",
+                        message_text = "Guys, when are we starting our math session?",
+                        sent_at = "2025-09-21T09:00:00Z"
+                    )
+                )
+            )
+        )
+
+        // ----- Module Default (also under Groups tab) -----
+        conversations.add(
+            InternalConversation(
+                conversation_id = nextConversationId++,
+                name = "Physics 101",
+                type = "module_default",
+                max_members = 20,
+                members = mutableListOf(
+                    InternalMember(
+                        user_id = "student_1",
+                        first_name = "John",
+                        last_name = "Doe",
+                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
+                        joined_at = "2025-09-22T08:00:00Z"
+                    )
+                ),
+                date_created = "2025-09-22T08:00:00Z",
+                messages = mutableListOf(
+                    InternalMessage(
+                        message_id = nextMessageId++,
+                        sender_id = "student_1",
+                        message_text = "Does anyone understand the last lecture?",
+                        sent_at = "2025-09-22T09:30:00Z"
+                    )
+                )
+            )
+        )
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createConversation(request: CreateConversationRequest): Response<CreateConversationResponse> {
@@ -170,13 +318,14 @@ class FakeConversationApi : ConversationApi {
         }
     }
 
+    // ---------- Fake getConversations ----------
     override suspend fun getConversations(
         userId: String,
         search: String?,
         type: String?,
         campusId: Int?
     ): Response<GetConversationsResponse> {
-        // Step 1: find conversations where this user is an active member
+        // Step 1: Filter by active membership
         var filtered = conversations.filter { conv ->
             conv.members.any { it.user_id == userId && it.status == "active" }
         }
@@ -184,38 +333,37 @@ class FakeConversationApi : ConversationApi {
         // Step 2: Apply optional search filter
         if (!search.isNullOrBlank()) {
             filtered = filtered.filter { conv ->
-                conv.name.contains(search, ignoreCase = true)
+                conv.name.contains(search, ignoreCase = true) ||
+                        conv.members.any { "${it.first_name} ${it.last_name}".contains(search, ignoreCase = true) }
             }
         }
 
         // Step 3: Apply optional type filter
         if (!type.isNullOrBlank()) {
-            filtered = filtered.filter { conv ->
-                conv.type.equals(type, ignoreCase = true)
-            }
+            filtered = filtered.filter { conv -> conv.type.equals(type, ignoreCase = true) }
         }
 
-        // Step 4: (Optional) campusId filter – depends on how you track campuses internally.
-        // For now, leaving it as a placeholder since InternalConversation has no campusId.
-        if (campusId != null) {
-            // TODO: filter by campus if you store it in InternalConversation
-        }
-
-        // Step 5: Map internal objects → DTO
+        // Step 4: Map InternalConversation → Conversation DTO
         val responseConversations = filtered.map { conv ->
             Conversation(
                 conversationId = conv.conversation_id,
-                name = conv.name,
+                name = if (conv.type in listOf("private_student", "private_lecturer")) {
+                    val member = conv.members.firstOrNull { it.user_id != userId }
+                    member?.let { "${it.first_name} ${it.last_name}" } ?: "Unknown"
+                } else {
+                    conv.name
+                },
                 type = conv.type,
-                moduleId = conv.module_id ?: -1, // handle null gracefully
+                moduleId = conv.module_id ?: -1,
                 visibility = conv.visibility,
                 maxMembers = conv.max_members,
                 memberCount = conv.members.size,
                 dateCreated = conv.date_created,
                 lastMessage = conv.messages.lastOrNull()?.let { msg ->
+                    val sender = conv.members.firstOrNull { it.user_id == msg.sender_id }
                     MessageA(
                         senderId = msg.sender_id,
-                        senderName = "TODO: resolve sender name", // need User store
+                        senderName = sender?.let { "${it.first_name} ${it.last_name}" } ?: "Unknown",
                         content = msg.message_text,
                         timestamp = msg.sent_at
                     )
@@ -223,9 +371,9 @@ class FakeConversationApi : ConversationApi {
                 members = conv.members.map { member ->
                     MemberA(
                         userId = member.user_id,
-                        firstName = "TODO", // would need user lookup
-                        lastName = "TODO",
-                        profilePictureUrl = "" // also from User store
+                        firstName = member.first_name,
+                        lastName = member.last_name,
+                        profilePictureUrl = member.profile_picture_url ?: ""
                     )
                 }.toTypedArray()
             )
@@ -233,7 +381,6 @@ class FakeConversationApi : ConversationApi {
 
         return Response.success(GetConversationsResponse(responseConversations))
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun sendMessage(
