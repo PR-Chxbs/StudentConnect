@@ -13,7 +13,7 @@ import java.time.Instant
 class FakeConversationApi : ConversationApi {
 
     private val conversations = mutableListOf<InternalConversation>()
-    private var nextConversationId = 2
+    private var nextConversationId = 3
     private var nextMessageId = 1
     private var nextConversationMemberId = 1
 
