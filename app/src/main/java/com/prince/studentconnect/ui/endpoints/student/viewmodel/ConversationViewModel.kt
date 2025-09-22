@@ -21,7 +21,7 @@ class ConversationViewModel(
     private val conversationRepository: ConversationRepository,
 ) : ViewModel() {
 
-    private lateinit var userId: String
+    private lateinit var currentUserId: String
     private var isInitialized = false
 
     private val _conversations = MutableStateFlow<List<ConversationUiModel>>(emptyList())
@@ -36,12 +36,12 @@ class ConversationViewModel(
     private val allConversations = mutableListOf<ConversationUiModel>()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun instantiate(userId: String) {
+    fun instantiate(currentUserId: String) {
         if (isInitialized) return  // don’t re-init if already done
 
         Log.d("ConversationViewModel", "(Instantiate): Instantiating ConversationViewModel")
 
-        this.userId = userId
+        this.currentUserId = currentUserId
         isInitialized = true
 
         // Start collecting WebSocket messages automatically
@@ -75,7 +75,7 @@ class ConversationViewModel(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = conversationRepository.getConversations(userId, search, type, campusId)
+                val response = conversationRepository.getConversations(currentUserId, search, type, campusId)
 
                 if (response.isSuccessful) {
                     val data: List<Conversation> = response.body()?.conversations?.toList() ?: emptyList()
@@ -83,7 +83,7 @@ class ConversationViewModel(
                     Log.d("ConversationViewModel", "loadConversations() triggered $data")
 
                     allConversations.clear()
-                    allConversations.addAll(data.map { it.toUiModel() }
+                    allConversations.addAll(data.map { it.toUiModel(currentUserId) }
                         .sortedByDescending { it.latestMessageEpoch }
                     )
 
@@ -151,7 +151,7 @@ class ConversationViewModel(
         if (!isInitialized) return
         viewModelScope.launch {
             val request = SendMessageRequest(
-                sender_id = userId,
+                sender_id = currentUserId,
                 message_text = content,
                 attachment_url = null,
                 attachment_type = null
@@ -179,7 +179,7 @@ data class ConversationUiModel(
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun Conversation.toUiModel(): ConversationUiModel {
+fun Conversation.toUiModel(userId: String): ConversationUiModel {
 
     val instant = Instant.parse(this.lastMessage.timestamp) // backend value
     val epochMillis = instant.toEpochMilli()
@@ -198,8 +198,12 @@ fun Conversation.toUiModel(): ConversationUiModel {
     return ConversationUiModel(
         id = conversationId,
         name = when (conversationType) {
-            ConversationType.PRIVATE_STUDENT -> members.firstOrNull()?.let { "${it.firstName} ${it.lastName}" } ?: "Student"
-            ConversationType.PRIVATE_LECTURER -> members.firstOrNull()?.let { "${it.firstName} ${it.lastName}" } ?: "Lecturer"
+            ConversationType.PRIVATE_STUDENT,
+            ConversationType.PRIVATE_LECTURER -> {
+                // Pick the member who is NOT the current user
+                val other = members.firstOrNull { it.userId != userId }
+                other?.let { "${it.firstName} ${it.lastName}" } ?: "Unknown"
+            }
             ConversationType.GROUP -> name.ifBlank { "Unnamed Group" }
             ConversationType.MODULE_DEFAULT -> name.ifBlank { "Module Chat" } // Show module name or fallback
         },
@@ -207,8 +211,13 @@ fun Conversation.toUiModel(): ConversationUiModel {
         latestMessageTimestamp = lastMessage.timestamp,
         latestMessageEpoch = epochMillis,
         profileImages = when (conversationType) {
-            ConversationType.GROUP, ConversationType.MODULE_DEFAULT -> members.take(3).map { it.profilePictureUrl }
-            else -> listOf(members.firstOrNull()?.profilePictureUrl ?: "")
+            ConversationType.GROUP, ConversationType.MODULE_DEFAULT ->
+                members.take(3).map { it.profilePictureUrl }
+
+            else -> {
+                val other = members.firstOrNull { it.userId != userId }
+                listOf(other?.profilePictureUrl ?: "")
+            }
         },
         unreadCount = 0, // placeholder for now
         type = conversationType

@@ -11,6 +11,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -19,9 +23,11 @@ fun SearchBar(
     placeholder: String,
     modifier: Modifier = Modifier
 ) {
+    var value by remember { mutableStateOf("") }
+
     OutlinedTextField(
-        value = "",
-        onValueChange = {}, // No functionality for now
+        value = value,
+        onValueChange = { value = it }, // No functionality for now
         placeholder = {
             Text(
                 text = placeholder,
