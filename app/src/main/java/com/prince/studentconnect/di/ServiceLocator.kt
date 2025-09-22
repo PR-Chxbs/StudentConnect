@@ -88,7 +88,7 @@ object ServiceLocator {
     }
 
     // ---------------- ViewModel Factory ----------------
-    val conversationViewModelFactory: ViewModelProvider.Factory by lazy {
-        ConversationViewModelFactory(conversationRepository)
+    fun provideConversationViewModelFactory(userId: String): ViewModelProvider.Factory {
+        return ConversationViewModelFactory(conversationRepository, userId)
     }
 }

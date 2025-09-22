@@ -3,6 +3,8 @@ package com.prince.studentconnect.ui.endpoints.student.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
 import com.prince.studentconnect.data.repository.ConversationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ConversationViewModel(
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    private val userId: String // needed to update the correct conversation
 ) : ViewModel() {
 
     private val _conversations = MutableStateFlow<List<ConversationUiModel>>(emptyList())
@@ -24,8 +27,17 @@ class ConversationViewModel(
 
     private val allConversations = mutableListOf<ConversationUiModel>()
 
+    init {
+        // Start collecting WebSocket messages automatically
+        viewModelScope.launch {
+            conversationRepository.incomingMessages.collect { message ->
+                handleIncomingMessage(message)
+            }
+        }
+    }
+
+    // ---------------- API loading ----------------
     fun loadConversations(
-        userId: String,
         search: String? = null,
         type: String? = null,
         campusId: Int? = null
@@ -41,7 +53,6 @@ class ConversationViewModel(
                     allConversations.clear()
                     allConversations.addAll(data.map { it.toUiModel() })
 
-                    // By default: show all
                     _conversations.value = allConversations
                 } else {
                     _error.value = "Failed to fetch conversations"
@@ -54,6 +65,23 @@ class ConversationViewModel(
         }
     }
 
+    // ---------------- WebSocket message handling ----------------
+    private fun handleIncomingMessage(message: SendMessageResponse) {
+        val updated = allConversations.map { conversation ->
+            if (conversation.id == message.conversation_id) {
+                conversation.copy(
+                    latestMessage = message.message_text.take(30),
+                    latestMessageTimestamp = message.sent_at,
+                    unreadCount = conversation.unreadCount + 1 // increment unread
+                )
+            } else conversation
+        }
+        allConversations.clear()
+        allConversations.addAll(updated)
+        _conversations.value = allConversations
+    }
+
+    // ---------------- Filtering ----------------
     fun showStudentConversations() {
         _conversations.value = allConversations.filter { it.type == ConversationType.PRIVATE_STUDENT }
     }
@@ -68,9 +96,23 @@ class ConversationViewModel(
         }
     }
 
+    // ---------------- WebSocket lifecycle ----------------
+    fun connectWebSocket() = conversationRepository.connect()
+    fun disconnectWebSocket() = conversationRepository.disconnect()
 
-
+    fun sendMessage(content: String, conversationId: Int) {
+        viewModelScope.launch {
+            val request = SendMessageRequest(
+                sender_id = userId,
+                message_text = content,
+                attachment_url = null,
+                attachment_type = null
+            )
+            conversationRepository.sendMessageViaWebSocket(request)
+        }
+    }
 }
+
 
 data class ConversationUiModel(
     val id: Int,
