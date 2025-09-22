@@ -2,58 +2,33 @@ package com.prince.studentconnect.data.remote.websocket
 
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 class FakeChatWebSocketClient : ChatWebSocketClient {
+
+    private val scope = CoroutineScope(Dispatchers.Default)
     private val _incomingMessages = MutableSharedFlow<SendMessageResponse>()
-    override val incomingMessages: Flow<SendMessageResponse> = _incomingMessages.asSharedFlow()
+    override val incomingMessages: Flow<SendMessageResponse> = _incomingMessages
+
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    private val messageAdapter = moshi.adapter(SendMessageResponse::class.java)
+    private val requestAdapter = moshi.adapter(SendMessageRequest::class.java)
 
     override fun connect() {
-        // Simulate a new incoming message 2s after connection
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(2000)
-            _incomingMessages.emit(
-                SendMessageResponse(
-                    message_id = 1,
-                    conversation_id = 1,
-                    sender_id = "system",
-                    message_text = "Welcome to Fake Chat 🎉",
-                    attachment_url = null,
-                    attachment_type = null,
-                    sent_at = System.currentTimeMillis().toString()
-                )
-            )
-        }
-    }
-
-    override fun disconnect() {
-        // no-op
-    }
-
-    override suspend fun sendMessage(request: SendMessageRequest) {
-        val fakeResponse = SendMessageResponse(
-            message_id = (1..1000).random(),
-            conversation_id = 1,
-            sender_id = request.sender_id,
-            message_text = request.message_text,
-            attachment_url = request.attachment_url,
-            attachment_type = request.attachment_type,
-            sent_at = System.currentTimeMillis().toString()
-        )
-        // Emit immediately to simulate echo from server
-        _incomingMessages.emit(fakeResponse)
-    }
-}
-/*
-private val scope = CoroutineScope(Dispatchers.Default)
-override fun connect() {
-    // Fake: simulate receiving messages periodically
-    scope.launch {
-        repeat(5) { i ->
-            delay(3000L) // every 3 seconds
-            _incomingMessages.emit(
-                SendMessageResponse(
+        // Simulate server sending messages periodically
+        scope.launch {
+            repeat(5) { i ->
+                delay(3000L) // every 3 seconds
+                val fakeMessage = SendMessageResponse(
                     message_id = i,
                     conversation_id = 1,
                     sender_id = "user_$i",
@@ -62,7 +37,30 @@ override fun connect() {
                     attachment_type = null,
                     sent_at = System.currentTimeMillis().toString()
                 )
-            )
+                // Convert to JSON and back to simulate network parsing
+                val json = messageAdapter.toJson(fakeMessage)
+                messageAdapter.fromJson(json)?.let { _incomingMessages.emit(it) }
+            }
         }
     }
-}*/
+
+    override fun disconnect() {
+        // Nothing needed for fake
+    }
+
+    override suspend fun sendMessage(request: SendMessageRequest) {
+        // Simulate echo back as if server processed it
+        val json = requestAdapter.toJson(request)
+        val message = SendMessageResponse(
+            message_id = 999,
+            conversation_id = 1,
+            sender_id = request.sender_id,
+            message_text = request.message_text,
+            attachment_url = request.attachment_url,
+            attachment_type = request.attachment_type,
+            sent_at = System.currentTimeMillis().toString()
+        )
+        val jsonMessage = messageAdapter.toJson(message)
+        messageAdapter.fromJson(jsonMessage)?.let { _incomingMessages.emit(it) }
+    }
+}
