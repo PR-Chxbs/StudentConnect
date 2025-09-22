@@ -82,4 +82,8 @@ dependencies {
     // Moshi
     implementation(libs.moshi.core)
     implementation(libs.moshi.kotlin)
+
+    // Coil
+    implementation(libs.coil.core)     // Core Coil dependency
+    implementation(libs.coil.compose)
 }
