@@ -17,12 +17,15 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationView
 
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
-    conversationViewModel: ConversationViewModel
+    conversationViewModel: ConversationViewModel,
+    currentUserId: String
 ) {
     navigation(
         startDestination = Screen.StudentHome.route,
         route = Graph.STUDENT
     ){
+        conversationViewModel.instantiate(currentUserId)
+
         val bottomNavItems = listOf(
             BottomNavItem(
                 route = Screen.StudentHome.route,

@@ -88,7 +88,7 @@ object ServiceLocator {
     }
 
     // ---------------- ViewModel Factory ----------------
-    fun provideConversationViewModelFactory(userId: String): ViewModelProvider.Factory {
-        return ConversationViewModelFactory(conversationRepository, userId)
+    fun provideConversationViewModelFactory(): ViewModelProvider.Factory {
+        return ConversationViewModelFactory(conversationRepository)
     }
 }

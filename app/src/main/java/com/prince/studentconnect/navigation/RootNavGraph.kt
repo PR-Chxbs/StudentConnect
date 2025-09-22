@@ -17,7 +17,7 @@ fun RootNavGraph(
 
     // --- ViewModels via ViewModelProvider ---
     val conversationViewModel: ConversationViewModel = viewModel(
-        factory = ServiceLocator.provideConversationViewModelFactory(currentUserId)
+        factory = ServiceLocator.provideConversationViewModelFactory()
     )
 
     // --- Navigation ---
@@ -28,7 +28,8 @@ fun RootNavGraph(
         authNavGraph(navController = navController)
         studentNavGraph(
             navController = navController,
-            conversationViewModel = conversationViewModel
+            conversationViewModel = conversationViewModel,
+            currentUserId = currentUserId
         )
         lecturerNavGraph(navController = navController)
         systemAdminNavGraph(navController = navController)
