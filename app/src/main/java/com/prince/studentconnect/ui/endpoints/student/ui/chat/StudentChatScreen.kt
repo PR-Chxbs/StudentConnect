@@ -26,7 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
 import com.prince.studentconnect.ui.components.chat.ConversationItem
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationUiModel
+import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
 
