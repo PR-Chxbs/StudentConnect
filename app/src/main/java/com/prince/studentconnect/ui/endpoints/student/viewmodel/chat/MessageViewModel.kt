@@ -21,9 +21,9 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 class MessageViewModel(
     private val repository: ConversationRepository,
-    private val userId: String,
+    val userId: String,
     private val conversationId: Int,
-    private val members: List<MemberA> // pass conversation members here for profile images
+    val members: List<MemberA> // pass conversation members here for profile images
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<MessageUiModel>>(emptyList())
