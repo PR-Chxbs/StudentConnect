@@ -50,7 +50,7 @@ fun StudentChatScreen(
     // Load conversations once
     LaunchedEffect(Unit) {
         conversationViewModel.loadConversations()
-        conversationViewModel.simulateMessageEmits()
+        // conversationViewModel.simulateMessageEmits()
     }
 
     Scaffold(
