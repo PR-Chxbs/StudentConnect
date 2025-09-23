@@ -58,7 +58,7 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
                     val fakeMessage = SendMessageResponse(
                         message_id = i,
                         conversation_id = x+1,
-                        sender_id = "student_$i",
+                        sender_id = "student_${if (x == 0) 2 else 3}",
                         message_text = message[x][i],
                         attachment_url = null,
                         attachment_type = null,
