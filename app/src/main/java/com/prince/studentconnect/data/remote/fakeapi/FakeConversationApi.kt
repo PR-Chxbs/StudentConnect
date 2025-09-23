@@ -17,9 +17,10 @@ class FakeConversationApi : ConversationApi {
     private var nextMessageId = 1
     private var nextConversationMemberId = 1
 
-    private data class InternalMessage(
+    data class InternalMessage(
         val message_id: Int,
         val sender_id: String,
+        val conversation_id: Int = 1, // Need to work on fixing all references
         val message_text: String,
         val attachment_url: String? = null,
         val attachment_type: String? = null,
