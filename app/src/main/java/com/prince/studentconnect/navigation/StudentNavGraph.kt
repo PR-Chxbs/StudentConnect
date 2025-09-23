@@ -131,7 +131,7 @@ fun NavGraphBuilder.studentNavGraph(
         }
 
         composable(Screen.StudentConversationMessages.route) { backStackEntry ->
-            val conversationId = backStackEntry.arguments?.getInt("conversationId") ?: return@composable
+            val conversationId = backStackEntry.arguments?.getInt("conversation_id") ?: return@composable
 
             val conversation = conversationViewModel.conversations.value
                 .firstOrNull { it.id == conversationId }
