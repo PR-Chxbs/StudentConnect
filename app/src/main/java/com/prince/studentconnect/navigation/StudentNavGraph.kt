@@ -14,6 +14,7 @@ import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentCalendarScreen
+import androidx.compose.material3.Text
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
