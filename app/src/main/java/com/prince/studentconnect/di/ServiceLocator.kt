@@ -4,12 +4,16 @@ import AuthRepository
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
 import com.prince.studentconnect.data.remote.api.*
+import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.remote.fakeapi.*
 import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
+import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -88,7 +92,13 @@ object ServiceLocator {
     }
 
     // ---------------- ViewModel Factory ----------------
+    // Main
     fun provideConversationViewModelFactory(): ViewModelProvider.Factory {
         return ConversationViewModelFactory(conversationRepository)
+    }
+
+    // Extras
+    fun provideMessageViewModelFactory(userId: String, conversationId: Int, members: List<MemberUiModel>): ViewModelProvider.Factory {
+        return MessageViewModelFactory(conversationRepository, userId, conversationId, members)
     }
 }

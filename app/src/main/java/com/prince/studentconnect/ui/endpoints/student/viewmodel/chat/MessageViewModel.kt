@@ -4,26 +4,22 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
 import com.prince.studentconnect.ui.endpoints.student.model.chat.toUiModel
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
+import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MessageViewModel(
     private val repository: ConversationRepository,
     val userId: String,
     private val conversationId: Int,
-    val members: List<MemberA> // pass conversation members here for profile images
+    val members: List<MemberUiModel> // now from ConversationUiModel
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<MessageUiModel>>(emptyList())
@@ -35,12 +31,16 @@ class MessageViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    /** Derived properties for profile images */
+    /** Derived UI properties */
+    val isGroupConversation: Boolean = members.size > 2
+
     val otherUserProfile: String? =
         members.firstOrNull { it.userId != userId }?.profilePictureUrl
 
     val groupProfileImages: List<String> =
-        members.filter { it.userId != userId }.take(3).map { it.profilePictureUrl }
+        members.filter { it.userId != userId }
+            .take(3)
+            .map { it.profilePictureUrl }
 
     init {
         loadMessages()
@@ -51,13 +51,18 @@ class MessageViewModel(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = repository.getMessagesInConversation(conversationId, limit = limit)
+                val response = repository.getMessagesInConversation(
+                    conversationId = conversationId,
+                    limit = limit
+                )
+
                 if (response.isSuccessful) {
                     val data = response.body()
                         ?.messages
                         ?.map { it.toUiModel(userId) }
-                        ?: emptyList()
-                    _messages.value = data.sortedBy { it.sentAtEpoch } // chronological
+                        .orEmpty()
+
+                    _messages.value = data.sortedBy { it.sentAtEpoch }
                 } else {
                     _error.value = "Failed to fetch messages: ${response.code()}"
                 }
@@ -81,7 +86,11 @@ class MessageViewModel(
         }
     }
 
-    fun sendMessage(text: String, attachmentUrl: String? = null, attachmentType: String? = null) {
+    fun sendMessage(
+        text: String,
+        attachmentUrl: String? = null,
+        attachmentType: String? = null
+    ) {
         viewModelScope.launch {
             val request = SendMessageRequest(
                 sender_id = userId,
@@ -92,25 +101,7 @@ class MessageViewModel(
             repository.sendMessageViaWebSocket(request)
         }
     }
-
-    /** Utility to group messages by date (for separators) */
-    fun getMessagesGroupedByDate(): Map<String, List<MessageUiModel>> {
-        return _messages.value.groupBy { msg ->
-            val msgDate = Instant.ofEpochMilli(msg.sentAtEpoch).atZone(ZoneId.systemDefault()).toLocalDate()
-            val today = LocalDate.now()
-            val yesterday = today.minusDays(1)
-
-            when (msgDate) {
-                today -> "Today"
-                yesterday -> "Yesterday"
-                else -> msgDate.dayOfWeek.name.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.ROOT
-                    ) else it.toString()
-                } // Sunday, Monday, etc.
-            }
-        }
-    }
 }
+
 
 

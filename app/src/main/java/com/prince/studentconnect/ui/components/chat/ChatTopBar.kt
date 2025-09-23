@@ -28,7 +28,10 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageView
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ChatTopBar(viewModel: MessageViewModel) {
+fun ChatTopBar(
+    viewModel: MessageViewModel,
+    onBackClick: () -> Unit
+) {
     val title = if (viewModel.groupProfileImages.isNotEmpty()) {
         "" // will show images for group
     } else {
@@ -43,7 +46,7 @@ fun ChatTopBar(viewModel: MessageViewModel) {
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /* navController.popBackStack() */ }) {
+        IconButton(onClick = onBackClick ) {
             Icon(Icons.Default.ArrowBack, contentDescription = "Back")
         }
 

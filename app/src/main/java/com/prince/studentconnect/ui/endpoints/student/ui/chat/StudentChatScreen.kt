@@ -124,19 +124,22 @@ fun StudentChatScreen(
                     0 -> ConversationListScreen(
                         conversations = conversations.filter { it.type == ConversationType.PRIVATE_STUDENT },
                         loading = loading,
-                        error = error
+                        error = error,
+                        navController = navController
                     )
                     1 -> ConversationListScreen(
                         conversations = conversations.filter { it.type == ConversationType.PRIVATE_LECTURER },
                         loading = loading,
-                        error = error
+                        error = error,
+                        navController = navController
                     )
                     2 -> ConversationListScreen(
                         conversations = conversations.filter {
                             it.type == ConversationType.GROUP || it.type == ConversationType.MODULE_DEFAULT
                         },
                         loading = loading,
-                        error = error
+                        error = error,
+                        navController = navController
                     )
                 }
             }
@@ -148,7 +151,8 @@ fun StudentChatScreen(
 fun ConversationListScreen(
     conversations: List<ConversationUiModel>,
     loading: Boolean,
-    error: String?
+    error: String?,
+    navController: NavController
 ) {
     if (loading) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -169,7 +173,7 @@ fun ConversationListScreen(
     ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
-                // TODO: Navigate to chat detail screen
+                navController.navigate("chat/${conversation.id}")
             }
         }
     }

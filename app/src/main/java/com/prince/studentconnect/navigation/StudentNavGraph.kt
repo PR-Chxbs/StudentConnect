@@ -1,13 +1,16 @@
 package com.prince.studentconnect.navigation
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.compose.composable
 
 import com.prince.studentconnect.R
+import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentCalendarScreen
@@ -15,8 +18,11 @@ import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
@@ -120,6 +126,26 @@ fun NavGraphBuilder.studentNavGraph(
                         currentRoute = Screen.StudentSearch.route
                     )
                 }
+            )
+        }
+
+        composable(Screen.StudentConversationMessages.route) { backStackEntry ->
+            val conversationId = backStackEntry.arguments?.getInt("conversationId") ?: return@composable
+
+            val conversation = conversationViewModel.conversations.value
+                .firstOrNull { it.id == conversationId }
+
+            if (conversation == null) {
+                // Show a simple error or navigate back
+                Text("Conversation not found")
+                return@composable
+            }
+
+            ChatScreen(
+                navController = navController,
+                conversationId = conversationId,
+                userId = currentUserId,
+                members = conversation?.members ?: return@composable
             )
         }
     }

@@ -18,18 +18,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.ui.components.chat.ChatTopBar
 import com.prince.studentconnect.ui.components.chat.MessageInputBar
 import com.prince.studentconnect.ui.components.chat.MessagesList
+import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
     navController: NavController,
-    viewModel: MessageViewModel
+    conversationId: Int,
+    userId: String,
+    members: List<MemberUiModel>
 ) {
+    val viewModel: MessageViewModel = viewModel(
+        factory = ServiceLocator.provideMessageViewModelFactory(
+            userId = userId,
+            conversationId = conversationId,
+            members = members
+        )
+    )
+
     val messages by viewModel.messages.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
@@ -45,7 +58,11 @@ fun ChatScreen(
     }
 
     Scaffold(
-        topBar = { ChatTopBar(viewModel) },
+        topBar = { ChatTopBar(
+            viewModel = viewModel,
+            onBackClick = { navController.popBackStack() }
+        ) },
+
         bottomBar = {
             MessageInputBar(
                 text = messageText,

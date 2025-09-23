@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -47,11 +48,22 @@ fun MessagesList(
         contentPadding = PaddingValues(vertical = 8.dp),
         reverseLayout = false
     ) {
-        items(messages) { message ->
-            MessageBubble(message = message)
+        if (messages.isEmpty()) return@LazyColumn
+
+        var lastMessageDay: String? = null
+
+        messages.forEach { message ->
+            val messageDay = formatDateSeparator(message.sentAtEpoch)
+            if (messageDay != lastMessageDay) {
+                item { DateSeparator(dateText = messageDay) }
+                lastMessageDay = messageDay
+            }
+
+            item { MessageBubble(message = message) }
         }
     }
 }
+
 
 @Composable
 fun MessageBubble(message: MessageUiModel) {
@@ -98,5 +110,22 @@ fun MessageBubble(message: MessageUiModel) {
                 )
             }
         }
+    }
+}
+
+fun formatDateSeparator(epochMillis: Long): String {
+    val messageDate = Calendar.getInstance().apply { timeInMillis = epochMillis }
+    val today = Calendar.getInstance()
+
+    return when {
+        messageDate.get(Calendar.YEAR) != today.get(Calendar.YEAR) ||
+                messageDate.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR) -> {
+            val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+            when {
+                messageDate.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
+                else -> SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault()).format(Date(epochMillis))
+            }
+        }
+        else -> "Today"
     }
 }

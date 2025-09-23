@@ -39,9 +39,7 @@ class ConversationViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun instantiate(currentUserId: String) {
-        if (isInitialized) return  // don’t re-init if already done
-
-        Log.d("ConversationViewModel", "(Instantiate): Instantiating ConversationViewModel")
+        if (isInitialized) return
 
         this.currentUserId = currentUserId
         isInitialized = true
@@ -55,14 +53,10 @@ class ConversationViewModel(
 
         // You could even preload conversations here if you want
         loadConversations()
-        Log.d("ConversationViewModel", "(Instantiate): Loading conversations")
-
-        Log.d("ConversationViewModel", "(Instantiate): Conversations fetched...")
-        Log.d("ConversationViewModel", "(Instantiate): $allConversations")
 
         // connect on startup
         connectWebSocket()
-        Log.d("ConversationViewModel", "(Instantiate): Connecting Web Socket")
+
     }
 
     // ---------------- API loading ----------------
@@ -118,21 +112,6 @@ class ConversationViewModel(
                 .sortedByDescending { it.latestMessageEpoch } // <-- ensure newest first
         }
     }
-
-    // ---------------- Filtering ----------------
-    /*fun showStudentConversations() {
-        _conversations.value = allConversations.filter { it.type == ConversationType.PRIVATE_STUDENT }
-    }
-
-    fun showLecturerConversations() {
-        _conversations.value = allConversations.filter { it.type == ConversationType.PRIVATE_LECTURER }
-    }
-
-    fun showGroupConversations() {
-        _conversations.value = allConversations.filter {
-            it.type == ConversationType.GROUP || it.type == ConversationType.MODULE_DEFAULT
-        }
-    }*/
 
     // ---------------- WebSocket lifecycle ----------------
     fun connectWebSocket() {

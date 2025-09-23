@@ -30,6 +30,9 @@ sealed class Screen(val route: String) {
     object StudentCalendar : Screen("student_calendar")
     object StudentProfile : Screen("student_profile")
 
+    // Chat Extra
+    object StudentConversationMessages : Screen("student_conversation_messages/{conversation_id}")
+
     // --------- Lecturer screens ---------
     // Main Nav
     object LecturerHome : Screen("lecturer_home")
