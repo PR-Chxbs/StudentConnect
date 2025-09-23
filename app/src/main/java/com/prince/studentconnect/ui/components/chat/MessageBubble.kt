@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.components.chat
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,14 +21,18 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -47,33 +52,59 @@ fun MessagesList(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier
-            .fillMaxSize(),
-
+        modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
         reverseLayout = false
     ) {
-        if (messages.isEmpty()) return@LazyColumn
+        if (messages.isEmpty()) {
+            item {
+                Text(
+                    text = "No messages yet",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+            return@LazyColumn
+        }
 
         var lastMessageDay: String? = null
 
-        messages.forEach { message ->
+        itemsIndexed(messages) { index, message ->
             val messageDay = formatDateSeparator(message.sentAtEpoch)
-            if (messageDay != lastMessageDay) {
-                item { DateSeparator(dateText = messageDay) }
+            val isSameDayDate = messageDay == lastMessageDay
+            if (!isSameDayDate) {
+                DateSeparator(dateText = messageDay)
                 lastMessageDay = messageDay
             }
 
-            item { MessageBubble(message = message, viewModel = viewModel) }
+            // 👇 compare with the *previous message* to know if consecutive sender
+            val previousSenderId = messages.getOrNull(index - 1)?.senderId
+            val isRepeatSender = previousSenderId == message.senderId
+
+            if (!isRepeatSender && index != 0 && isSameDayDate) {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+
+            val displayProfile = !(isRepeatSender && isSameDayDate)
+
+            MessageBubble(
+                message = message,
+                viewModel = viewModel,
+                displayProfile = displayProfile
+            )
         }
     }
 }
 
 
+
 @Composable
 fun MessageBubble(
     message: MessageUiModel,
-    viewModel: MessageViewModel
+    viewModel: MessageViewModel,
+    displayProfile: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -83,10 +114,14 @@ fun MessageBubble(
         verticalAlignment = Alignment.Top
     ) {
         if (!message.isMine) {
-            val senderProfileUrl = viewModel.members
-                .firstOrNull { it.userId == message.senderId } // match the sender of this message
-                ?.profilePictureUrl
-                ?: "https://randomuser.me/api/portraits/men/11.jpg" // fallback
+            val senderProfileUrl =
+                if (displayProfile)
+                    viewModel.members
+                    .firstOrNull { it.userId == message.senderId } // match the sender of this message
+                    ?.profilePictureUrl
+                    ?: "https://randomuser.me/api/portraits/men/11.jpg" // fallback
+                else
+                    ""
 
             Image(
                 painter = rememberAsyncImagePainter(senderProfileUrl),

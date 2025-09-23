@@ -174,7 +174,7 @@ fun ConversationListScreen(
     ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
-                Log.d("StudentNavGraph", "Passed Conversation Id: ${conversation.id}")
+                Log.d("ChatScreen", "Passed Conversation Id: ${conversation.id}")
                 navController.navigate("student_conversation_messages/${conversation.id}")
             }
         }

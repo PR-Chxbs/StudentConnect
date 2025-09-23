@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.ui.chat
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,8 @@ fun ChatScreen(
     members: List<MemberUiModel>,
     conversationName: String
 ) {
+    Log.d("ChatScreen", "Received conversationId: $conversationId")
+
     val viewModel: MessageViewModel = viewModel(
         factory = ServiceLocator.provideMessageViewModelFactory(
             userId = userId,
