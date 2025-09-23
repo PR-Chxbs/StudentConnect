@@ -5,6 +5,9 @@ import androidx.annotation.RequiresApi
 import com.prince.studentconnect.data.remote.api.ConversationApi
 import com.prince.studentconnect.data.remote.dto.conversation.*
 import com.prince.studentconnect.data.remote.dto.conversation_membership.*
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleConversations
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextConversationId
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextMessageId
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -12,222 +15,18 @@ import java.time.Instant
 
 class FakeConversationApi : ConversationApi {
 
-    private val conversations = mutableListOf<InternalConversation>()
-    private var nextConversationId = 3
-    private var nextMessageId = 1
+    private var conversations = mutableListOf<InternalConversation>()
     private var nextConversationMemberId = 1
-
-    data class InternalMessage(
-        val message_id: Int,
-        val sender_id: String,
-        // val conversation_id: Int = 1, // Need to work on fixing all references
-        val message_text: String,
-        val attachment_url: String? = null,
-        val attachment_type: String? = null,
-        val sent_at: String
-    )
-
-    private data class InternalMember(
-        val user_id: String,
-        val first_name: String = "Harry",
-        val last_name: String = "Fowls",
-        val profile_picture_url: String? = "https://randomuser.me/api/portraits/men/11.jpg",
-        var role_in_conversation: String = "member",
-        var status: String = "active",
-        var joined_at: String,
-        var left_at: String? = null
-    )
-
-
-    private data class InternalConversation(
-        val conversation_id: Int,
-        val name: String,
-        val type: String,
-        val module_id: Int? = null,
-        val visibility: String = "private",
-        val max_members: Int,
-        val members: MutableList<InternalMember>,
-        val date_created: String,
-        val messages: MutableList<InternalMessage> = mutableListOf()
-    )
 
     // ---------------- Sample Data ----------------
     init {
-        // ----- Students -----
-        conversations.add(
-            InternalConversation(
-                conversation_id = 2,
-                name = "",
-                type = "private_student",
-                max_members = 2,
-                members = mutableListOf(
-                    InternalMember(
-                        user_id = "student_3",
-                        first_name = "Bob",
-                        last_name = "Johnson",
-                        profile_picture_url = "https://i.pravatar.cc/150?img=1",
-                        joined_at = "2025-09-22T08:00:00Z"
-                    ),
-                    InternalMember(
-                        user_id = "student_1",
-                        first_name = "John",
-                        last_name = "Doe",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
-                        joined_at = "2025-09-22T08:10:00Z"
-                    )
-                ),
-                date_created = "2025-09-22T08:00:00Z",
-                messages = mutableListOf(
-                    InternalMessage(
-                        message_id = nextMessageId++,
-                        sender_id = "student_3",
-                        message_text = "Make sure you have your material in place",
-                        sent_at = "2025-09-22T09:00:00Z"
-                    )
-                )
+        conversations = sampleConversations.map { conversation ->
+            conversation.copy(
+                messages = conversation.messages.toMutableList(),
+                members = conversation.members.toMutableList()
             )
-        )
-
-        conversations.add(
-            InternalConversation(
-                conversation_id = 1,
-                name = "",
-                type = "private_student",
-                max_members = 2,
-                members = mutableListOf(
-                    InternalMember(
-                        user_id = "student_1",
-                        first_name = "John",
-                        last_name = "Doe",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
-                        joined_at = "2025-09-22T08:00:00Z"
-                    ),
-                    InternalMember(
-                        user_id = "student_2",
-                        first_name = "Alice",
-                        last_name = "Smith",
-                        profile_picture_url = "https://randomuser.me/api/portraits/women/12.jpg",
-                        joined_at = "2025-09-22T08:10:00Z"
-                    )
-                ),
-                date_created = "2025-09-22T08:00:00Z",
-                messages = mutableListOf(
-                    InternalMessage(
-                        message_id = nextMessageId++,
-                        sender_id = "student_1",
-                        message_text = "Hey, are you ready for the test?",
-                        sent_at = "2025-09-22T08:00:00Z"
-                    )
-                )
-            )
-        )
-
-        // ----- Lecturers -----
-        conversations.add(
-            InternalConversation(
-                conversation_id = nextConversationId++,
-                name = "",
-                type = "private_lecturer",
-                max_members = 2,
-                members = mutableListOf(
-                    InternalMember(
-                        user_id = "lecturer_1",
-                        first_name = "Dr.",
-                        last_name = "Brown",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/21.jpg",
-                        joined_at = "2025-09-20T10:00:00Z"
-                    ),
-                    InternalMember(
-                        user_id = "student_1",
-                        first_name = "John",
-                        last_name = "Doe",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
-                        joined_at = "2025-09-20T10:05:00Z"
-                    )
-                ),
-                date_created = "2025-09-20T10:00:00Z",
-                messages = mutableListOf(
-                    InternalMessage(
-                        message_id = nextMessageId++,
-                        sender_id = "lecturer_1",
-                        message_text = "Please submit your assignment by Friday.",
-                        sent_at = "2025-09-21T12:00:00Z"
-                    )
-                )
-            )
-        )
-
-        // ----- Groups -----
-        conversations.add(
-            InternalConversation(
-                conversation_id = nextConversationId++,
-                name = "Math Study Group",
-                type = "group",
-                max_members = 5,
-                members = mutableListOf(
-                    InternalMember(
-                        user_id = "student_1",
-                        first_name = "John",
-                        last_name = "Doe",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
-                        joined_at = "2025-09-21T08:00:00Z"
-                    ),
-                    InternalMember(
-                        user_id = "student_2",
-                        first_name = "Alice",
-                        last_name = "Smith",
-                        profile_picture_url = "https://randomuser.me/api/portraits/women/12.jpg",
-                        joined_at = "2025-09-21T08:05:00Z"
-                    ),
-                    InternalMember(
-                        user_id = "student_3",
-                        first_name = "Bob",
-                        last_name = "Johnson",
-                        profile_picture_url = "https://i.pravatar.cc/150?img=1",
-                        joined_at = "2025-09-21T08:10:00Z"
-                    )
-                ),
-                date_created = "2025-09-21T08:00:00Z",
-                messages = mutableListOf(
-                    InternalMessage(
-                        message_id = nextMessageId++,
-                        sender_id = "student_2",
-                        message_text = "Guys, when are we starting our math session?",
-                        sent_at = "2025-09-21T09:00:00Z"
-                    )
-                )
-            )
-        )
-
-        // ----- Module Default (also under Groups tab) -----
-        conversations.add(
-            InternalConversation(
-                conversation_id = nextConversationId++,
-                name = "Physics 101",
-                type = "module_default",
-                max_members = 20,
-                members = mutableListOf(
-                    InternalMember(
-                        user_id = "student_1",
-                        first_name = "John",
-                        last_name = "Doe",
-                        profile_picture_url = "https://randomuser.me/api/portraits/men/11.jpg",
-                        joined_at = "2025-09-22T08:00:00Z"
-                    )
-                ),
-                date_created = "2025-09-22T08:00:00Z",
-                messages = mutableListOf(
-                    InternalMessage(
-                        message_id = nextMessageId++,
-                        sender_id = "student_1",
-                        message_text = "Does anyone understand the last lecture?",
-                        sent_at = "2025-09-22T09:30:00Z"
-                    )
-                )
-            )
-        )
+        }.toMutableList()
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createConversation(request: CreateConversationRequest): Response<CreateConversationResponse> {
@@ -647,4 +446,38 @@ class FakeConversationApi : ConversationApi {
             )
         }
     }
+
+    data class InternalMessage(
+        val message_id: Int,
+        val sender_id: String,
+        // val conversation_id: Int = 1, // Need to work on fixing all references
+        val message_text: String,
+        val attachment_url: String? = null,
+        val attachment_type: String? = null,
+        val sent_at: String
+    )
+
+    data class InternalMember(
+        val user_id: String,
+        val first_name: String = "Harry",
+        val last_name: String = "Fowls",
+        val profile_picture_url: String? = "https://randomuser.me/api/portraits/men/11.jpg",
+        var role_in_conversation: String = "member",
+        var status: String = "active",
+        var joined_at: String,
+        var left_at: String? = null
+    )
+
+
+     data class InternalConversation(
+        val conversation_id: Int,
+        val name: String,
+        val type: String,
+        val module_id: Int? = null,
+        val visibility: String = "private",
+        val max_members: Int,
+        val members: MutableList<InternalMember>,
+        val date_created: String,
+        val messages: MutableList<InternalMessage> = mutableListOf()
+    )
 }
