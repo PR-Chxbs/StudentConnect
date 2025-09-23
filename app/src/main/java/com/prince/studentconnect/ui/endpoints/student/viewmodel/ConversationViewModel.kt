@@ -11,6 +11,7 @@ import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRespons
 import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import com.prince.studentconnect.ui.endpoints.student.model.chat.toUiModel
+import com.prince.studentconnect.utils.parseTimestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -98,13 +99,14 @@ class ConversationViewModel(
     // ---------------- WebSocket message handling ----------------
     @RequiresApi(Build.VERSION_CODES.O)
     fun handleIncomingMessage(message: SendMessageResponse) {
+        Log.d("ChatScreen", "Timestamp: ${message.sent_at}")
         _conversations.update { current ->
             current.map { conversation ->
                 if (conversation.id == message.conversation_id) {
                     conversation.copy(
                         latestMessage = message.message_text.take(30),
                         latestMessageTimestamp = message.sent_at,
-                        latestMessageEpoch = Instant.parse(message.sent_at).toEpochMilli(),
+                        latestMessageEpoch = parseTimestamp(message.sent_at),
                         unreadCount = conversation.unreadCount + 1
                     )
                 } else conversation
@@ -137,7 +139,7 @@ class ConversationViewModel(
                 attachment_url = null,
                 attachment_type = null
             )
-            conversationRepository.sendMessageViaWebSocket(request)
+            conversationRepository.sendMessageViaWebSocket(request, conversationId)
         }
     }
 

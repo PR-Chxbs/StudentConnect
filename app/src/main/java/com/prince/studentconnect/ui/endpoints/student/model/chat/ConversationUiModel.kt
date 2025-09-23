@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
 import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
+import com.prince.studentconnect.utils.parseTimestamp
 import java.time.Instant
 
 data class ConversationUiModel(
@@ -28,8 +29,6 @@ data class MemberUiModel(
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun Conversation.toUiModel(userId: String): ConversationUiModel {
-    val instant = Instant.parse(this.lastMessage.timestamp)
-    val epochMillis = instant.toEpochMilli()
     val conversationType = ConversationType.fromValue(type)
 
     var formatLastMessage: String = if (
@@ -60,7 +59,7 @@ fun Conversation.toUiModel(userId: String): ConversationUiModel {
         },
         latestMessage = formatLastMessage,
         latestMessageTimestamp = lastMessage.timestamp,
-        latestMessageEpoch = epochMillis,
+        latestMessageEpoch = parseTimestamp(lastMessage.timestamp),
         profileImages = when (conversationType) {
             ConversationType.GROUP, ConversationType.MODULE_DEFAULT ->
                 members.take(3).map { it.profilePictureUrl }

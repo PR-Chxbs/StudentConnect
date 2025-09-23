@@ -61,7 +61,7 @@ class RealChatWebSocketClient(
         webSocket = null
     }
 
-    override suspend fun sendMessage(request: SendMessageRequest) {
+    override suspend fun sendMessage(request: SendMessageRequest, conversationId: Int) {
         val jsonString = requestAdapter.toJson(request)
         webSocket?.send(jsonString)
     }

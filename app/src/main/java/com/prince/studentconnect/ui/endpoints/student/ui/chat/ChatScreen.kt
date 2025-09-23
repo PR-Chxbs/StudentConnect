@@ -101,9 +101,11 @@ fun ChatScreen(
                     text = messageText,
                     onTextChange = { messageText = it },
                     onSend = {
-                        if (messageText.isNotBlank()) {
-                            viewModel.sendMessage(messageText)
+                        try {
+                            viewModel.sendMessage(messageText, conversationId)
                             messageText = ""
+                        } catch (e: Exception) {
+                            Log.e("ChatScreen", "Error sending message: ${e.message}", e)
                         }
                     }
                 )

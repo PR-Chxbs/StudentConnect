@@ -95,6 +95,7 @@ class MessageViewModel(
 
     fun sendMessage(
         text: String,
+        conversationId: Int,
         attachmentUrl: String? = null,
         attachmentType: String? = null
     ) {
@@ -105,7 +106,8 @@ class MessageViewModel(
                 attachment_url = attachmentUrl,
                 attachment_type = attachmentType
             )
-            repository.sendMessageViaWebSocket(request)
+            repository.sendMessage(request, conversationId)
+            repository.sendMessageViaWebSocket(request, conversationId)
         }
     }
 }

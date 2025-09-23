@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.prince.studentconnect.data.remote.dto.conversation.Message
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
 import com.prince.studentconnect.data.remote.fakeapi.FakeConversationApi.InternalMessage
+import com.prince.studentconnect.utils.parseTimestamp
 import java.time.Instant
 
 data class MessageUiModel(
@@ -27,7 +28,7 @@ fun SendMessageResponse.toUiModel(currentUserId: String): MessageUiModel {
         attachmentUrl = attachment_url,
         attachmentType = attachment_type,
         sentAtTimestamp = sent_at,
-        sentAtEpoch = Instant.parse(sent_at).toEpochMilli(),
+        sentAtEpoch = parseTimestamp(sent_at),
         isMine = sender_id == currentUserId
     )
 }
@@ -41,7 +42,7 @@ fun Message.toUiModel(currentUserId: String): MessageUiModel {
         attachmentUrl = attachment_url,
         attachmentType = null,
         sentAtTimestamp = sent_at,
-        sentAtEpoch = Instant.parse(sent_at).toEpochMilli(),
+        sentAtEpoch = parseTimestamp(sent_at),
         isMine = sender_id == currentUserId
     )
 }
@@ -55,7 +56,7 @@ fun InternalMessage.toUiModel(currentUserId: String): MessageUiModel {
         attachmentUrl = attachment_url,
         attachmentType = attachment_type,
         sentAtTimestamp = sent_at,
-        sentAtEpoch = Instant.parse(sent_at).toEpochMilli(),
+        sentAtEpoch = parseTimestamp(sent_at),
         isMine = sender_id == currentUserId
     )
 }

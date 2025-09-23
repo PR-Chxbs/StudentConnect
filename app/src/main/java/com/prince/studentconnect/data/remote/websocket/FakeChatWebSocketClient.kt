@@ -73,12 +73,12 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
         }
 
     }
-    override suspend fun sendMessage(request: SendMessageRequest) {
+    override suspend fun sendMessage(request: SendMessageRequest, conversationId: Int) {
         // Simulate echo back as if server processed it
         val json = requestAdapter.toJson(request)
         val message = SendMessageResponse(
             message_id = 999,
-            conversation_id = 1,
+            conversation_id = conversationId,
             sender_id = request.sender_id,
             message_text = request.message_text,
             attachment_url = request.attachment_url,
@@ -86,6 +86,7 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
             sent_at = System.currentTimeMillis().toString()
         )
         val jsonMessage = messageAdapter.toJson(message)
+        Log.d("ChatScreen", "\n\n---------Message Emitted---------")
         messageAdapter.fromJson(jsonMessage)?.let { _incomingMessages.emit(it) }
     }
 }
