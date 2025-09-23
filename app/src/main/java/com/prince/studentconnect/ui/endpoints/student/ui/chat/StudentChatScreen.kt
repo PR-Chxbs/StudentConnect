@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.ui.chat
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -173,6 +174,7 @@ fun ConversationListScreen(
     ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
+                Log.d("StudentNavGraph", "Passed Conversation Id: ${conversation.id}")
                 navController.navigate("student_conversation_messages/${conversation.id}")
             }
         }

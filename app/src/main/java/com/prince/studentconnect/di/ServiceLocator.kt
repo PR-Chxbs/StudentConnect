@@ -98,7 +98,7 @@ object ServiceLocator {
     }
 
     // Extras
-    fun provideMessageViewModelFactory(userId: String, conversationId: Int, members: List<MemberUiModel>): ViewModelProvider.Factory {
-        return MessageViewModelFactory(conversationRepository, userId, conversationId, members)
+    fun provideMessageViewModelFactory(userId: String, conversationId: Int, members: List<MemberUiModel>, conversationName: String): ViewModelProvider.Factory {
+        return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName)
     }
 }

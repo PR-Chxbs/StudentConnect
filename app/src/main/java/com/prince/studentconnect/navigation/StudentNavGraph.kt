@@ -2,6 +2,7 @@ package com.prince.studentconnect.navigation
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -124,14 +125,16 @@ fun NavGraphBuilder.studentNavGraph(
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.StudentSearch.route
+                        currentRoute = Screen.StudentProfile.route
                     )
                 }
             )
         }
 
         composable(Screen.StudentConversationMessages.route) { backStackEntry ->
-            val conversationId = backStackEntry.arguments?.getInt("conversation_id") ?: return@composable
+            val conversationId = backStackEntry.arguments?.getString("conversation_id")?.toIntOrNull() ?: return@composable
+
+            Log.d("StudentNavGraph", "Retrieved Conversation Id: $conversationId")
 
             val conversation = conversationViewModel.conversations.value
                 .firstOrNull { it.id == conversationId }
@@ -146,7 +149,8 @@ fun NavGraphBuilder.studentNavGraph(
                 navController = navController,
                 conversationId = conversationId,
                 userId = currentUserId,
-                members = conversation?.members ?: return@composable
+                members = conversation.members,
+                conversationName = conversation.name
             )
         }
     }

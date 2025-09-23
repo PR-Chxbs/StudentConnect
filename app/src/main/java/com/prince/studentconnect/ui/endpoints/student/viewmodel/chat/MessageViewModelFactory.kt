@@ -11,7 +11,8 @@ class MessageViewModelFactory(
     private val conversationRepository: ConversationRepository,
     private val userId: String,
     private val conversationId: Int,
-    private val members: List<MemberUiModel>
+    private val members: List<MemberUiModel>,
+    private val conversationName: String
 ) : ViewModelProvider.Factory {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -22,7 +23,8 @@ class MessageViewModelFactory(
                 repository = conversationRepository,
                 userId = userId,
                 conversationId = conversationId,
-                members = members
+                members = members,
+                conversationName = conversationName
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

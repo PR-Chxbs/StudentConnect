@@ -3,17 +3,18 @@ package com.prince.studentconnect.ui.components.chat
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,37 +34,48 @@ fun ChatTopBar(
     onBackClick: () -> Unit
 ) {
     val title = if (viewModel.groupProfileImages.isNotEmpty()) {
-        "" // will show images for group
+        viewModel.conversationName
     } else {
-        viewModel.members.firstOrNull { it.userId != viewModel.userId }?.firstName ?: "User"
+        val user  = viewModel.members.firstOrNull { it.userId != viewModel.userId }
+        "${user?.firstName ?: "User"} ${user?.lastName ?: ""}"
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .border(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
-            .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(onClick = onBackClick ) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-        }
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                // .border(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
+                .padding(top = 24.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBackClick) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            }
 
-        if (viewModel.groupProfileImages.isNotEmpty()) {
-            GroupProfileImages(images = viewModel.groupProfileImages)
-        } else {
-            Image(
-                painter = rememberAsyncImagePainter(viewModel.otherUserProfile),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
+            if (viewModel.groupProfileImages.isNotEmpty()) {
+                GroupProfileImages(images = viewModel.groupProfileImages)
+            } else {
+                Image(
+                    painter = rememberAsyncImagePainter(viewModel.otherUserProfile),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text(text = title, style = MaterialTheme.typography.titleMedium)
+        HorizontalDivider(
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+        )
     }
 }

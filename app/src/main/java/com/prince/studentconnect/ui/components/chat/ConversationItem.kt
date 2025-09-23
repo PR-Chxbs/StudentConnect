@@ -74,7 +74,7 @@ fun ConversationItem(
                 Text(
                     text = conversation.latestMessage,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.tertiary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

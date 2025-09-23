@@ -23,7 +23,8 @@ fun StudentConnectTheme(
         onBackground = colorResource(id = R.color.black),
         outline = colorResource(id = R.color.outline_grey),
         surfaceVariant = colorResource(id = R.color.white),
-        onSurfaceVariant = colorResource(id = R.color.subtext_grey_light)
+        onSurfaceVariant = colorResource(id = R.color.black),
+        tertiary = colorResource(id = R.color.subtext_grey_light)
     )
 
     val DarkColors = darkColorScheme(
@@ -36,7 +37,8 @@ fun StudentConnectTheme(
         onBackground = colorResource(id = R.color.white),
         outline = colorResource(id = R.color.dark_outline_grey),
         surfaceVariant = colorResource(id = R.color.variant_blue_black),
-        onSurfaceVariant = colorResource(id = R.color.subtext_grey_dark)
+        onSurfaceVariant = colorResource(id = R.color.white),
+        tertiary = colorResource(id = R.color.subtext_grey_dark)
     )
 
     val colors = if (darkTheme) DarkColors else LightColors

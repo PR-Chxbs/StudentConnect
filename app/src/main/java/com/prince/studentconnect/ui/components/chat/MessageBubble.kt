@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -40,6 +41,7 @@ import java.util.Locale
 fun MessagesList(
     messages: List<MessageUiModel>,
     listState: LazyListState,
+    viewModel: MessageViewModel,
     currentUserId: String
 ) {
     LazyColumn(
@@ -59,27 +61,35 @@ fun MessagesList(
                 lastMessageDay = messageDay
             }
 
-            item { MessageBubble(message = message) }
+            item { MessageBubble(message = message, viewModel = viewModel) }
         }
     }
 }
 
 
 @Composable
-fun MessageBubble(message: MessageUiModel) {
+fun MessageBubble(
+    message: MessageUiModel,
+    viewModel: MessageViewModel
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 2.dp),
         horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
-        verticalAlignment = Alignment.Bottom
+        verticalAlignment = Alignment.Top
     ) {
         if (!message.isMine) {
+            val senderProfileUrl = viewModel.members
+                .firstOrNull { it.userId == message.senderId } // match the sender of this message
+                ?.profilePictureUrl
+                ?: "https://randomuser.me/api/portraits/men/11.jpg" // fallback
+
             Image(
-                painter = rememberAsyncImagePainter(message.senderId), // replace with actual profile url
+                painter = rememberAsyncImagePainter(senderProfileUrl),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(24.dp)
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -88,24 +98,23 @@ fun MessageBubble(message: MessageUiModel) {
         Box(
             modifier = Modifier
                 .background(
-                    if (message.isMine) MaterialTheme.colorScheme.primary else Color.LightGray,
+                    if (message.isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
                     shape = RoundedCornerShape(16.dp)
                 )
-                .padding(8.dp)
+                .padding(top = 8.dp, bottom = 1.dp, start = 8.dp, end = 8.dp)
                 .widthIn(max = 250.dp)
         ) {
             Column {
                 Text(
                     text = message.text,
-                    color = if (message.isMine) Color.White else Color.Black
+                    color = if (message.isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(
                         Date(message.sentAtEpoch)
                     ),
                     fontSize = 10.sp,
-                    color = if (message.isMine) Color.White.copy(alpha = 0.7f) else Color.Black.copy(alpha = 0.7f),
+                    color = if (message.isMine) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier = Modifier.align(Alignment.End)
                 )
             }

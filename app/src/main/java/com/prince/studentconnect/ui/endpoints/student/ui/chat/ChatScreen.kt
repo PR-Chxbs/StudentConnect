@@ -3,7 +3,10 @@ package com.prince.studentconnect.ui.endpoints.student.ui.chat
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.prince.studentconnect.di.ServiceLocator
@@ -33,13 +37,15 @@ fun ChatScreen(
     navController: NavController,
     conversationId: Int,
     userId: String,
-    members: List<MemberUiModel>
+    members: List<MemberUiModel>,
+    conversationName: String
 ) {
     val viewModel: MessageViewModel = viewModel(
         factory = ServiceLocator.provideMessageViewModelFactory(
             userId = userId,
             conversationId = conversationId,
-            members = members
+            members = members,
+            conversationName = conversationName
         )
     )
 
@@ -64,16 +70,22 @@ fun ChatScreen(
         ) },
 
         bottomBar = {
-            MessageInputBar(
-                text = messageText,
-                onTextChange = { messageText = it },
-                onSend = {
-                    if (messageText.isNotBlank()) {
-                        viewModel.sendMessage(messageText)
-                        messageText = ""
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                MessageInputBar(
+                    text = messageText,
+                    onTextChange = { messageText = it },
+                    onSend = {
+                        if (messageText.isNotBlank()) {
+                            viewModel.sendMessage(messageText)
+                            messageText = ""
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     ) { innerPadding ->
         Box(modifier = Modifier
@@ -83,7 +95,7 @@ fun ChatScreen(
             when {
                 loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 !error.isNullOrEmpty() -> Text(error!!, modifier = Modifier.align(Alignment.Center))
-                else -> MessagesList(messages = messages, listState = listState, currentUserId = viewModel.userId)
+                else -> MessagesList(messages = messages, listState = listState, currentUserId = viewModel.userId, viewModel = viewModel)
             }
         }
     }

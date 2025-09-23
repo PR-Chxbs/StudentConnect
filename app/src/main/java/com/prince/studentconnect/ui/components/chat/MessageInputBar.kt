@@ -1,9 +1,11 @@
 package com.prince.studentconnect.ui.components.chat
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,15 +42,17 @@ fun MessageInputBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp, vertical = 2.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(50))
-            .padding(horizontal = 12.dp, vertical = 4.dp),
+            .padding(horizontal = 12.dp, vertical = 2.dp), // smaller vertical padding
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
             value = text,
             onValueChange = onTextChange,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(all = 0.dp), // fixed height for smaller bar
             placeholder = { Text("Type a message...") },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -63,7 +67,7 @@ fun MessageInputBar(
                 if (showSend) {
                     IconButton(
                         onClick = onSend,
-                        modifier = Modifier.size(28.dp) // smaller icon button
+                        modifier = Modifier.size(24.dp) // slightly smaller
                     ) {
                         Icon(Icons.Default.Send, contentDescription = "Send")
                     }
@@ -73,16 +77,17 @@ fun MessageInputBar(
 
         if (!showSend) {
             Spacer(modifier = Modifier.width(4.dp))
-            IconButton(onClick = { /* Camera action */ }, modifier = Modifier.size(28.dp)) {
+            IconButton(onClick = { /* Camera action */ }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.CameraAlt, contentDescription = "Camera")
             }
             Spacer(modifier = Modifier.width(4.dp))
-            IconButton(onClick = { /* Attach action */ }, modifier = Modifier.size(28.dp)) {
+            IconButton(onClick = { /* Attach action */ }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.AttachFile, contentDescription = "Attach")
             }
         }
     }
 }
+
 
 
 /*

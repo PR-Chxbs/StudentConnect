@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.viewmodel.chat
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +20,8 @@ class MessageViewModel(
     private val repository: ConversationRepository,
     val userId: String,
     private val conversationId: Int,
-    val members: List<MemberUiModel> // now from ConversationUiModel
+    val members: List<MemberUiModel>, // now from ConversationUiModel
+    val conversationName: String
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<MessageUiModel>>(emptyList())
@@ -38,13 +40,18 @@ class MessageViewModel(
         members.firstOrNull { it.userId != userId }?.profilePictureUrl
 
     val groupProfileImages: List<String> =
-        members.filter { it.userId != userId }
-            .take(3)
-            .map { it.profilePictureUrl }
+        if (isGroupConversation)
+            members.filter { it.userId != userId }
+                .take(3)
+                .map { it.profilePictureUrl }
+        else
+            emptyList()
 
     init {
         loadMessages()
         observeIncomingMessages()
+        Log.d("MessageViewModel", "Members: $members")
+        Log.d("MessageViewModel", "Group Profile Images: $groupProfileImages")
     }
 
     fun loadMessages(limit: Int? = 50) {
