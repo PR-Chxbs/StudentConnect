@@ -45,7 +45,7 @@ fun ChatTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 // .border(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
-                .padding(top = 24.dp, bottom = 4.dp),
+                .padding(top = 30.dp, bottom = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBackClick) {
@@ -59,12 +59,12 @@ fun ChatTopBar(
                     painter = rememberAsyncImagePainter(viewModel.otherUserProfile),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(36.dp)
                         .clip(CircleShape)
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(4.dp))
 
             Text(
                 text = title,
@@ -75,7 +75,7 @@ fun ChatTopBar(
 
         HorizontalDivider(
             thickness = 0.5.dp,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
         )
     }
 }

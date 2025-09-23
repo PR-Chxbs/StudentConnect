@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
@@ -64,16 +66,19 @@ fun ChatScreen(
     }
 
     Scaffold(
-        topBar = { ChatTopBar(
-            viewModel = viewModel,
-            onBackClick = { navController.popBackStack() }
-        ) },
+        topBar = {
+            ChatTopBar(
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() }
+            ) },
 
         bottomBar = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 4.dp)
+                    .navigationBarsPadding()
+                    .imePadding()
             ) {
                 MessageInputBar(
                     text = messageText,

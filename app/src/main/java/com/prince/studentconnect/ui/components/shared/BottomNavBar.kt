@@ -24,10 +24,8 @@ fun BottomNavBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(
-                top = 8.dp,
-                bottom = 20.dp
-            ),
+            .padding(top = 8.dp)
+            .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {

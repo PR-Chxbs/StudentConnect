@@ -42,21 +42,20 @@ fun MessageInputBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp)
+            .padding(horizontal = 8.dp, vertical = 0.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(50))
-            .padding(horizontal = 12.dp, vertical = 2.dp), // smaller vertical padding
+            .padding(horizontal = 12.dp, vertical = 0.dp), // smaller vertical padding
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
             value = text,
             onValueChange = onTextChange,
             modifier = Modifier
-                .weight(1f)
-                .padding(all = 0.dp), // fixed height for smaller bar
+                .weight(1f), // fixed height for smaller bar
             placeholder = { Text("Type a message...") },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                unfocusedContainerColor  = MaterialTheme.colorScheme.surfaceVariant,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor  = Color.Transparent,
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent
             ),
@@ -77,13 +76,14 @@ fun MessageInputBar(
 
         if (!showSend) {
             Spacer(modifier = Modifier.width(4.dp))
+            IconButton(onClick = { /* Attach action */ }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.AttachFile, contentDescription = "Attach")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
             IconButton(onClick = { /* Camera action */ }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.CameraAlt, contentDescription = "Camera")
             }
             Spacer(modifier = Modifier.width(4.dp))
-            IconButton(onClick = { /* Attach action */ }, modifier = Modifier.size(24.dp)) {
-                Icon(Icons.Default.AttachFile, contentDescription = "Attach")
-            }
         }
     }
 }
