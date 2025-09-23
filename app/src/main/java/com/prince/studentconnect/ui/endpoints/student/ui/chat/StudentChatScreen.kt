@@ -173,7 +173,7 @@ fun ConversationListScreen(
     ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
-                navController.navigate("chat/${conversation.id}")
+                navController.navigate("student_conversation_messages/${conversation.id}")
             }
         }
     }
