@@ -11,7 +11,7 @@ import com.prince.studentconnect.R
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentCalendarScreen
-import com.prince.studentconnect.ui.endpoints.student.ui.StudentChatScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen

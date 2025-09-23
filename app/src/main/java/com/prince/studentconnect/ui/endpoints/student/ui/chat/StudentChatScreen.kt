@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.student.ui
+package com.prince.studentconnect.ui.endpoints.student.ui.chat
 
 import android.os.Build
 import androidx.annotation.RequiresApi
