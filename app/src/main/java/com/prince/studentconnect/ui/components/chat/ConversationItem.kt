@@ -12,7 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationUiModel
+import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
