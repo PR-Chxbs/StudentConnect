@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -20,9 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prince.studentconnect.data.remote.dto.event.Event
+import com.prince.studentconnect.R
 import java.time.*
 import java.time.format.TextStyle
 import java.util.*
+import androidx.core.graphics.toColorInt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
@@ -49,7 +52,7 @@ fun SwipeableMonthCalendar(
         Text(
             text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()) +
                     " " + currentMonth.year,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .align(Alignment.CenterHorizontally)
@@ -62,12 +65,11 @@ fun SwipeableMonthCalendar(
             reordered.forEach { day ->
                 val isWeekend = day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY
                 Text(
-                    text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                    text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()).first().toString(), // .first().toString() to abbreviated name e.g. Sun, Mon
                     modifier = Modifier.weight(1f),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
                     textAlign = TextAlign.Center,
-                    color = if (isWeekend) Color.Red else Color.Black
+                    color = if (isWeekend) Color.Red else MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -75,7 +77,9 @@ fun SwipeableMonthCalendar(
         // Swipeable months
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(alignment = Alignment.Start)
         ) { page ->
             val month = startMonth.plusMonths(page.toLong())
             MonthGrid(
@@ -128,29 +132,35 @@ private fun MonthGrid(
                             .weight(1f)
                             .aspectRatio(1f)
                             .padding(4.dp)
-                            .clickable { onDateSelected(date) },
+                            .clickable { onDateSelected(date) }
+                            .border(1.dp,
+                                color = when {
+                                    isSelected -> MaterialTheme.colorScheme.surfaceVariant
+                                    else -> Color.Transparent
+                                }),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = date.dayOfMonth.toString(),
                                 color = when {
-                                    isSelected -> MaterialTheme.colorScheme.onPrimary
-                                    !isCurrentMonth -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                                    isToday -> MaterialTheme.colorScheme.onPrimary
+                                    !isCurrentMonth -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                                     isWeekend -> Color.Red
                                     else -> MaterialTheme.colorScheme.onBackground
                                 },
-                                fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
+                                fontWeight = FontWeight.Normal, // if (isToday) FontWeight.Bold else FontWeight.Normal
                                 modifier = Modifier
                                     .background(
                                         color = when {
-                                            isSelected -> MaterialTheme.colorScheme.primary
-                                            isToday -> MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                                            isToday -> MaterialTheme.colorScheme.primary
                                             else -> Color.Transparent
                                         },
-                                        shape = CircleShape.
+                                        shape = RoundedCornerShape(6.dp)
                                     )
-                                    .padding(8.dp)
+                                    .padding(8.dp),
+                                fontSize = 12.sp
+
                             )
 
                             // Event underline
@@ -161,7 +171,7 @@ private fun MonthGrid(
                                         .height(3.dp)
                                         .width(20.dp)
                                         .background(
-                                            color = Color(android.graphics.Color.parseColor(underlineColor)),
+                                            color = Color(underlineColor.toColorInt()),
                                             shape = RoundedCornerShape(50)
                                         )
                                 )

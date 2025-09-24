@@ -32,6 +32,7 @@ fun StudentCalendarScreen(
                 events = viewModel.eventsForSelectedDate,
                 selectedDate = viewModel.selectedDate,
                 onDateSelected = viewModel::selectDate,
+                modifier = Modifier.padding(12.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
