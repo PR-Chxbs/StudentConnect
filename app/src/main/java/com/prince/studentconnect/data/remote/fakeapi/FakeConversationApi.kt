@@ -8,6 +8,7 @@ import com.prince.studentconnect.data.remote.dto.conversation_membership.*
 import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleConversations
 import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextConversationId
 import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextMessageId
+import com.prince.studentconnect.utils.parseTimestamp
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -153,6 +154,7 @@ class FakeConversationApi : ConversationApi {
     }
 
     // ---------- Fake getConversations ----------
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getConversations(
         userId: String,
         search: String?,
@@ -193,7 +195,9 @@ class FakeConversationApi : ConversationApi {
                 maxMembers = conv.max_members,
                 memberCount = conv.members.size,
                 dateCreated = conv.date_created,
-                lastMessage = conv.messages.lastOrNull()?.let { msg ->
+                lastMessage = conv.messages.maxByOrNull { msg ->
+                    parseTimestamp(msg.sent_at) // your parser function
+                }?.let { msg ->
                     val sender = conv.members.firstOrNull { it.user_id == msg.sender_id }
                     MessageA(
                         senderId = msg.sender_id,
