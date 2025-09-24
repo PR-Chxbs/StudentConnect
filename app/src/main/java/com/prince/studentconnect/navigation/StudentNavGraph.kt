@@ -20,12 +20,14 @@ import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
     conversationViewModel: ConversationViewModel,
+    calendarViewModel: CalendarViewModel,
     currentUserId: String
 ) {
     navigation(
@@ -33,6 +35,7 @@ fun NavGraphBuilder.studentNavGraph(
         route = Graph.STUDENT
     ){
         conversationViewModel.instantiate(currentUserId)
+        calendarViewModel.instantiate(currentUserId)
 
         val bottomNavItems = listOf(
             BottomNavItem(
@@ -111,7 +114,8 @@ fun NavGraphBuilder.studentNavGraph(
                         navController = navController,
                         currentRoute = Screen.StudentCalendar.route
                     )
-                }
+                },
+                viewModel = calendarViewModel
             )
         }
 

@@ -3,12 +3,13 @@ package com.prince.studentconnect.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import retrofit2.Retrofit
+
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import com.prince.studentconnect.di.ServiceLocator
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -23,7 +24,11 @@ fun RootNavGraph(
         factory = ServiceLocator.provideConversationViewModelFactory()
     )
 
-    // --- Navigation ---
+    val calendarViewModel: CalendarViewModel = viewModel (
+        factory = ServiceLocator.provideCalendarViewModelFactory()
+    )
+
+    // ------ Navigation ------
     NavHost(
         navController = navController,
         startDestination = Graph.AUTH
@@ -32,7 +37,8 @@ fun RootNavGraph(
         studentNavGraph(
             navController = navController,
             conversationViewModel = conversationViewModel,
-            currentUserId = currentUserId
+            currentUserId = currentUserId,
+            calendarViewModel = calendarViewModel
         )
         lecturerNavGraph(navController = navController)
         systemAdminNavGraph(navController = navController)

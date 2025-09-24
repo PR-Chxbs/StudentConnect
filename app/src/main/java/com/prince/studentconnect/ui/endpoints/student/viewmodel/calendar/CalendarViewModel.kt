@@ -18,8 +18,10 @@ import java.time.YearMonth
 @RequiresApi(Build.VERSION_CODES.O)
 class CalendarViewModel(
     private val repository: EventRepository,
-    private val userId: String // Needed for fetching user events
 ) : ViewModel() {
+
+    private lateinit var userId: String // Needed for fetching user events
+    private var isInitialized = false
 
     // --- State ---
     var currentMonth by mutableStateOf(YearMonth.now())
@@ -41,7 +43,10 @@ class CalendarViewModel(
         private set
 
     // --- Initialization ---
-    init {
+    fun instantiate(userId: String) {
+        if (isInitialized) return
+        isInitialized = false
+        this.userId = userId
         loadEventsForMonth(currentMonth)
         selectedDate?.let { loadEventsForDate(it) }
     }
@@ -65,6 +70,7 @@ class CalendarViewModel(
     // --- Private functions to fetch events ---
 
     private fun loadEventsForMonth(month: YearMonth) {
+        if (!isInitialized) return
         isLoading = true
         errorMessage = null
 
@@ -93,11 +99,13 @@ class CalendarViewModel(
     }
 
     private fun loadEventsForDate(date: LocalDate) {
+        if (!isInitialized) return
         eventsForSelectedDate = eventsByDate[date] ?: emptyList()
     }
 
     // Optional: add event
     fun addEvent(request: CreateEventRequest, onSuccess: () -> Unit = {}, onError: (String) -> Unit = {}) {
+        if (!isInitialized) return
         isLoading = true
         viewModelScope.launch {
             try {
@@ -119,6 +127,7 @@ class CalendarViewModel(
 
     // Optional: delete event
     fun deleteEvent(eventId: Int, onSuccess: () -> Unit = {}, onError: (String) -> Unit = {}) {
+        if (!isInitialized) return
         isLoading = true
         viewModelScope.launch {
             try {
