@@ -50,8 +50,8 @@ class MessageViewModel(
     init {
         loadMessages()
         observeIncomingMessages()
-        Log.d("MessageViewModel", "Members: $members")
-        Log.d("MessageViewModel", "Group Profile Images: $groupProfileImages")
+        // Log.d("MessageViewModel", "Members: $members")
+        // Log.d("MessageViewModel", "Group Profile Images: $groupProfileImages")
     }
 
     fun loadMessages(limit: Int? = 50) {
@@ -69,7 +69,9 @@ class MessageViewModel(
                         ?.map { it.toUiModel(userId) }
                         .orEmpty()
 
+                    // Log.d("MessageViewModel", "(loadMessages) ---------------- Unsorted ----------------\n${prettyPrintMessages(data)}\n\n")
                     _messages.value = data.sortedBy { it.sentAtEpoch }
+                    // Log.d("MessageViewModel", "(loadMessages) ---------------- Sorted ---------------- ${prettyPrintMessages(_messages.value)}\n\n")
                 } else {
                     _error.value = "Failed to fetch messages: ${response.code()}"
                 }
@@ -87,7 +89,10 @@ class MessageViewModel(
             repository.incomingMessages.collect { newMessage ->
                 if (newMessage.conversation_id == conversationId) {
                     val uiModel = newMessage.toUiModel(userId)
+                    // Log.d("MessageViewModel", "(observeIncomingMessages) ----------- Alert -----------")
+                    // Log.d("MessageViewModel", "(observeIncomingMessages) New message: $uiModel")
                     _messages.update { (it + uiModel).sortedBy { msg -> msg.sentAtEpoch } }
+                    // Log.d("MessageViewModel", "(observeIncomingMessages) Sorted: ${_messages.value}")
                 }
             }
         }
@@ -109,6 +114,17 @@ class MessageViewModel(
             repository.sendMessage(request, conversationId)
             repository.sendMessageViaWebSocket(request, conversationId)
         }
+    }
+
+    fun prettyPrintMessages(messageList: List<MessageUiModel>): String {
+        var returnString = ""
+        var messageIndex = 1
+
+        messageList.forEach { message ->
+            returnString += "Message (${messageIndex++}): ${message.text}\nTime: ${message.sentAtTimestamp}\n\n"
+        }
+
+        return returnString
     }
 }
 

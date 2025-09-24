@@ -50,13 +50,18 @@ fun MessagesList(
     viewModel: MessageViewModel,
     currentUserId: String
 ) {
+    // compute chat items only when messages list changes
+    val chatItems = remember(messages) {
+        buildChatItemsWithDebug(messages)
+    }
+
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
         reverseLayout = false
     ) {
-        if (messages.isEmpty()) {
+        if (chatItems.isEmpty()) {
             item {
                 Text(
                     text = "No messages yet",
@@ -69,15 +74,57 @@ fun MessagesList(
             return@LazyColumn
         }
 
+        var isFirstRun = true
+
+        items(chatItems) { chatItem ->
+            when (chatItem) {
+                is ChatItem.DateSeparatorItem -> {
+                    // DateSeparator composable (keeps same appearance)
+                    DateSeparator(dateText = chatItem.label)
+                }
+
+                is ChatItem.MessageItem -> {
+                    // optional small spacing when profile is shown (mimic your old spacing)
+                    if (chatItem.showProfile && !isFirstRun) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+
+                    // Render MessageBubble with the precomputed showProfile flag
+                    MessageBubble(
+                        message = chatItem.message,
+                        viewModel = viewModel,
+                        displayProfile = chatItem.showProfile
+                    )
+                }
+            }
+            if (isFirstRun) isFirstRun = false
+        }
+        /*
+
         var lastMessageDay: String? = null
 
         itemsIndexed(messages) { index, message ->
             val messageDay = formatDateSeparator(message.sentAtEpoch)
             val isSameDayDate = messageDay == lastMessageDay
+
+            var debugString = "---------------------------\nMessage: ${message.text}\n" +
+                    "Timestamp: ${message.sentAtTimestamp}\n" +
+                    "Day: ${messageDay}\n" +
+                    "LastMessageDay: $lastMessageDay\n" +
+                    "IsSameDayDate: $isSameDayDate\n" +
+                    "Use separator: ${!isSameDayDate}\n"
+                    // Debug string to be completed after checking if date separator was used
+
+            var separtorUsed = false
+
             if (!isSameDayDate) {
                 DateSeparator(dateText = messageDay)
                 lastMessageDay = messageDay
+                separtorUsed = true
             }
+
+            debugString += "Added separator: $separtorUsed\n---------------------------\n\n"
+            Log.d("MessageBubble", debugString)
 
             // 👇 compare with the *previous message* to know if consecutive sender
             val previousSenderId = messages.getOrNull(index - 1)?.senderId
@@ -94,7 +141,7 @@ fun MessagesList(
                 viewModel = viewModel,
                 displayProfile = displayProfile
             )
-        }
+        }*/
     }
 }
 
@@ -175,4 +222,65 @@ fun formatDateSeparator(epochMillis: Long): String {
         }
         else -> "Today"
     }
+}
+
+sealed class ChatItem {
+    data class DateSeparatorItem(val label: String, val epochForLabel: Long) : ChatItem()
+    data class MessageItem(val message: MessageUiModel, val showProfile: Boolean) : ChatItem()
+}
+
+fun buildChatItemsWithDebug(
+    messages: List<MessageUiModel>
+): List<ChatItem> {
+    val items = mutableListOf<ChatItem>()
+
+    var lastMessageDate = ""
+    var previousSenderId: String? = null
+
+    // assume messages are already chronological (old -> new). If not, sort by epoch:
+    val ordered = messages.sortedBy { it.sentAtEpoch }
+
+    for ((index, msg) in ordered.withIndex()) {
+        // derive the LocalDate of the message in the chosen timezone
+
+        val messageDayLabel = formatDateSeparator(msg.sentAtEpoch)
+        val isSameDayDate = (messageDayLabel == lastMessageDate)
+
+        // debug string (mirrors your previous output)
+        var debugString = "---------------------------\n" +
+                "Message: ${msg.text}\n" +
+                "Timestamp: ${msg.sentAtTimestamp}\n" +
+                "Day: $messageDayLabel\n" +
+                "LastMessageDay: $lastMessageDate\n" +
+                "IsSameDayDate: $isSameDayDate\n" +
+                "Use separator: ${!isSameDayDate}\n"
+
+        // Should we insert a separator?
+        var separatorUsed = false
+        if (!isSameDayDate) {
+            // Insert separator BEFORE this message
+            items.add(ChatItem.DateSeparatorItem(label = messageDayLabel, epochForLabel = msg.sentAtEpoch))
+            separatorUsed = true
+            // update lastMessageDate
+            lastMessageDate = messageDayLabel
+        }
+
+        // determine whether to show profile image: hide when previous sender is same AND same day
+        val isRepeatSender = previousSenderId != null && previousSenderId == msg.senderId && isSameDayDate
+        val displayProfile = !isRepeatSender
+
+        // add message item (with precomputed displayProfile)
+        items.add(ChatItem.MessageItem(message = msg, showProfile = displayProfile))
+
+        // log debug, consistent with your format
+        debugString += "Added separator: $separatorUsed\n" +
+                "ShowProfile: $displayProfile\n" +
+                "---------------------------\n\n"
+        // Log.d("MessageBubble", debugString)
+
+        // update previousSenderId for next iteration
+        previousSenderId = msg.senderId
+    }
+
+    return items
 }
