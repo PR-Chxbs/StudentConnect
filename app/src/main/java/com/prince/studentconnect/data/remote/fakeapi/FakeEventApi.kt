@@ -1,35 +1,32 @@
 package com.prince.studentconnect.data.remote.fakeapi
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.prince.studentconnect.data.remote.api.EventApi
 import com.prince.studentconnect.data.remote.dto.event.*
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleEvents
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.time.Instant
 
+@RequiresApi(Build.VERSION_CODES.O)
 class FakeEventApi : EventApi {
 
-    private data class InternalEvent(
-        val event_id: Int,
-        val creator_id: String,
-        val conversation_id: Int?,
-        val title: String,
-        val description: String,
-        val icon_url: String,
-        val color_code: String,
-        val start_at: String,
-        val recurrence_rule: String,
-        val reminder_at: String,
-        val created_at: String,
-        val participants: MutableList<Participant> = mutableListOf()
-    )
-
     // In-memory storage for events
-    private val events = mutableListOf<InternalEvent>()
+    private var events = mutableListOf<InternalEvent>()
     private var nextId = 1
 
+    init {
+        events = sampleEvents.map { event ->
+            event.copy(
+                participants = event.participants.toMutableList()
+            )
+        }.toMutableList()
+        Log.d("CalendarScreen", "(FakeEventApi) FakeEventApi initialized")
+        Log.d("CalendarScreen", "(FakeEventApi) ------------ Events ------------\n ${prettyReturnEvent(events)}")
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createEvent(request: CreateEventRequest): Response<CreateEventResponse> {
@@ -288,4 +285,29 @@ class FakeEventApi : EventApi {
             Response.error(404, errorJson.toResponseBody("application/json".toMediaType()))
         }
     }
+}
+
+data class InternalEvent(
+    val event_id: Int,
+    val creator_id: String,
+    val conversation_id: Int?,
+    val title: String,
+    val description: String,
+    val icon_url: String,
+    val color_code: String,
+    val start_at: String,
+    val recurrence_rule: String,
+    val reminder_at: String,
+    val created_at: String,
+    val participants: MutableList<Participant> = mutableListOf()
+)
+
+fun prettyReturnEvent(events: List<InternalEvent>): String {
+    var returnString = ""
+
+    events.forEach { event ->
+        returnString += "Event: ${event.title}\nStart at: ${event.start_at}\nMembers: ${event.participants}\n---------\n"
+    }
+
+    return returnString
 }

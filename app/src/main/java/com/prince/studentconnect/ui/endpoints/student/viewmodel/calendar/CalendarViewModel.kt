@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +46,8 @@ class CalendarViewModel(
     // --- Initialization ---
     fun instantiate(userId: String) {
         if (isInitialized) return
-        isInitialized = false
+        isInitialized = true
+
         this.userId = userId
         loadEventsForMonth(currentMonth)
         selectedDate?.let { loadEventsForDate(it) }
@@ -82,6 +84,7 @@ class CalendarViewModel(
 
                 val response = repository.getUserEvents(userId, startOfMonth, endOfMonth)
                 if (response.isSuccessful) {
+                    Log.d("CalendarScreen", "(CalendarViewModel) Response is successful")
                     val events = response.body()?.events ?: emptyArray()
                     // Map events by LocalDate
                     eventsByDate = events.groupBy { LocalDate.parse(it.start_at.substring(0, 10)) }
@@ -89,6 +92,7 @@ class CalendarViewModel(
                     selectedDate?.let { loadEventsForDate(it) }
                 } else {
                     errorMessage = "Failed to load events: ${response.code()}"
+                    Log.d("CalendarScreen", "Error: $errorMessage")
                 }
             } catch (e: Exception) {
                 errorMessage = e.message

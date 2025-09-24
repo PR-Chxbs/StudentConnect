@@ -31,10 +31,10 @@ import androidx.core.graphics.toColorInt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SwipeableMonthCalendar(
+    modifier: Modifier = Modifier,
     events: List<Event>,
     onDateSelected: (LocalDate) -> Unit,
     selectedDate: LocalDate? = null,
-    modifier: Modifier = Modifier
 ) {
     val today = LocalDate.now()
     val initialMonth = YearMonth.now()
@@ -80,8 +80,8 @@ fun SwipeableMonthCalendar(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.Start)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.Top
         ) { page ->
             val month = startMonth.plusMonths(page.toLong())
             MonthGrid(
