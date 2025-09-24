@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.student.ui
+package com.prince.studentconnect.ui.endpoints.student.ui.calendar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
