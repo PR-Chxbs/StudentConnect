@@ -47,7 +47,9 @@ fun SwipeableMonthCalendar(
         startMonth.plusMonths(pagerState.currentPage.toLong())
     }
 
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .height(400.dp)) {
         // Top month label
         Text(
             text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()) +
@@ -135,7 +137,7 @@ private fun MonthGrid(
                             .clickable { onDateSelected(date) }
                             .border(1.dp,
                                 color = when {
-                                    isSelected -> MaterialTheme.colorScheme.surfaceVariant
+                                    isSelected && !isToday -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                                     else -> Color.Transparent
                                 }),
                         contentAlignment = Alignment.Center
@@ -158,7 +160,7 @@ private fun MonthGrid(
                                         },
                                         shape = RoundedCornerShape(6.dp)
                                     )
-                                    .padding(8.dp),
+                                    .padding(vertical = 8.dp, horizontal = 10.dp),
                                 fontSize = 12.sp
 
                             )
