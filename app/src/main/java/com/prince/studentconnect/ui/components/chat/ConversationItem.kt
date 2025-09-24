@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.components.chat
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -23,8 +24,7 @@ fun ConversationItem(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .fillMaxWidth(),
         onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background // overrides default
@@ -32,7 +32,8 @@ fun ConversationItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -45,6 +46,7 @@ fun ConversationItem(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
+                        .clickable(onClick = {})
                 )
             } else {
                 // Show up to 3 small stacked images for group/module
