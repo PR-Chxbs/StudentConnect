@@ -8,6 +8,8 @@ data class Event(
     val event_id: Int,
     val title: String,
     val start_at: String,
+    val icon_url: String,
+    val color_code: String,
     val conversation_id: Int?,
     val is_subscribed: Boolean,
     val recurrence_rule: String

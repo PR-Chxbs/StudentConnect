@@ -4,17 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.compose.composable
 
 import com.prince.studentconnect.R
-import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
-import com.prince.studentconnect.ui.endpoints.student.ui.StudentCalendarScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.calendar.StudentCalendarScreen
 import androidx.compose.material3.Text
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
@@ -22,7 +20,6 @@ import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)

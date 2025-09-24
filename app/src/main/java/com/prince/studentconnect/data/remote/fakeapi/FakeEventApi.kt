@@ -17,6 +17,8 @@ class FakeEventApi : EventApi {
         val conversation_id: Int?,
         val title: String,
         val description: String,
+        val icon_url: String,
+        val color_code: String,
         val start_at: String,
         val recurrence_rule: String,
         val reminder_at: String,
@@ -38,6 +40,8 @@ class FakeEventApi : EventApi {
             conversation_id = request.conversation_id,
             title = request.title,
             description = request.description,
+            color_code = request.color_code,
+            icon_url = request.icon_url,
             start_at = request.start_at,
             recurrence_rule = request.recurrence_rule,
             reminder_at = request.reminder_at,
@@ -77,6 +81,8 @@ class FakeEventApi : EventApi {
                     conversation_id = event.conversation_id,
                     title = event.title,
                     description = event.description,
+                    color_code = event.color_code,
+                    icon_url = event.icon_url,
                     start_at = event.start_at,
                     recurrence_rule = event.recurrence_rule,
                     reminder_at = event.reminder_at,
@@ -240,6 +246,8 @@ class FakeEventApi : EventApi {
                 title = internal.title,
                 start_at = internal.start_at,
                 conversation_id = internal.conversation_id,
+                color_code = internal.color_code,
+                icon_url = internal.icon_url,
                 is_subscribed = internal.participants.any { it.user_id == userId },
                 recurrence_rule = internal.recurrence_rule
             )
@@ -260,6 +268,8 @@ class FakeEventApi : EventApi {
                     title = internal.title,
                     start_at = internal.start_at,
                     conversation_id = internal.conversation_id,
+                    color_code = internal.color_code,
+                    icon_url = internal.icon_url,
                     is_subscribed = internal.participants.isNotEmpty(), // anyone subscribed
                     recurrence_rule = internal.recurrence_rule
                 )
