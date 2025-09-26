@@ -169,6 +169,20 @@ fun ConversationListScreen(
         return
     }
 
+    if (conversations.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Text(
+                text = "No conversations started yet",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        return
+    }
+
     LazyColumn (
         modifier = Modifier.fillMaxSize()
     ) {

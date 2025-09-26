@@ -53,8 +53,95 @@ val sampleEvents = mutableListOf(
         recurrence_rule = "WEEKLY",
         reminder_at = LocalDateTime.now().plusHours(2).format(DateTimeFormatter.ISO_DATE_TIME),
         created_at = LocalDateTime.now().minusDays(2).format(DateTimeFormatter.ISO_DATE_TIME),
-        participants = mutableListOf(participantsPool[3], participantsPool[2])
+        participants = mutableListOf(participantsPool[0], participantsPool[2]) // 3, 2
     ),
+
+    // ---------------------- Extra start ----------------------
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "student_1",
+        conversation_id = null,
+        title = "Math Study Group",
+        description = "Calculus revision session",
+        icon_url = "https://img.icons8.com/fluency/48/000000/book.png",
+        color_code = "#FFFFFE",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "NONE",
+        reminder_at = LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[1])
+    ),
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "lecturer_1",
+        conversation_id = 1,
+        title = "Computer Science Lecture",
+        description = "Intro to Algorithms",
+        icon_url = "https://img.icons8.com/fluency/48/000000/laptop.png",
+        color_code = "#4CAF50",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "WEEKLY",
+        reminder_at = LocalDateTime.now().plusHours(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[2]) // 3, 2
+    ),
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "student_1",
+        conversation_id = null,
+        title = "Math Study Group",
+        description = "Calculus revision session",
+        icon_url = "https://img.icons8.com/fluency/48/000000/book.png",
+        color_code = "#FFFFFE",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "NONE",
+        reminder_at = LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[1])
+    ),
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "lecturer_1",
+        conversation_id = 1,
+        title = "Computer Science Lecture",
+        description = "Intro to Algorithms",
+        icon_url = "https://img.icons8.com/fluency/48/000000/laptop.png",
+        color_code = "#4CAF50",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "WEEKLY",
+        reminder_at = LocalDateTime.now().plusHours(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[2]) // 3, 2
+    ),
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "student_1",
+        conversation_id = null,
+        title = "Math Study Group",
+        description = "Calculus revision session",
+        icon_url = "https://img.icons8.com/fluency/48/000000/book.png",
+        color_code = "#FFFFFE",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "NONE",
+        reminder_at = LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[1])
+    ),
+    InternalEvent(
+        event_id = event_id++,
+        creator_id = "lecturer_1",
+        conversation_id = 1,
+        title = "Computer Science Lecture",
+        description = "Intro to Algorithms",
+        icon_url = "https://img.icons8.com/fluency/48/000000/laptop.png",
+        color_code = "#4CAF50",
+        start_at = LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
+        recurrence_rule = "WEEKLY",
+        reminder_at = LocalDateTime.now().plusHours(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        created_at = LocalDateTime.now().minusDays(2).format(DateTimeFormatter.ISO_DATE_TIME),
+        participants = mutableListOf(participantsPool[0], participantsPool[2]) // 3, 2
+    ),
+    // Extra end
     InternalEvent(
         event_id = event_id++,
         creator_id = "student_2",
@@ -67,7 +154,7 @@ val sampleEvents = mutableListOf(
         recurrence_rule = "NONE",
         reminder_at = LocalDateTime.now().plusHours(3).format(DateTimeFormatter.ISO_DATE_TIME),
         created_at = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
-        participants = mutableListOf(participantsPool[1], participantsPool[4])
+        participants = mutableListOf(participantsPool[0], participantsPool[4]) // 1, 4
     ),
     InternalEvent(
         event_id = event_id++,
@@ -95,6 +182,6 @@ val sampleEvents = mutableListOf(
         recurrence_rule = "NONE",
         reminder_at = LocalDateTime.now().plusHours(5).format(DateTimeFormatter.ISO_DATE_TIME),
         created_at = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_DATE_TIME),
-        participants = mutableListOf(participantsPool[2], participantsPool[1])
+        participants = mutableListOf(participantsPool[0], participantsPool[1]) // 2, 1
     )
 )

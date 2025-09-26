@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
@@ -77,7 +78,10 @@ fun EventItem(event: Event, onClick: () -> Unit) {
             modifier = Modifier
                 .width(4.dp)
                 .height(48.dp)
-                .background(Color(event.color_code.toColorInt()))
+                .background(
+                    color = Color(event.color_code.toColorInt()),
+                    shape = RoundedCornerShape(2.dp)
+                )
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -92,7 +96,11 @@ fun EventItem(event: Event, onClick: () -> Unit) {
 
         Text(event.title, modifier = Modifier.weight(1f))
 
-        Text(formatEpochMillis(event.start_at))
+        Text(
+            text = formatEpochMillis(event.start_at),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.tertiary
+        )
     }
 }
 
