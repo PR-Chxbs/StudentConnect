@@ -1,7 +1,9 @@
 package com.prince.studentconnect.di
 
 import AuthRepository
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
 import com.prince.studentconnect.data.remote.api.*
@@ -19,6 +21,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageView
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@RequiresApi(Build.VERSION_CODES.O)
 object ServiceLocator {
 
     // ---------------- Toggle flag ----------------
