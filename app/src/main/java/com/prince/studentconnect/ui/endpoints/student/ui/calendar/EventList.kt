@@ -1,7 +1,9 @@
 package com.prince.studentconnect.ui.endpoints.student.ui.calendar
 
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +29,14 @@ import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.event.Event
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
+import com.prince.studentconnect.ui.components.chat.formatDateSeparator
+import com.prince.studentconnect.utils.parseTimestamp
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EventList(
     events: List<Event>,
@@ -54,6 +63,7 @@ fun EventList(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EventItem(event: Event, onClick: () -> Unit) {
     Row(
@@ -82,6 +92,25 @@ fun EventItem(event: Event, onClick: () -> Unit) {
 
         Text(event.title, modifier = Modifier.weight(1f))
 
-        Text(event.start_at)
+        Text(formatEpochMillis(event.start_at))
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun formatEpochMillis(timestampString: String, zoneId: ZoneId = ZoneId.systemDefault()): String {
+    val epochMillis = parseTimestamp(timestampString)
+    val targetDate = Instant.ofEpochMilli(epochMillis)
+        .atZone(zoneId)
+        .toLocalDate()
+    val today = LocalDate.now(zoneId)
+    val tomorrow = today.plusDays(1)
+
+    Log.d("EventList", "Timestamp: $timestampString")
+    Log.d("EventList", "Event date: $targetDate")
+
+    return when (targetDate) {
+        today -> "Today"
+        tomorrow -> "Tomorrow"
+        else -> targetDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
     }
 }
