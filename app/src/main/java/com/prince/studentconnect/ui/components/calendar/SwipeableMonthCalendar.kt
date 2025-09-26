@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.student.ui.calendar
+package com.prince.studentconnect.ui.components.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prince.studentconnect.data.remote.dto.event.Event
-import com.prince.studentconnect.R
 import java.time.*
 import java.time.format.TextStyle
 import java.util.*
@@ -67,7 +65,7 @@ fun SwipeableMonthCalendar(
             val daysOfWeek = DayOfWeek.values().toList()
             val reordered = daysOfWeek.drop(6) + daysOfWeek.dropLast(1) // Sunday first
             reordered.forEach { day ->
-                val isWeekend = day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY
+                val isWeekend = day == DayOfWeek.SUNDAY // || day == DayOfWeek.SATURDAY
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()).first().toString(),
                     modifier = Modifier.weight(1f),

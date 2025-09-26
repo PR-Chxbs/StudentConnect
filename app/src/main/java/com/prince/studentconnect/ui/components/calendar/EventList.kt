@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.student.ui.calendar
+package com.prince.studentconnect.ui.components.calendar
 
 
 import android.os.Build
@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.event.Event
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
-import com.prince.studentconnect.ui.components.chat.formatDateSeparator
 import com.prince.studentconnect.utils.parseTimestamp
 import java.time.Instant
 import java.time.LocalDate
