@@ -31,7 +31,7 @@ fun StudentCalendarScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             SwipeableMonthCalendar(
-                events = viewModel.eventsForSelectedDate,
+                eventsByDate = viewModel.eventsByDate,
                 selectedDate = viewModel.selectedDate,
                 onDateSelected = viewModel::selectDate,
                 modifier = Modifier.padding(12.dp)

@@ -32,7 +32,7 @@ import androidx.core.graphics.toColorInt
 @Composable
 fun SwipeableMonthCalendar(
     modifier: Modifier = Modifier,
-    events: List<Event>,
+    eventsByDate: Map<LocalDate, List<Event>>,
     onDateSelected: (LocalDate) -> Unit,
     selectedDate: LocalDate? = null,
 ) {
@@ -47,10 +47,12 @@ fun SwipeableMonthCalendar(
         startMonth.plusMonths(pagerState.currentPage.toLong())
     }
 
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .height(400.dp)) {
-        // Top month label
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(400.dp)
+    ) {
+        // Month label
         Text(
             text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()) +
                     " " + currentMonth.year,
@@ -60,14 +62,14 @@ fun SwipeableMonthCalendar(
                 .align(Alignment.CenterHorizontally)
         )
 
-        // Weekday headers (Sunday first → Saturday last)
+        // Weekday headers (Sunday → Saturday)
         Row(modifier = Modifier.fillMaxWidth()) {
             val daysOfWeek = DayOfWeek.values().toList()
             val reordered = daysOfWeek.drop(6) + daysOfWeek.dropLast(1) // Sunday first
             reordered.forEach { day ->
-                val isWeekend = day == DayOfWeek.SUNDAY // || day == DayOfWeek.SATURDAY
+                val isWeekend = day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY
                 Text(
-                    text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()).first().toString(), // .first().toString() to abbreviated name e.g. Sun, Mon
+                    text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()).first().toString(),
                     modifier = Modifier.weight(1f),
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -76,11 +78,10 @@ fun SwipeableMonthCalendar(
             }
         }
 
-        // Swipeable months
+        // Swipeable month pages
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top
         ) { page ->
             val month = startMonth.plusMonths(page.toLong())
@@ -88,7 +89,7 @@ fun SwipeableMonthCalendar(
                 month = month,
                 today = today,
                 selectedDate = selectedDate,
-                events = events,
+                eventsByDate = eventsByDate,
                 onDateSelected = onDateSelected
             )
         }
@@ -101,7 +102,7 @@ private fun MonthGrid(
     month: YearMonth,
     today: LocalDate,
     selectedDate: LocalDate?,
-    events: List<Event>,
+    eventsByDate: Map<LocalDate, List<Event>>,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val firstDayOfMonth = month.atDay(1)
@@ -123,10 +124,7 @@ private fun MonthGrid(
                     val isWeekend = date.dayOfWeek == DayOfWeek.SUNDAY // || date.dayOfWeek == DayOfWeek.SATURDAY
 
                     // Find events for this day
-                    val dayEvents = events.filter {
-                        val eventDate = LocalDate.parse(it.start_at.substring(0, 10)) // assumes ISO-8601
-                        eventDate == date
-                    }
+                    val dayEvents = eventsByDate[date].orEmpty()
                     val underlineColor = dayEvents.lastOrNull()?.color_code
 
                     Box(
