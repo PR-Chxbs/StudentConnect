@@ -60,7 +60,9 @@ fun MessageInputBar(
             ),
             keyboardActions = KeyboardActions(
                 onSend = {
-                    onSend()
+                    if (showSend) {
+                        onSend()
+                    }
                 }
             ),
             modifier = Modifier

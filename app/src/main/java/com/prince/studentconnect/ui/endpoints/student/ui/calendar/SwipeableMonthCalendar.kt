@@ -65,7 +65,7 @@ fun SwipeableMonthCalendar(
             val daysOfWeek = DayOfWeek.values().toList()
             val reordered = daysOfWeek.drop(6) + daysOfWeek.dropLast(1) // Sunday first
             reordered.forEach { day ->
-                val isWeekend = day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY
+                val isWeekend = day == DayOfWeek.SUNDAY // || day == DayOfWeek.SATURDAY
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()).first().toString(), // .first().toString() to abbreviated name e.g. Sun, Mon
                     modifier = Modifier.weight(1f),
@@ -120,7 +120,7 @@ private fun MonthGrid(
                     val isToday = date == today
                     val isSelected = date == selectedDate
                     val isCurrentMonth = date.month == month.month
-                    val isWeekend = date.dayOfWeek == DayOfWeek.SUNDAY || date.dayOfWeek == DayOfWeek.SATURDAY
+                    val isWeekend = date.dayOfWeek == DayOfWeek.SUNDAY // || date.dayOfWeek == DayOfWeek.SATURDAY
 
                     // Find events for this day
                     val dayEvents = events.filter {
@@ -134,12 +134,17 @@ private fun MonthGrid(
                             .weight(1f)
                             .aspectRatio(1f)
                             .padding(4.dp)
-                            .clickable { onDateSelected(date) }
+                            .clickable {
+                                when {
+                                    isCurrentMonth -> onDateSelected(date)
+                                } }
                             .border(1.dp,
                                 color = when {
                                     isSelected && !isToday -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                                     else -> Color.Transparent
-                                }),
+                                },
+                                shape = RoundedCornerShape(8.dp)
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -158,9 +163,9 @@ private fun MonthGrid(
                                             isToday -> MaterialTheme.colorScheme.primary
                                             else -> Color.Transparent
                                         },
-                                        shape = RoundedCornerShape(6.dp)
+                                        shape = RoundedCornerShape(2.dp)
                                     )
-                                    .padding(vertical = 8.dp, horizontal = 10.dp),
+                                    ,// .padding(vertical = 8.dp, horizontal = 10.dp),
                                 fontSize = 12.sp
 
                             )
