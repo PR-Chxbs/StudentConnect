@@ -1,6 +1,8 @@
 package com.prince.studentconnect.ui.components.chat
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -48,6 +50,11 @@ fun MessageInputBar(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 0.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(50))
+            .border(
+                width = if (!isSystemInDarkTheme()) 1.dp else 0.dp,
+                shape = RoundedCornerShape(50),
+                color = if (!isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else Color.Transparent
+            )
             .padding(horizontal = 12.dp, vertical = 0.dp), // smaller vertical padding
         verticalAlignment = Alignment.CenterVertically
     ) {

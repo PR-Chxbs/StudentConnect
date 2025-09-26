@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -185,6 +187,11 @@ fun MessageBubble(
                 .background(
                     if (message.isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
                     shape = RoundedCornerShape(16.dp)
+                )
+                .border(
+                    width = if (!isSystemInDarkTheme() && !message.isMine) 1.dp else 0.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    color = if (!isSystemInDarkTheme() && !message.isMine) MaterialTheme.colorScheme.outline else Color.Transparent
                 )
                 .padding(top = 8.dp, bottom = 1.dp, start = 8.dp, end = 8.dp)
                 .widthIn(max = 250.dp)
