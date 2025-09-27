@@ -14,10 +14,12 @@ import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.StudentCalendarScreen
 import androidx.compose.material3.Text
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.calendar.EventDetailScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
@@ -132,6 +134,7 @@ fun NavGraphBuilder.studentNavGraph(
             )
         }
 
+        // ------- Chat Extra -------
         composable(Screen.StudentConversationMessages.route) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getString("conversation_id")?.toIntOrNull() ?: return@composable
 
@@ -152,6 +155,24 @@ fun NavGraphBuilder.studentNavGraph(
                 userId = currentUserId,
                 members = conversation.members,
                 conversationName = conversation.name
+            )
+        }
+
+        // ------- Calendar Extra -------
+        composable(Screen.StudentEventDetails.route) { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getString("event_id")?.toIntOrNull() ?: return@composable
+            calendarViewModel.getEventDetails(eventId)
+
+            val event = calendarViewModel.selectedEvent
+
+            if (event == null) {
+                Text("Conversation not found")
+                return@composable
+            }
+
+            EventDetailScreen(
+                event = event,
+                onBackClick = { navController.popBackStack() }
             )
         }
     }

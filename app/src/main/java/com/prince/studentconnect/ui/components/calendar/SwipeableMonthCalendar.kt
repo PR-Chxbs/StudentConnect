@@ -174,7 +174,7 @@ private fun MonthGrid(
                                         .height(3.dp)
                                         .width(20.dp)
                                         .background(
-                                            color = Color(underlineColor.toColorInt()),
+                                            color = if (isCurrentMonth) Color(underlineColor.toColorInt()) else Color(underlineColor.toColorInt()).copy(alpha = 0.2f),
                                             shape = RoundedCornerShape(50)
                                         )
                                 )

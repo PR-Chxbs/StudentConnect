@@ -8,8 +8,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.data.remote.dto.event.CreateEventRequest
 import com.prince.studentconnect.data.remote.dto.event.Event
+import com.prince.studentconnect.data.remote.dto.event.GetAnEventResponse
+import com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest
 import com.prince.studentconnect.data.repository.EventRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -43,6 +46,12 @@ class CalendarViewModel(
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    var successMessage by mutableStateOf<String?>(null)
+        private set
+
+    var selectedEvent by mutableStateOf<GetAnEventResponse?>(null)
+        private set
+
     // --- Initialization ---
     fun instantiate(userId: String) {
         if (isInitialized) return
@@ -65,9 +74,9 @@ class CalendarViewModel(
         loadEventsForMonth(newMonth)
     }
 
-    fun onEventClick(event: Event) {
-        // TODO: Handle navigation to Event Details screen
-    }
+//    fun onEventClick(eventId: Int) {
+//        nav
+//    }
 
     // --- Private functions to fetch events ---
 
@@ -107,6 +116,28 @@ class CalendarViewModel(
         eventsForSelectedDate = eventsByDate[date] ?: emptyList()
     }
 
+    fun updateEvent(event: UpdateEventRequest, eventId: Int) {
+        if (!isInitialized) return
+
+        isLoading = true
+        viewModelScope.launch {
+            try {
+                val response = repository.updateEvent(event, eventId)
+
+                if (response.isSuccessful) {
+                    loadEventsForMonth(currentMonth)
+                    successMessage = "Event successfully updated"
+                } else {
+                    errorMessage = "Failed to update event: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = "Error: ${e.message ?: "Unknown error"}"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
     // Optional: add event
     fun addEvent(request: CreateEventRequest, onSuccess: () -> Unit = {}, onError: (String) -> Unit = {}) {
         if (!isInitialized) return
@@ -144,6 +175,26 @@ class CalendarViewModel(
                 }
             } catch (e: Exception) {
                 onError(e.message ?: "Unknown error")
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    fun getEventDetails(eventId: Int) {
+        if (!isInitialized) return
+
+        isLoading = true
+        viewModelScope.launch {
+            try {
+                val response = repository.getEvent(eventId)
+                if (response.isSuccessful) {
+                    selectedEvent = response.body()
+                } else {
+                    errorMessage = "Failed to get event: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.message ?: "Unknown error"
             } finally {
                 isLoading = false
             }

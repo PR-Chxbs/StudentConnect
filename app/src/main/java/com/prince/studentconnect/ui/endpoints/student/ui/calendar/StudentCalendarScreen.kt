@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.calendar.EventList
 import com.prince.studentconnect.ui.components.calendar.SwipeableMonthCalendar
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
@@ -83,7 +84,7 @@ fun StudentCalendarScreen(
 
             EventList(
                 events = viewModel.eventsForSelectedDate,
-                onEventClick = viewModel::onEventClick
+                onEventClick = { eventId -> navController.navigate(Screen.StudentEventDetails.route.replace("{event_id}", "$eventId"))}
             )
         }
     }

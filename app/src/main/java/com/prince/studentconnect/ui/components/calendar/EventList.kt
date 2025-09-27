@@ -40,7 +40,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun EventList(
     events: List<Event>,
-    onEventClick: (Event) -> Unit
+    onEventClick: (Int) -> Unit
 ) {
     Log.d("CalendarScreen", "Events: $events")
     LazyColumn {
@@ -57,7 +57,7 @@ fun EventList(
             }
         } else {
             items(events) { event ->
-                EventItem(event = event, onClick = { onEventClick(event) })
+                EventItem(event = event, onClick = { onEventClick(event.event_id) })
             }
         }
     }
@@ -104,7 +104,7 @@ fun EventItem(event: Event, onClick: () -> Unit) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun formatEpochMillis(timestampString: String, zoneId: ZoneId = ZoneId.systemDefault()): String {
+fun formatEpochMillis(timestampString: String, zoneId: ZoneId = ZoneId.systemDefault(), debugScreen: String = "formatEpochMillis"): String {
     val epochMillis = parseTimestamp(timestampString)
     val targetDate = Instant.ofEpochMilli(epochMillis)
         .atZone(zoneId)
@@ -112,8 +112,8 @@ fun formatEpochMillis(timestampString: String, zoneId: ZoneId = ZoneId.systemDef
     val today = LocalDate.now(zoneId)
     val tomorrow = today.plusDays(1)
 
-    Log.d("EventList", "Timestamp: $timestampString")
-    Log.d("EventList", "Event date: $targetDate")
+    Log.d(debugScreen, "Timestamp: $timestampString")
+    Log.d(debugScreen, "Event date: $targetDate")
 
     return when (targetDate) {
         today -> "Today"

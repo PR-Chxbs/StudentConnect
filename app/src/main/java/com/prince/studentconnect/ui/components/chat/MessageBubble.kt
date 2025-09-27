@@ -1,6 +1,8 @@
 package com.prince.studentconnect.ui.components.chat
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +48,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MessagesList(
     messages: List<MessageUiModel>,
@@ -101,54 +105,12 @@ fun MessagesList(
             }
             if (isFirstRun) isFirstRun = false
         }
-        /*
-
-        var lastMessageDay: String? = null
-
-        itemsIndexed(messages) { index, message ->
-            val messageDay = formatDateSeparator(message.sentAtEpoch)
-            val isSameDayDate = messageDay == lastMessageDay
-
-            var debugString = "---------------------------\nMessage: ${message.text}\n" +
-                    "Timestamp: ${message.sentAtTimestamp}\n" +
-                    "Day: ${messageDay}\n" +
-                    "LastMessageDay: $lastMessageDay\n" +
-                    "IsSameDayDate: $isSameDayDate\n" +
-                    "Use separator: ${!isSameDayDate}\n"
-                    // Debug string to be completed after checking if date separator was used
-
-            var separtorUsed = false
-
-            if (!isSameDayDate) {
-                DateSeparator(dateText = messageDay)
-                lastMessageDay = messageDay
-                separtorUsed = true
-            }
-
-            debugString += "Added separator: $separtorUsed\n---------------------------\n\n"
-            Log.d("MessageBubble", debugString)
-
-            // 👇 compare with the *previous message* to know if consecutive sender
-            val previousSenderId = messages.getOrNull(index - 1)?.senderId
-            val isRepeatSender = previousSenderId == message.senderId
-
-            if (!isRepeatSender && index != 0 && isSameDayDate) {
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-
-            val displayProfile = !(isRepeatSender && isSameDayDate)
-
-            MessageBubble(
-                message = message,
-                viewModel = viewModel,
-                displayProfile = displayProfile
-            )
-        }*/
     }
 }
 
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MessageBubble(
     message: MessageUiModel,
@@ -197,10 +159,22 @@ fun MessageBubble(
                 .widthIn(max = 250.dp)
         ) {
             Column {
+                // Sender name
+                if (viewModel.isGroupConversation && !message.isMine) {
+                    Text(
+                        text = message.senderId,
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                // Message text
                 Text(
                     text = message.text,
                     color = if (message.isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
+                // Timestamp
                 Text(
                     text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(
                         Date(message.sentAtEpoch)
