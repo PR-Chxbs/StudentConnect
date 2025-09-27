@@ -2,46 +2,26 @@ package com.prince.studentconnect.data.remote.fakeapi
 
 import com.prince.studentconnect.data.remote.api.UserApi
 import com.prince.studentconnect.data.remote.dto.user.*
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleUsers
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 class FakeUserApi : UserApi {
 
-    private val users = mutableListOf<GetUserResponse>()
+    private var users = mutableListOf<GetUserResponse>()
 
     // Example initial data
     init {
-        users.add(
-            GetUserResponse(
-                user_id = "user1",
-                first_name = "John",
-                last_name = "Doe",
-                role = "student",
-                bio = "CS Student",
-                campus = Campus(1, "Main Campus"),
-                course = Course(1, "Computer Science"),
-                profile_picture_url = ""
-            )
-        )
-        users.add(
-            GetUserResponse(
-                user_id = "user2",
-                first_name = "Jane",
-                last_name = "Smith",
-                role = "lecturer",
-                bio = "Lecturer in Maths",
-                campus = Campus(1, "Main Campus"),
-                course = Course(2, "Mathematics"),
-                profile_picture_url = ""
-            )
-        )
+        users = sampleUsers.toMutableList()
     }
 
     override suspend fun getUser(userId: String): Response<GetUserResponse> {
         val user = users.find { it.user_id == userId }
-        return if (user != null) Response.success(user)
-        else Response.error(404, """{"error":"User not found"}""".toResponseBody("application/json".toMediaType()))
+        return if (user != null)
+            Response.success(user)
+        else
+            Response.error(404, """{"error":"User not found"}""".toResponseBody("application/json".toMediaType()))
     }
 
     override suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<GetUsersResponse> {

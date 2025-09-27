@@ -18,6 +18,8 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationView
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModelFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -104,6 +106,10 @@ object ServiceLocator {
 
     fun provideCalendarViewModelFactory(): ViewModelProvider.Factory {
         return CalendarViewModelFactory(eventRepository)
+    }
+
+    fun provideProfileViewModelFactory(userId: String): ViewModelProvider.Factory {
+        return ProfileViewModelFactory(userRepository, userId)
     }
 
     // Extras

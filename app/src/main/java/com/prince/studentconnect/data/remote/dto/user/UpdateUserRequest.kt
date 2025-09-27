@@ -6,5 +6,6 @@ data class UpdateUserRequest(
     val bio: String,
     val campus_id: Int,
     val course_id: Int,
-    val profile_picture_url: String
+    val profile_picture_url: String,
+    val student_number: String? // <-- NEW
 )

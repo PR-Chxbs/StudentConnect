@@ -7,8 +7,9 @@ data class GetUserResponse(
     val role: String,
     val bio: String,
     val campus: Campus,
-    val course: Course,
-    val profile_picture_url: String
+    val course: Course?,
+    val profile_picture_url: String,
+    val student_number: String? // <-- NEW
 )
 
 data class Campus(
