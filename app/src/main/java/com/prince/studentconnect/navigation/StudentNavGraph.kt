@@ -16,7 +16,7 @@ import com.prince.studentconnect.ui.endpoints.student.ui.calendar.StudentCalenda
 import androidx.compose.material3.Text
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
-import com.prince.studentconnect.ui.endpoints.student.ui.profile.StudentProfileScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.AddEventScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.EventDetailScreen
@@ -61,7 +61,7 @@ fun NavGraphBuilder.studentNavGraph(
                 iconRes = R.drawable.ic_calendar_icon
             ),
             BottomNavItem(
-                route = Screen.StudentProfile.route,
+                route = Screen.StudentProfile.route.replace("{user_id}", currentUserId),
                 label = "Profile",
                 iconRes = R.drawable.ic_user_icon
             )
@@ -121,9 +121,15 @@ fun NavGraphBuilder.studentNavGraph(
             )
         }
 
-        composable(Screen.StudentProfile.route) {
-            StudentProfileScreen(
-                navController = navController,
+        composable(Screen.StudentProfile.route) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("user_id") ?: currentUserId
+
+            ProfileScreen(
+                userId = userId,
+                currentUserId = currentUserId,
+                onBackClick = {},
+                onSettingsClick = {},
+                onEditProfileClick = {},
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,

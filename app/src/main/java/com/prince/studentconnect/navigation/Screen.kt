@@ -28,7 +28,7 @@ sealed class Screen(val route: String) {
     object StudentSearch : Screen("student_search")
     object StudentMessages : Screen("student_messages")
     object StudentCalendar : Screen("student_calendar")
-    object StudentProfile : Screen("student_profile")
+    object StudentProfile : Screen("student_profile/{user_id}")
 
     // Chat Extra
     object StudentConversationMessages : Screen("student_conversation_messages/{conversation_id}")
