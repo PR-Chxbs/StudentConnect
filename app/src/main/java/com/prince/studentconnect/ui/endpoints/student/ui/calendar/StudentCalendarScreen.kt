@@ -40,7 +40,7 @@ fun StudentCalendarScreen(
         bottomBar = bottomBar,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* handle click */ },
+                onClick = { navController.navigate(Screen.StudentAddEvent.route) },
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 elevation = FloatingActionButtonDefaults.elevation(

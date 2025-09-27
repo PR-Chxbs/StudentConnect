@@ -24,6 +24,7 @@ class FakeEventApi : EventApi {
                 participants = event.participants.toMutableList()
             )
         }.toMutableList()
+        nextId = events.size + 1
         Log.d("CalendarScreen", "(FakeEventApi) FakeEventApi initialized")
         Log.d("CalendarScreen", "(FakeEventApi) ------------ Events ------------\n ${prettyReturnEvent(events)}")
     }
@@ -31,6 +32,7 @@ class FakeEventApi : EventApi {
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createEvent(request: CreateEventRequest): Response<CreateEventResponse> {
         val createdAt = Instant.now().toString()
+        Log.d("AddEventScreen", "Request: $request")
         val newEvent = InternalEvent(
             event_id = nextId++,
             creator_id = request.creator_id,
@@ -52,7 +54,10 @@ class FakeEventApi : EventApi {
                 )
             )
         )
+
+        Log.d("AddEventScreen", "New event: $newEvent")
         events.add(newEvent)
+        Log.d("AddEventScreen", "Events total: ${events.size}")
 
         val response = CreateEventResponse(
             event_id = newEvent.event_id,

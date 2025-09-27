@@ -19,6 +19,7 @@ import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentProfileScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.calendar.AddEventScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.EventDetailScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
@@ -173,6 +174,13 @@ fun NavGraphBuilder.studentNavGraph(
             EventDetailScreen(
                 event = event,
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.StudentAddEvent.route) {
+            AddEventScreen(
+                navController = navController,
+                viewModel = calendarViewModel
             )
         }
     }

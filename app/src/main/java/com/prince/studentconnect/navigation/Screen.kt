@@ -35,6 +35,7 @@ sealed class Screen(val route: String) {
 
     // Calendar Extra
     object StudentEventDetails : Screen("student_event_details/{event_id}")
+    object StudentAddEvent : Screen("student_add_event")
 
     // --------- Lecturer screens ---------
     // Main Nav
