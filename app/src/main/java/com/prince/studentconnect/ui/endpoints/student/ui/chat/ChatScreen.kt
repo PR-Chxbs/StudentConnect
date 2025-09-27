@@ -68,6 +68,10 @@ fun ChatScreen(
     val listState = rememberLazyListState()
     var messageText by remember { mutableStateOf("") }
 
+    LaunchedEffect(Unit) {
+        viewModel.navController = navController
+    }
+
     // Auto-scroll to bottom when messages change
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {

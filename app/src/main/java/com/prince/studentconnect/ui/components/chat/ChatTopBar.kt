@@ -3,6 +3,7 @@ package com.prince.studentconnect.ui.components.chat
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -23,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -38,6 +41,9 @@ fun ChatTopBar(
         val user  = viewModel.members.firstOrNull { it.userId != viewModel.userId }
         "${user?.firstName ?: "User"} ${user?.lastName ?: ""}"
     }
+
+    val memberIds = viewModel.memberIds
+    val otherMemberId = memberIds.firstOrNull { it != viewModel.userId }
 
     Column {
         Row(
@@ -60,6 +66,7 @@ fun ChatTopBar(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
+                        .clickable { viewModel.navController.navigate(Screen.StudentProfile.route.replace("{user_id}", "$otherMemberId")) }
                 )
             }
 

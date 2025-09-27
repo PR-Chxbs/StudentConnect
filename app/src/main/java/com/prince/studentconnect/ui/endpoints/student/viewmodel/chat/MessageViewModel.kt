@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
 import com.prince.studentconnect.ui.endpoints.student.model.chat.toUiModel
@@ -32,6 +33,10 @@ class MessageViewModel(
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+    val memberIds = members.map { it.userId }
+
+    lateinit var navController: NavController
 
     /** Derived UI properties */
     val isGroupConversation: Boolean = members.size > 2

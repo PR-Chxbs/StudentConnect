@@ -127,14 +127,14 @@ fun NavGraphBuilder.studentNavGraph(
             ProfileScreen(
                 userId = userId,
                 currentUserId = currentUserId,
-                onBackClick = {},
+                onBackClick = {navController.popBackStack()},
                 onSettingsClick = {},
                 onEditProfileClick = {},
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.StudentProfile.route
+                        currentRoute = Screen.StudentProfile.route.replace("{user_id}", currentUserId)
                     )
                 }
             )

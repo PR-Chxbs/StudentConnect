@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.chat.ConversationItem
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
@@ -188,8 +189,7 @@ fun ConversationListScreen(
     ) {
         items(conversations) { conversation ->
             ConversationItem(conversation) {
-                Log.d("ChatScreen", "Passed Conversation Id: ${conversation.id}")
-                navController.navigate("student_conversation_messages/${conversation.id}")
+                navController.navigate(Screen.StudentConversationMessages.route.replace("{conversation_id}", "${conversation.id}"))
             }
         }
     }

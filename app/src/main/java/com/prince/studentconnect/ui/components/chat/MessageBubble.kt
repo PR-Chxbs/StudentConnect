@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -40,13 +41,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -115,8 +120,20 @@ fun MessagesList(
 fun MessageBubble(
     message: MessageUiModel,
     viewModel: MessageViewModel,
-    displayProfile: Boolean
+    displayProfile: Boolean,
 ) {
+    val nameColorsList = listOf(
+        "#708090", // SlateGrey
+        "#778899", // LightSlateGray
+        "#FF00FF", // Magenta
+        "#808080", // Gray
+        "#FF4500", // OrangeRed
+        "#9370DB", // MediumPurple
+        "#7B68EE", // MediumSlateBlue
+        "#1E90FF", // DodgerBlue
+        "#4682B4", // SteelBlue
+        "#228B22", // ForestGreen
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -161,10 +178,17 @@ fun MessageBubble(
             Column {
                 // Sender name
                 if (viewModel.isGroupConversation && !message.isMine) {
+                    val sender = viewModel.members.firstOrNull {it.userId == message.senderId}
+                    var colorIndex = viewModel.members.indexOf(sender)
+                    if (colorIndex + 1 > nameColorsList.size)
+                        colorIndex = Random.nextInt(0, nameColorsList.size)
+
                     Text(
-                        text = message.senderId,
-                        color = MaterialTheme.colorScheme.secondary,
-                        fontWeight = FontWeight.Bold
+                        text = if (sender != null) "${sender.firstName} ${sender.lastName}" else "User",
+                        color = Color(nameColorsList[colorIndex].toColorInt()),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clickable {viewModel.navController.navigate(Screen.StudentProfile.route.replace("{user_id}", message.senderId))}
                     )
                 }
 
