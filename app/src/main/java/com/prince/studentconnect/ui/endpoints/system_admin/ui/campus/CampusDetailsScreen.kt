@@ -1,25 +1,64 @@
 package com.prince.studentconnect.ui.endpoints.system_admin.ui.campus
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.prince.studentconnect.data.remote.dto.campus.Campus
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CampusDetailsScreen(
     campus: Campus,
     onEditClick: (Int) -> Unit,
     onDeleteClick: (Int) -> Unit,
-    bottomBar: @Composable () -> Unit,
-    topBar: @Composable () -> Unit
+    onBackClick: () -> Unit,
+    bottomBar: @Composable () -> Unit
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 8.dp)
-            ) {
-                topBar()
-            }
+            TopAppBar(
+                title = {
+                    Text(campus.name)
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
         },
         bottomBar = bottomBar
     ) { padding ->

@@ -88,6 +88,9 @@ fun SystemAdminManageCampusesScreen(
                         }
                     }
                 }
+                else -> {
+                    viewModel.fetchCampuses()
+                }
             }
         }
     }

@@ -24,6 +24,8 @@ class CampusCmsViewModel(
 
     private var isInitialized = false
 
+    lateinit var currentCampus: Campus
+
     fun initialize() {
         if (isInitialized) return
 
@@ -46,6 +48,20 @@ class CampusCmsViewModel(
             } catch (e: Exception) {
                 uiState = UiState.Error("Error: ${e.message}")
             }
+        }
+    }
+
+    fun getCampusById(campusId: Int) {
+        val currentState = uiState
+        if (currentState is UiState.Success) {
+            val campus = currentState.campuses.find { it.campus_id == campusId }
+            if (campus != null) {
+                currentCampus = campus
+            } else {
+                uiState = UiState.Error("Campus not found")
+            }
+        } else {
+            uiState = UiState.Error("Campuses not loaded yet")
         }
     }
 }

@@ -2,6 +2,14 @@ package com.prince.studentconnect.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -12,6 +20,7 @@ import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.components.shared.SearchBar
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.CampusDetailsScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.SystemAdminManageCampusesScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
@@ -93,8 +102,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
         composable(Screen.SystemAdminManageCampuses.route) {
             SystemAdminManageCampusesScreen(
                 viewModel = campusCmsViewModel,
-                onCampusClick = { campusId: Int -> navController.navigate(Screen.SystemAdminManageCampuses.route.replace("{campus_id}", "$campusId"))},
-                onAddCampusClick = {},
+                onCampusClick = { campusId: Int -> navController.navigate(Screen.CampusDetails.route.replace("{campus_id}", "$campusId"))},
+                onAddCampusClick = {  },
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
@@ -139,6 +148,39 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 },
                 isAdmin = true
             )
+        }
+
+        // Extras
+        composable(Screen.CampusDetails.route) { backStackEntry ->
+            val campusId = backStackEntry.arguments?.getString("campus_id")?.toIntOrNull()
+
+            campusId?.let { campusCmsViewModel.getCampusById(it) }
+
+            when (val uiState = campusCmsViewModel.uiState) {
+                is CampusCmsViewModel.UiState.Success -> {
+                    CampusDetailsScreen(
+                        campus = campusCmsViewModel.currentCampus,
+                        onEditClick = { /* navigate to edit campus screen */ },
+                        onDeleteClick = { /* show delete dialog */ },
+                        onBackClick = { navController.popBackStack() },
+                        bottomBar = { /* pass your bottom bar */ }
+                    )
+                }
+
+                is CampusCmsViewModel.UiState.Error -> {
+                    Text(
+                        text = uiState.message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+                    )
+                }
+
+                else -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+                    )
+                }
+            }
         }
     }
 }

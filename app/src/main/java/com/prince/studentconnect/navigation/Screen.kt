@@ -12,9 +12,10 @@ sealed class Screen(val route: String) {
     object SystemAdminManageUsers : Screen("system_admin_manage_users")
     object SystemAdminManageCampuses : Screen("system_admin_manage_campuses")
     object SystemAdminManageInterests : Screen("system_admin_manage_interests")
+    object SystemAdminViewProfile : Screen("system_admin_view_profile/{user_id}")
 
     // Extras
-    object SystemAdminViewProfile : Screen("system_admin_view_profile/{user_id}")
+    object CampusDetails : Screen("campus_details/{campus_id}")
 
     // --------- Campus Admin screens ---------
     // Main Nav
