@@ -16,27 +16,27 @@ fun NavGraphBuilder.campusAdminNavGraph(navController: NavController) {
     ) {
         val bottomNavItems = listOf(
             BottomNavItem(
-                route = Screen.SystemAdminHome.route,
+                route = Screen.CampusAdminHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminManageUsers.route,
+                route = Screen.CampusAdminManageUsers.route,
                 label = "Users",
                 iconRes = R.drawable.ic_users_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminManageCampuses.route,
+                route = Screen.CampusAdminManageCourses.route,
                 label = "Courses",
                 iconRes = R.drawable.ic_book_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminManageInterests.route,
+                route = Screen.CampusAdminManageModules.route,
                 label = "Modules",
                 iconRes = R.drawable.ic_book_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminProfile.route,
+                route = Screen.CampusAdminProfile.route,
                 label = "Profile",
                 iconRes = R.drawable.ic_user_icon
             )

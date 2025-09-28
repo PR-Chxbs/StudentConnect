@@ -1,21 +1,21 @@
-package com.prince.studentconnect.ui.endpoints.system_admin.viewmodel
+package com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.prince.studentconnect.data.repository.UserRepository
+import com.prince.studentconnect.data.repository.CampusRepository
 
-class UserCmsViewModelFactory(
-    private val userRepository: UserRepository
+class CampusCmsViewModelFactory(
+    private val campusRepository: CampusRepository
 ) : ViewModelProvider.Factory {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(UserCmsViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(CampusCmsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return UserCmsViewModel(
-                userRepository = userRepository,
+            return CampusCmsViewModel(
+                campusRepository = campusRepository,
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -1,6 +1,5 @@
-package com.prince.studentconnect.ui.endpoints.system_admin.ui.user
+package com.prince.studentconnect.ui.endpoints.system_admin.ui.campus
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,25 +26,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.prince.studentconnect.data.remote.dto.user.User
-import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
+import coil.compose.AsyncImage
+import com.prince.studentconnect.data.remote.dto.campus.Campus
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SystemAdminManageUsersScreen(
-    viewModel: UserCmsViewModel,
-    onUserClick: (String) -> Unit,
-    onAddUserClick: () -> Unit,
+fun SystemAdminManageCampusesScreen(
+    viewModel: CampusCmsViewModel,
+    onCampusClick: (Int) -> Unit,
+    onAddCampusClick: () -> Unit,
     bottomBar: @Composable () -> Unit,
-    topBar: @Composable () -> Unit // Your SearchBar
+    topBar: @Composable () -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -55,43 +53,38 @@ fun SystemAdminManageUsersScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    // you used 32.dp vertically before; can reduce to 16.dp if it feels too spaced.
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 32.dp,     // keep top padding as is
-                        bottom = 8.dp )
+                    .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 8.dp)
             ) {
                 topBar()
             }
         },
         bottomBar = bottomBar,
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddUserClick) {
-                Icon(Icons.Default.Add, contentDescription = "Add User")
+            FloatingActionButton(onClick = onAddCampusClick) {
+                Icon(Icons.Default.Add, contentDescription = "Add Campus")
             }
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             when (uiState) {
-                is UserCmsViewModel.UiState.Loading -> {
+                is CampusCmsViewModel.UiState.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-                is UserCmsViewModel.UiState.Error -> {
+                is CampusCmsViewModel.UiState.Error -> {
                     Text(
                         text = uiState.message,
                         modifier = Modifier.align(Alignment.Center),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
-                is UserCmsViewModel.UiState.Success -> {
+                is CampusCmsViewModel.UiState.Success -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(vertical = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(uiState.users) { user ->
-                            UserItem(user = user, onClick = { onUserClick(user.user_id) })
+                        items(uiState.campuses) { campus ->
+                            CampusItem(campus = campus, onClick = { onCampusClick(campus.campus_id) })
                         }
                     }
                 }
@@ -101,8 +94,8 @@ fun SystemAdminManageUsersScreen(
 }
 
 @Composable
-fun UserItem(
-    user: User,
+fun CampusItem(
+    campus: Campus,
     onClick: () -> Unit
 ) {
     Card(
@@ -110,9 +103,7 @@ fun UserItem(
             .fillMaxWidth()
             .clickable { onClick() },
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
-        )
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Row(
             modifier = Modifier
@@ -120,41 +111,30 @@ fun UserItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Avatar Placeholder (initials)
-            Box(
+            // Load campus image
+            AsyncImage(
+                model = campus.campus_image_url,
+                contentDescription = campus.name,
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = user.first_name.firstOrNull()?.toString() ?: "?",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column {
                 Text(
-                    text = "${user.first_name} ${user.last_name}",
+                    text = campus.name,
                     style = MaterialTheme.typography.bodyLarge
                 )
-                user.course?.let {
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
                 Text(
-                    text = user.role.replaceFirstChar { it.uppercase() },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
+                    text = campus.location,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
     }
 }
+

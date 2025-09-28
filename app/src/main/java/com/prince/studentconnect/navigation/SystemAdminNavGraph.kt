@@ -12,20 +12,26 @@ import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.components.shared.SearchBar
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.SystemAdminManageCampusesScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
-import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.UserCmsViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.systemAdminNavGraph(
     navController: NavController,
     currentUserId: String,
-    userCmsViewModel: UserCmsViewModel
+
+    // View Model
+    userCmsViewModel: UserCmsViewModel,
+    campusCmsViewModel: CampusCmsViewModel
 ) {
     navigation(
         startDestination = Screen.SystemAdminHome.route,
         route = Graph.SYSTEM_ADMIN
     ) {
         userCmsViewModel.initialize()
+        campusCmsViewModel.initialize()
 
         val bottomNavItems = listOf(
             BottomNavItem(
@@ -86,14 +92,17 @@ fun NavGraphBuilder.systemAdminNavGraph(
 
         composable(Screen.SystemAdminManageCampuses.route) {
             SystemAdminManageCampusesScreen(
-                navController = navController,
+                viewModel = campusCmsViewModel,
+                onCampusClick = { campusId: Int -> navController.navigate(Screen.SystemAdminManageCampuses.route.replace("{campus_id}", "$campusId"))},
+                onAddCampusClick = {},
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
                         currentRoute = Screen.SystemAdminManageCampuses.route
                     )
-                }
+                },
+                topBar = { SearchBar("Search campuses...") },
             )
         }
 
@@ -105,19 +114,6 @@ fun NavGraphBuilder.systemAdminNavGraph(
                         items = bottomNavItems,
                         navController = navController,
                         currentRoute = Screen.SystemAdminManageInterests.route
-                    )
-                }
-            )
-        }
-
-        composable(Screen.SystemAdminProfile.route) {
-            SystemAdminProfileScreen(
-                navController = navController,
-                bottomBar = {
-                    BottomNavBar(
-                        items = bottomNavItems,
-                        navController = navController,
-                        currentRoute = Screen.SystemAdminProfile.route
                     )
                 }
             )

@@ -5,6 +5,7 @@ import com.prince.studentconnect.data.remote.dto.campus.AddCampusRequest
 import com.prince.studentconnect.data.remote.dto.campus.Campus
 import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
 import com.prince.studentconnect.data.remote.dto.campus.UpdateCampusRequest
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleCampuses
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -12,11 +13,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 class FakeCampusApi : CampusApi {
 
     // In-memory storage for campuses
-    private val campuses = mutableListOf(
-        Campus(campus_id = 1, name = "Main Campus", location = "Pretoria", campus_image_url = "https://example.com/main.png"),
-        Campus(campus_id = 2, name = "City Campus", location = "Johannesburg", campus_image_url = "https://example.com/city.png"),
-        Campus(campus_id = 3, name = "Coastal Campus", location = "Durban", campus_image_url = "https://example.com/coastal.png")
-    )
+    private var campuses: MutableList<Campus> = sampleCampuses.toMutableList()
     private var nextId = 4
 
     override suspend fun getCampuses(): Response<GetCampusesResponse> {
