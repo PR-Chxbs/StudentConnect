@@ -20,6 +20,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageView
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModelFactory
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.UserCmsViewModelFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -99,6 +100,8 @@ object ServiceLocator {
     }
 
     // ---------------- ViewModel Factory ----------------
+
+    // ----- Student Endpoint -----
     // Main
     fun provideConversationViewModelFactory(): ViewModelProvider.Factory {
         return ConversationViewModelFactory(conversationRepository)
@@ -115,5 +118,12 @@ object ServiceLocator {
     // Extras
     fun provideMessageViewModelFactory(userId: String, conversationId: Int, members: List<MemberUiModel>, conversationName: String): ViewModelProvider.Factory {
         return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName)
+    }
+
+
+    // ----- Admin Endpoint -----
+    // Main
+    fun provideUserCmsViewModelFactory(): ViewModelProvider.Factory {
+        return UserCmsViewModelFactory(userRepository)
     }
 }
