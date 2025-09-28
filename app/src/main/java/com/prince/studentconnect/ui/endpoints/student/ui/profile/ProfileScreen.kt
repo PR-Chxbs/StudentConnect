@@ -45,7 +45,8 @@ fun ProfileScreen(
     onBackClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onEditProfileClick: () -> Unit,
-    bottomBar: @Composable () -> Unit
+    bottomBar: @Composable () -> Unit,
+    isAdmin: Boolean = false
 ) {
     val viewModel: ProfileViewModel = viewModel(
         factory = ServiceLocator.provideProfileViewModelFactory(

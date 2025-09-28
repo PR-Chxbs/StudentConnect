@@ -1,5 +1,7 @@
 package com.prince.studentconnect.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -7,13 +9,24 @@ import androidx.navigation.navigation
 import com.prince.studentconnect.R
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
+import com.prince.studentconnect.ui.components.shared.SearchBar
+import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.UserCmsViewModel
 
-fun NavGraphBuilder.systemAdminNavGraph(navController: NavController) {
+@RequiresApi(Build.VERSION_CODES.O)
+fun NavGraphBuilder.systemAdminNavGraph(
+    navController: NavController,
+    currentUserId: String,
+    userCmsViewModel: UserCmsViewModel
+) {
     navigation(
         startDestination = Screen.SystemAdminHome.route,
         route = Graph.SYSTEM_ADMIN
     ) {
+        userCmsViewModel.initialize()
+
         val bottomNavItems = listOf(
             BottomNavItem(
                 route = Screen.SystemAdminHome.route,
@@ -36,7 +49,7 @@ fun NavGraphBuilder.systemAdminNavGraph(navController: NavController) {
                 iconRes = R.drawable.ic_calendar_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminProfile.route,
+                route = Screen.SystemAdminViewProfile.route.replace("{user_id}", currentUserId),
                 label = "Profile",
                 iconRes = R.drawable.ic_user_icon
             )
@@ -57,14 +70,17 @@ fun NavGraphBuilder.systemAdminNavGraph(navController: NavController) {
 
         composable(Screen.SystemAdminManageUsers.route) {
             SystemAdminManageUsersScreen(
-                navController = navController,
+                viewModel = userCmsViewModel,
+                onUserClick = { userId -> navController.navigate(Screen.SystemAdminViewProfile.route.replace("{user_id}", userId))},
+                onAddUserClick = {},
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
                         currentRoute = Screen.SystemAdminManageUsers.route
                     )
-                }
+                },
+                topBar = { SearchBar("Search users...") }
             )
         }
 
@@ -104,6 +120,28 @@ fun NavGraphBuilder.systemAdminNavGraph(navController: NavController) {
                         currentRoute = Screen.SystemAdminProfile.route
                     )
                 }
+            )
+        }
+
+        composable(Screen.SystemAdminViewProfile.route) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("user_id") ?: currentUserId
+
+            ProfileScreen(
+                userId = userId,
+                currentUserId = currentUserId,
+                onBackClick = { navController.popBackStack()},
+                onSettingsClick = {},
+                onEditProfileClick = {},
+                bottomBar = {
+                    if (userId == currentUserId) {
+                        BottomNavBar(
+                            items = bottomNavItems,
+                            navController = navController,
+                            currentRoute = Screen.SystemAdminViewProfile.route.replace("{user_id}", currentUserId)
+                        )
+                    }
+                },
+                isAdmin = true
             )
         }
     }

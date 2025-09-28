@@ -131,11 +131,13 @@ fun NavGraphBuilder.studentNavGraph(
                 onSettingsClick = {},
                 onEditProfileClick = {},
                 bottomBar = {
-                    BottomNavBar(
-                        items = bottomNavItems,
-                        navController = navController,
-                        currentRoute = Screen.StudentProfile.route.replace("{user_id}", currentUserId)
-                    )
+                    if (userId == currentUserId) {
+                        BottomNavBar(
+                            items = bottomNavItems,
+                            navController = navController,
+                            currentRoute = Screen.StudentProfile.route.replace("{user_id}", currentUserId)
+                        )
+                    }
                 }
             )
         }

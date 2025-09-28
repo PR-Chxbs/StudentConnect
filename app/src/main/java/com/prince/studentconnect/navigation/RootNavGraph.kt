@@ -10,6 +10,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationView
 import com.prince.studentconnect.di.ServiceLocator
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.UserCmsViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -28,20 +29,35 @@ fun RootNavGraph(
         factory = ServiceLocator.provideCalendarViewModelFactory()
     )
 
+    val userCmsViewModel: UserCmsViewModel = viewModel (
+        factory = ServiceLocator.provideUserCmsViewModelFactory()
+    )
+
     // ------ Navigation ------
     NavHost(
         navController = navController,
         startDestination = Graph.AUTH
     ) {
-        authNavGraph(navController = navController)
+        authNavGraph(
+            navController = navController
+        )
+
         studentNavGraph(
             navController = navController,
-            conversationViewModel = conversationViewModel,
             currentUserId = currentUserId,
+
+            // View Models
+            conversationViewModel = conversationViewModel,
             calendarViewModel = calendarViewModel
         )
         lecturerNavGraph(navController = navController)
-        systemAdminNavGraph(navController = navController)
+        systemAdminNavGraph(
+            navController = navController,
+            currentUserId = currentUserId,
+
+            // View Models
+            userCmsViewModel = userCmsViewModel
+        )
         campusAdminNavGraph(navController = navController)
     }
 }
