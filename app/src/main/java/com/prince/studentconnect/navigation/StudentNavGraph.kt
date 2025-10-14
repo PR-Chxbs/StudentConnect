@@ -21,8 +21,10 @@ import com.prince.studentconnect.ui.endpoints.student.ui.StudentSearchScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.AddEventScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.calendar.EventDetailScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.ChatScreen
+import com.prince.studentconnect.ui.endpoints.student.ui.settings.SettingsScreen
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -30,6 +32,7 @@ fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
     conversationViewModel: ConversationViewModel,
     calendarViewModel: CalendarViewModel,
+    settingsViewModel: SettingsViewModel,
     currentUserId: String
 ) {
     navigation(
@@ -128,7 +131,7 @@ fun NavGraphBuilder.studentNavGraph(
                 userId = userId,
                 currentUserId = currentUserId,
                 onBackClick = {navController.popBackStack()},
-                onSettingsClick = {},
+                onSettingsClick = {navController.navigate(Screen.StudentSettings.route)},
                 onEditProfileClick = {},
                 bottomBar = {
                     if (userId == currentUserId) {
@@ -189,6 +192,10 @@ fun NavGraphBuilder.studentNavGraph(
                 navController = navController,
                 viewModel = calendarViewModel
             )
+        }
+
+        composable(Screen.StudentSettings.route) {
+            SettingsScreen(settingsViewModel)
         }
     }
 }

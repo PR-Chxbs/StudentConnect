@@ -40,6 +40,8 @@ sealed class Screen(val route: String) {
     object StudentEventDetails : Screen("student_event_details/{event_id}")
     object StudentAddEvent : Screen("student_add_event")
 
+    object StudentSettings: Screen("student_settings")
+
     // --------- Lecturer screens ---------
     // Main Nav
     object LecturerHome : Screen("lecturer_home")

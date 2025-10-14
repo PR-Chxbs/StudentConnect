@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
+import com.prince.studentconnect.data.preferences.ThemePreferenceManager
 import com.prince.studentconnect.data.remote.api.*
 import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.remote.fakeapi.*
@@ -20,6 +21,8 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageView
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModelFactory
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModelFactory
 import retrofit2.Retrofit
@@ -121,6 +124,9 @@ object ServiceLocator {
         return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName)
     }
 
+    fun provideSettingsViewModelFactory(themePreferenceManager: ThemePreferenceManager): ViewModelProvider.Factory {
+        return SettingsViewModelFactory(themePreferenceManager)
+    }
 
     // ----- Admin Endpoint -----
     // Main
