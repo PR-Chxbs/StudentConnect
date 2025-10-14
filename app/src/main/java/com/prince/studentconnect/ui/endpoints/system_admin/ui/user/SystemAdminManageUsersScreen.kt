@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.system_admin.ui.user
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -92,6 +93,7 @@ fun SystemAdminManageUsersScreen(
                     ) {
                         items(uiState.users) { user ->
                             UserItem(user = user, onClick = { onUserClick(user.user_id) })
+//                            Log.d("CampusAdminNavGraph", "(SystemAdminManageUsersScreen) User: $user")
                         }
                     }
                 }

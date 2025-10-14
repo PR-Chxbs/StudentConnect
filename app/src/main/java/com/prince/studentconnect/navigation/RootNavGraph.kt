@@ -66,6 +66,12 @@ fun RootNavGraph(
             userCmsViewModel = userCmsViewModel,
             campusCmsViewModel = campusCmsViewModel
         )
-        campusAdminNavGraph(navController = navController)
+
+        campusAdminNavGraph(
+            navController = navController,
+            currentUserId = currentUserId,
+
+            userCmsViewModel = userCmsViewModel
+        )
     }
 }

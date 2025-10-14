@@ -39,8 +39,6 @@ fun NavGraphBuilder.systemAdminNavGraph(
         startDestination = Screen.SystemAdminHome.route,
         route = Graph.SYSTEM_ADMIN
     ) {
-        userCmsViewModel.initialize()
-        campusCmsViewModel.initialize()
 
         val bottomNavItems = listOf(
             BottomNavItem(
@@ -71,6 +69,9 @@ fun NavGraphBuilder.systemAdminNavGraph(
         )
 
         composable(Screen.SystemAdminHome.route) {
+            userCmsViewModel.initialize()
+            campusCmsViewModel.initialize()
+
             SystemAdminHomeScreen(
                 navController = navController,
                 bottomBar = {
