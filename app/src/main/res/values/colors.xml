@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Main Colors -->
+    <color name="green_main">#D2EADB</color>
+    <color name="green_secondary">#97CEAC</color>
+
+    <!-- Background Colors -->
+    <color name="grey_white">#F6F6F8</color>
+    <color name="blue_black">#0B1014</color>
+
+    <color name="variant_blue_black">#283037</color>
+
+    <!-- Field Colors -->
+    <color name="outline_grey">#E6E6E8</color>
+    <color name="dark_outline_grey">#686D71</color>
+
+    <!-- Text Colors -->
+    <color name="subtext_grey_dark">#6D6E71</color>
+    <color name="subtext_grey_light">#6D6E71</color>
+
+    <!-- Standard Colors -->
+    <color name="red">#FD0505</color>
+
+    <!-- Original Default Colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
