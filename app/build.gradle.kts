@@ -70,6 +70,9 @@ dependencies {
     implementation(libs.supabase.postgrest)
     implementation(libs.supabase.storage)
 
+    // Ktor
+    implementation(libs.ktor.client.okhttp)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 

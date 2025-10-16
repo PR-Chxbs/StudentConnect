@@ -2,10 +2,10 @@ package com.prince.studentconnect.ui.endpoints.student.viewmodel.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.prince.studentconnect.data.preferences.ThemePreferenceManager
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 
 class SettingsViewModelFactory(
-    private val themeManager: ThemePreferenceManager
+    private val themeManager: UserPreferencesRepository
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -1,12 +1,11 @@
 package com.prince.studentconnect.di
 
-import AuthRepository
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
-import com.prince.studentconnect.data.preferences.ThemePreferenceManager
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.remote.api.*
 import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.remote.fakeapi.*
@@ -14,6 +13,7 @@ import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModelFactory
@@ -32,9 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServiceLocator {
 
     // ---------------- Toggle flag ----------------
-    private const val USE_FAKE_API = true // switch to false for real backend
+    private const val USE_FAKE_API = false // switch to false for real backend
 
-    private const val SERVER_URL = "https://your-api-base-url.com/"
+    private const val SERVER_URL = "https://studentconnect-server-js.onrender.com"
 
     // ---------------- Retrofit ----------------
     private val retrofit: Retrofit by lazy {
@@ -76,7 +76,7 @@ object ServiceLocator {
 
     // ---------------- Repository ----------------
     val authRepository by lazy {
-        if (USE_FAKE_API) FakeAuthRepository() else AuthRepository()
+        AuthRepository() // if (USE_FAKE_API) FakeAuthRepository() else
     }
 
     val campusRepository: CampusRepository by lazy {
@@ -124,7 +124,7 @@ object ServiceLocator {
         return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName)
     }
 
-    fun provideSettingsViewModelFactory(themePreferenceManager: ThemePreferenceManager): ViewModelProvider.Factory {
+    fun provideSettingsViewModelFactory(themePreferenceManager: UserPreferencesRepository): ViewModelProvider.Factory {
         return SettingsViewModelFactory(themePreferenceManager)
     }
 
@@ -136,5 +136,14 @@ object ServiceLocator {
 
     fun provideCampusCmsViewModelFactory(): ViewModelProvider.Factory {
         return CampusCmsViewModelFactory(campusRepository)
+    }
+
+    // ----- Auth Endpoint -----
+    fun provideAuthViewModelFactory(userPrefs: UserPreferencesRepository): ViewModelProvider.Factory {
+        return AuthViewModelFactory(
+            authRepository = authRepository,
+            userRepository = userRepository,
+            userPrefs = userPrefs
+        )
     }
 }

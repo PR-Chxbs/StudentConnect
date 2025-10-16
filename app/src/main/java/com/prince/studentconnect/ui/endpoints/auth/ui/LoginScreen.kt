@@ -1,63 +1,80 @@
 package com.prince.studentconnect.ui.endpoints.auth.ui
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.prince.studentconnect.navigation.Screen
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(navController: NavController){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-    ){
-        // ----------- Replace all the below content with the actual UI -----------
+fun LoginScreen(
+    viewModel: AuthViewModel,
+    onRedirectScreen: (screenRoute: String) -> Unit,
+    onNavigateToRegister: () -> Unit
+) {
+    val state by viewModel.uiState.collectAsState()
 
-        Text("Login Screen", style = MaterialTheme.typography.headlineSmall)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
 
-        Button(
-            onClick = {navController.navigate(Screen.SystemAdmin.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To System Admin")
-        }
+            Spacer(Modifier.height(20.dp))
 
-        Button(
-            onClick = {navController.navigate(Screen.CampusAdmin.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Campus Admin")
-        }
+            OutlinedTextField(
+                value = state.email,
+                onValueChange = { viewModel.onEmailChange(it) },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Button(
-            onClick = {navController.navigate(Screen.Student.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Student")
-        }
+            Spacer(Modifier.height(12.dp))
 
-        Button(
-            onClick = {navController.navigate(Screen.Lecturer.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Lecturer")
-        }
+            OutlinedTextField(
+                value = state.password,
+                onValueChange = { viewModel.onPasswordChange(it) },
+                label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Button(
-            onClick = {navController.navigate(Screen.Register.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Register")
+            Spacer(Modifier.height(20.dp))
+
+            Button(
+                onClick = { viewModel.login() },
+                enabled = !state.isLoading,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(if (state.isLoading) "Logging in..." else "Login")
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            TextButton(onClick = onNavigateToRegister) {
+                Text("Don’t have an account? Register")
+            }
+
+            state.errorMessage?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(text = it, color = MaterialTheme.colorScheme.error)
+            }
+
+            state.successMessage?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(text = it, color = MaterialTheme.colorScheme.primary)
+            }
+
+            if (!state.successMessage.isNullOrEmpty()) {
+                onRedirectScreen(viewModel.redirectScreenRoute)
+            }
         }
     }
 }

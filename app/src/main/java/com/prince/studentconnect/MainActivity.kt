@@ -11,7 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.prince.studentconnect.data.preferences.ThemePreferenceManager
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.navigation.RootNavGraph
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
@@ -21,16 +21,16 @@ import retrofit2.Retrofit
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var themeManager: ThemePreferenceManager
+    private lateinit var usePrefs: UserPreferencesRepository
     private lateinit var settingsViewModel: SettingsViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        themeManager = ThemePreferenceManager(this)
+        usePrefs = UserPreferencesRepository(this)
 
-        settingsViewModel = SettingsViewModel(themeManager)
+        settingsViewModel = SettingsViewModel(usePrefs)
 
         setContent {
             val themeMode by settingsViewModel.themeMode.collectAsState(initial = 0)
@@ -42,7 +42,10 @@ class MainActivity : ComponentActivity() {
             }
 
             StudentConnectTheme(isDarkTheme) {
-                StudentConnectApp(settingsViewModel)
+                StudentConnectApp(
+                    settingsViewModel = settingsViewModel,
+                    userPrefs = usePrefs
+                )
             }
         }
     }
@@ -51,13 +54,15 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StudentConnectApp(
-    settingsViewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    userPrefs: UserPreferencesRepository
 ) {
     BaseScreen {
         val navController = rememberNavController()
         RootNavGraph(
             navController = navController,
-            settingsViewModel = settingsViewModel
+            settingsViewModel = settingsViewModel,
+            userPrefs = userPrefs
         )
     }
 }

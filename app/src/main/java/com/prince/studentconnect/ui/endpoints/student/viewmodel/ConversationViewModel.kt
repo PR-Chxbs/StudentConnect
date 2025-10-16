@@ -40,9 +40,9 @@ class ConversationViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun instantiate(currentUserId: String) {
+        this.currentUserId = currentUserId
         if (isInitialized) return
 
-        this.currentUserId = currentUserId
         isInitialized = true
 
         // Start collecting WebSocket messages automatically

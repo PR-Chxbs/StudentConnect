@@ -1,3 +1,5 @@
+package com.prince.studentconnect.data.repository
+
 import com.prince.studentconnect.data.repository.SupabaseClientProvider
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.auth
