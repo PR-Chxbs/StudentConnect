@@ -69,10 +69,7 @@ class MessageViewModel(
                 )
 
                 if (response.isSuccessful) {
-                    val data = response.body()
-                        ?.messages
-                        ?.map { it.toUiModel(userId) }
-                        .orEmpty()
+                    val data = response.body()?.map { it.toUiModel(userId) }.orEmpty()
 
                     // Log.d("MessageViewModel", "(loadMessages) ---------------- Unsorted ----------------\n${prettyPrintMessages(data)}\n\n")
                     _messages.value = data.sortedBy { it.sentAtEpoch }

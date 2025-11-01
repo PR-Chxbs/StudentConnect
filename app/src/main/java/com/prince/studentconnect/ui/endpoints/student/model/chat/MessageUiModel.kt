@@ -2,6 +2,7 @@ package com.prince.studentconnect.ui.endpoints.student.model.chat
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.prince.studentconnect.data.remote.dto.conversation.GetMessagesResponse
 import com.prince.studentconnect.data.remote.dto.conversation.Message
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
 import com.prince.studentconnect.data.remote.fakeapi.FakeConversationApi.InternalMessage
@@ -34,7 +35,7 @@ fun SendMessageResponse.toUiModel(currentUserId: String): MessageUiModel {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun Message.toUiModel(currentUserId: String): MessageUiModel {
+fun GetMessagesResponse.toUiModel(currentUserId: String): MessageUiModel {
     return MessageUiModel(
         id = message_id,
         senderId = sender_id,

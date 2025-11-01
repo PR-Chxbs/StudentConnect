@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
+import com.prince.studentconnect.data.remote.dto.conversation.GetConversationsResponse
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
 import com.prince.studentconnect.data.repository.ConversationRepository
@@ -80,7 +81,7 @@ class ConversationViewModel(
                 val response = conversationRepository.getConversations(currentUserId, search, type, campusId)
 
                 if (response.isSuccessful) {
-                    val data: List<Conversation> = response.body()?.toList() ?: emptyList()
+                    val data: List<GetConversationsResponse> = response.body()?.toList() ?: emptyList()
 
                     Log.d("ConversationViewModel", "loadConversations() triggered $data")
 
@@ -167,7 +168,7 @@ enum class ConversationType(val value: String) {
 
     companion object {
         fun fromValue(value: String): ConversationType {
-            return values().find { it.value == value } ?: GROUP
+            return ConversationType.entries.find { it.value == value } ?: GROUP
         }
     }
 }

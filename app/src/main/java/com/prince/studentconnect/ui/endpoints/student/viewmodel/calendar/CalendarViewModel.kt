@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.data.remote.dto.event.CreateEventRequest
 import com.prince.studentconnect.data.remote.dto.event.Event
 import com.prince.studentconnect.data.remote.dto.event.GetAnEventResponse
+import com.prince.studentconnect.data.remote.dto.event.GetEventsResponse
 import com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest
 import com.prince.studentconnect.data.repository.EventRepository
 import kotlinx.coroutines.launch
@@ -34,10 +35,10 @@ class CalendarViewModel(
     var selectedDate by mutableStateOf<LocalDate?>(LocalDate.now())
         private set
 
-    var eventsByDate by mutableStateOf<Map<LocalDate, List<Event>>>(emptyMap())
+    var eventsByDate by mutableStateOf<Map<LocalDate, List<GetEventsResponse>>>(emptyMap())
         private set
 
-    var eventsForSelectedDate by mutableStateOf<List<Event>>(emptyList())
+    var eventsForSelectedDate by mutableStateOf<List<GetEventsResponse>>(emptyList())
         private set
 
     var isLoading by mutableStateOf(false)
@@ -94,7 +95,7 @@ class CalendarViewModel(
                 val response = repository.getUserEvents(userId, startOfMonth, endOfMonth)
                 if (response.isSuccessful) {
                     Log.d("CalendarScreen", "(CalendarViewModel) Response is successful")
-                    val events = response.body()?.events ?: emptyArray()
+                    val events = response.body() ?: listOf()
                     // Map events by LocalDate
                     eventsByDate = events.groupBy { LocalDate.parse(it.start_at.substring(0, 10)) }
                     // Update today's events if selectedDate is in this month

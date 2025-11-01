@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
+import com.prince.studentconnect.data.remote.dto.user.GetUsersResponse
 import com.prince.studentconnect.data.remote.dto.user.User
 import com.prince.studentconnect.data.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class UserCmsViewModel(
 
     sealed class UiState {
         object Loading : UiState()
-        data class Success(val users: List<User>) : UiState()
+        data class Success(val users: List<GetUsersResponse>) : UiState()
         data class Error(val message: String) : UiState()
     }
 
@@ -55,7 +56,7 @@ class UserCmsViewModel(
                 val response = userRepository.getUsers(role, campusId, courseId)
                 if (response.isSuccessful) {
                     response.body()?.let { res ->
-                        uiState = UiState.Success(res.users.toList())
+                        uiState = UiState.Success(res.toList())
                     } ?: run {
                         uiState = UiState.Error("No users found")
                     }

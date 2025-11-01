@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.campus.Campus
+import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
 import com.prince.studentconnect.data.repository.CampusRepository
 import kotlinx.coroutines.launch
 
@@ -15,7 +16,7 @@ class CampusCmsViewModel(
 
     sealed class UiState {
         object Loading : UiState()
-        data class Success(val campuses: List<Campus>) : UiState()
+        data class Success(val campuses: List<GetCampusesResponse>) : UiState()
         data class Error(val message: String) : UiState()
     }
 
@@ -24,7 +25,7 @@ class CampusCmsViewModel(
 
     private var isInitialized = false
 
-    lateinit var currentCampus: Campus
+    lateinit var currentCampus: GetCampusesResponse
 
     fun initialize() {
         if (isInitialized) return
@@ -40,7 +41,7 @@ class CampusCmsViewModel(
             try {
                 val response = campusRepository.getCampuses()
                 if (response.isSuccessful) {
-                    val campuses = response.body()?.campus?.toList().orEmpty()
+                    val campuses = response.body()?.toList().orEmpty()
                     uiState = UiState.Success(campuses)
                 } else {
                     uiState = UiState.Error("Failed to load campuses: ${response.code()}")
