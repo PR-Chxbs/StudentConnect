@@ -3,7 +3,16 @@ package com.prince.studentconnect.data.remote.dto.conversation
 import com.google.gson.annotations.SerializedName
 
 data class GetConversationsResponse(
-    val conversations: List<Conversation>
+    @SerializedName("conversation_id") val conversationId: Int,
+    val name: String,
+    val type: String,
+    @SerializedName("module_id") val moduleId: Int,
+    val visibility: String,
+    @SerializedName("max_members") val maxMembers: Int,
+    @SerializedName("member_count") val memberCount: Int,
+    @SerializedName("date_created") val dateCreated: String,
+    @SerializedName("last_message") val lastMessage: MessageA,
+    val members: List<MemberA>
 )
 
 data class Conversation(

@@ -55,7 +55,7 @@ interface ConversationApi {
         @Query("search") search: String? = null,
         @Query("type") type: String? = null,
         @Query("campus_id") campusId: Int? = null
-    ): Response<List<Conversation>>
+    ): Response<List<GetConversationsResponse>>
 
     @POST("conversations/{conversation_id}/messages")
     suspend fun sendMessage(
@@ -75,7 +75,7 @@ interface ConversationApi {
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null,
         @Query("limit") limit: Int? = null
-    ): Response<GetMessagesResponse>
+    ): Response<List<GetMessagesResponse>>
 
     // ----------- Conversation membership -----------
 
@@ -101,5 +101,5 @@ interface ConversationApi {
     @GET("conversations/{conversation_id}/members")
     suspend fun getConversationMembers(
         @Path("conversation_id") conversationId: Int
-    ): Response<GetConversationMembersResponse>
+    ): Response<List<GetConversationMembersResponse>>
 }
