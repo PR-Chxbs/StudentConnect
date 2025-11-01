@@ -141,7 +141,7 @@ class FakeConversationApi : ConversationApi {
                     visibility = conversation.visibility,
                     max_members = conversation.max_members,
                     member_count = conversation.members.size,
-                    members = members,
+                    members = members.toList(),
                     date_created = conversation.date_created
                 )
             )
@@ -160,7 +160,7 @@ class FakeConversationApi : ConversationApi {
         search: String?,
         type: String?,
         campusId: Int?
-    ): Response<List<Conversation>> {
+    ): Response<List<GetConversationsResponse>> {
         // Step 1: Filter by active membership
         var filtered = conversations.filter { conv ->
             conv.members.any { it.user_id == userId && it.status == "active" }
@@ -181,7 +181,7 @@ class FakeConversationApi : ConversationApi {
 
         // Step 4: Map InternalConversation → Conversation DTO
         val responseConversations = filtered.map { conv ->
-            Conversation(
+            GetConversationsResponse(
                 conversationId = conv.conversation_id,
                 name = if (conv.type in listOf("private_student", "private_lecturer")) {
                     val member = conv.members.firstOrNull { it.user_id != userId }
@@ -280,7 +280,7 @@ class FakeConversationApi : ConversationApi {
         fromDate: String?,
         toDate: String?,
         limit: Int?
-    ): Response<GetMessagesResponse> {
+    ): Response<List<GetMessagesResponse>> {
         val conversation = conversations.find { it.conversation_id == conversationId }
         return if (conversation != null) {
             val filtered = conversation.messages.filter { msg ->
@@ -290,16 +290,17 @@ class FakeConversationApi : ConversationApi {
                 fromOk && toOk
             }.sortedBy { it.sent_at }
             val limited = limit?.let { filtered.take(it) } ?: filtered
+
             val responseMessages = limited.map {
-                Message(
+                GetMessagesResponse(
                     message_id = it.message_id,
                     sender_id = it.sender_id,
                     message_text = it.message_text,
                     attachment_url = it.attachment_url,
                     sent_at = it.sent_at
                 )
-            }.toTypedArray()
-            Response.success(GetMessagesResponse(messages = responseMessages))
+            }.toList()
+            Response.success(responseMessages)
         } else {
             Response.error(
                 404,
@@ -432,17 +433,17 @@ class FakeConversationApi : ConversationApi {
         }
     }
 
-    override suspend fun getConversationMembers(conversationId: Int): Response<GetConversationMembersResponse> {
+    override suspend fun getConversationMembers(conversationId: Int): Response<List<GetConversationMembersResponse>> {
         val conversation = conversations.find { it.conversation_id == conversationId }
         return if (conversation != null) {
             val responseMembers = conversation.members.map {
-                Member(
+                GetConversationMembersResponse(
                     user_id = it.user_id,
                     role_in_conversation = it.role_in_conversation,
                     status = it.status
                 )
-            }.toTypedArray()
-            Response.success(GetConversationMembersResponse(members = responseMembers))
+            }.toList()
+            Response.success(responseMembers)
         } else {
             Response.error(
                 404,

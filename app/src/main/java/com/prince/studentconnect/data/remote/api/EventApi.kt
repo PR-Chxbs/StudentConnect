@@ -57,7 +57,7 @@ interface EventApi {
     @DELETE("events/{event_id}/participation/{user_id}")
     suspend fun unsubscribeFromEvent(
         @Path("event_id") eventId: Int,
-        @Path("user_id") userId: Int
+        @Path("user_id") userId: String
     ): Response<Unit>
 
     @GET("users/{user_id}/events")

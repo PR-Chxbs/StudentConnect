@@ -7,7 +7,7 @@ import retrofit2.Response
 class ModuleRepository(
     private val moduleApi: ModuleApi
 ) {
-    suspend fun getModules(courseId: Int, lecturerId: String): Response<GetModulesResponse> {
+    suspend fun getModules(courseId: Int, lecturerId: String): Response<List<GetModulesResponse>> {
         return moduleApi.getModules(courseId, lecturerId)
     }
 
@@ -15,15 +15,15 @@ class ModuleRepository(
         return moduleApi.getModule(moduleId)
     }
 
-    suspend fun addModule(createModuleRequest: CreateModuleRequest): Response<Unit> {
+    suspend fun addModule(createModuleRequest: CreateModuleRequest): Response<CreateModuleResponse> {
         return moduleApi.addModule(createModuleRequest)
     }
 
-    suspend fun updateModule(updateModuleRequest: UpdateModuleRequest, moduleId: Int): Response<Unit> {
+    suspend fun updateModule(updateModuleRequest: UpdateModuleRequest, moduleId: Int): Response<UpdateModuleResponse> {
         return moduleApi.updateModule(updateModuleRequest, moduleId)
     }
 
-    suspend fun deleteModule(moduleId: Int): Response<Unit> {
+    suspend fun deleteModule(moduleId: Int): Response<DeleteModuleResponse> {
         return moduleApi.deleteModule(moduleId)
     }
 }

@@ -24,22 +24,22 @@ class FakeUserApi : UserApi {
             Response.error(404, """{"error":"User not found"}""".toResponseBody("application/json".toMediaType()))
     }
 
-    override suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<GetUsersResponse> {
-        val filtered = users.filter { user ->
+    override suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<List<GetUsersResponse>> {
+        val returnResponse = users.filter { user ->
             (role == null || user.role == role) &&
                     (campusId == null || user.campus.campus_id == campusId) &&
                     (courseId == null || user.course?.course_id == courseId)
         }.map { user ->
-            User(
+            GetUsersResponse(
                 user_id = user.user_id,
                 first_name = user.first_name,
                 last_name = user.last_name,
                 role = user.role,
                 course = user.course,
-                module = emptyArray() // modules can be added if needed
+                module = null // modules can be added if needed
             )
-        }.toTypedArray()
-        return Response.success(GetUsersResponse(users = filtered))
+        }.toList()
+        return Response.success(returnResponse)
     }
 
     override suspend fun updateUser(request: UpdateUserRequest, userId: String): Response<Unit> {

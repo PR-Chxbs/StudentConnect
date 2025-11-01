@@ -19,5 +19,6 @@ data class Participant(
     val user_id: String,
     val full_name: String,
     val status: String,
-    val is_creator: Boolean
+    val is_creator: Boolean,
+    val student_number: String = ""
 )

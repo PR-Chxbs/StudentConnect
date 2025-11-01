@@ -29,7 +29,7 @@ class ConversationRepository(
         return conversationApi.getConversation(conversationId)
     }
 
-    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<List<Conversation>> {
+    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<List<GetConversationsResponse>> {
         return conversationApi.getConversations(userId, search, type, campusId)
     }
 
@@ -41,7 +41,7 @@ class ConversationRepository(
         return conversationApi.deleteMessage(conversationId, messageId)
     }
 
-    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String? = null, toDate: String? = null, limit: Int? = null): Response<GetMessagesResponse> {
+    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String? = null, toDate: String? = null, limit: Int? = null): Response<List<GetMessagesResponse>> {
         return conversationApi.getMessagesInConversation(conversationId, fromDate, toDate, limit)
     }
 
@@ -69,7 +69,7 @@ class ConversationRepository(
         return conversationApi.changeRole(changeMemberRoleRequest, conversationId, userId)
     }
 
-    suspend fun getConversationMembers(conversationId: Int): Response<GetConversationMembersResponse> {
+    suspend fun getConversationMembers(conversationId: Int): Response<List<GetConversationMembersResponse>> {
         return conversationApi.getConversationMembers(conversationId)
     }
 }

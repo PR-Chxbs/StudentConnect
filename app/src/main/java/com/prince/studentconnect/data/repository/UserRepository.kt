@@ -11,7 +11,7 @@ class UserRepository(
         return userApi.getUser(userId)
     }
 
-    suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<GetUsersResponse> {
+    suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<List<GetUsersResponse>> {
         return userApi.getUsers(role, campusId, courseId)
     }
 

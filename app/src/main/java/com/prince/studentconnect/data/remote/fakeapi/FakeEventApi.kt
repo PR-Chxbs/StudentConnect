@@ -98,7 +98,7 @@ class FakeEventApi : EventApi {
         }
     }
 
-    override suspend fun updateEvent(request: UpdateEventRequest, eventId: Int): Response<Unit> {
+    override suspend fun updateEvent(request: UpdateEventRequest, eventId: Int): Response<UpdateEventResponse> {
         val index = events.indexOfFirst { it.event_id == eventId }
 
         return if (index != -1) {
@@ -109,6 +109,14 @@ class FakeEventApi : EventApi {
                 Participant(
                     user_id = userId,
                     full_name = "User $userId",
+                    status = "accepted",
+                    is_creator = userId == request.creator_id
+                )
+            }.toMutableList()
+
+            val participantsResponse = request.participants.map { userId ->
+                UpdateEventResponseParticipant(
+                    user_id = userId,
                     status = "accepted",
                     is_creator = userId == request.creator_id
                 )
@@ -126,7 +134,19 @@ class FakeEventApi : EventApi {
                 participants = participants
             )
 
-            Response.success(Unit)
+            Response.success(UpdateEventResponse(
+                event_id = eventId,
+                creator_id = request.creator_id,
+                conversation_id = request.conversation_id,
+                title = request.title,
+                description = request.description,
+                start_at = request.start_at,
+                recurrence_rule = request.recurrence_rule,
+                reminder_at = request.reminder_at,
+                created_at = request.created_at,
+                participants = participantsResponse,
+                event_participation = listOf()
+            ))
         } else {
             val errorJson = """{"error":"Event not found"}"""
             Response.error(404, errorJson.toResponseBody("application/json".toMediaType()))
@@ -207,10 +227,11 @@ class FakeEventApi : EventApi {
             }
 
             val response = SubscribeToEventResponse(
+                event_participation_id = 1,
+                event_id = eventId, // Creator status is handled separately
                 user_id = request.user_id,
-                is_creator = false, // Creator status is handled separately
                 status = request.status,
-                custom_reminder_at = request.custom_reminder_at
+
             )
 
             Response.success(response)
@@ -221,7 +242,7 @@ class FakeEventApi : EventApi {
     }
 
 
-    override suspend fun unsubscribeFromEvent(eventId: Int): Response<Unit> {
+    override suspend fun unsubscribeFromEvent(eventId: Int, userId: String): Response<Unit> {
         val event = events.find { it.event_id == eventId }
 
         return if (event != null) {
@@ -238,12 +259,12 @@ class FakeEventApi : EventApi {
         userId: String,
         fromDate: String?,
         toDate: String?
-    ): Response<GetEventsResponse> {
+    ): Response<List<GetEventsResponse>> {
         val userEvents = events.filter { event ->
             // Check if user is a participant
             event.participants.any { it.user_id == userId }
         }.map { internal ->
-            Event(
+            GetEventsResponse(
                 event_id = internal.event_id,
                 title = internal.title,
                 start_at = internal.start_at,
@@ -253,19 +274,19 @@ class FakeEventApi : EventApi {
                 is_subscribed = internal.participants.any { it.user_id == userId },
                 recurrence_rule = internal.recurrence_rule
             )
-        }.toTypedArray()
+        }.toList()
 
-        return Response.success(GetEventsResponse(events = userEvents))
+        return Response.success(userEvents)
     }
 
     override suspend fun getConversationEvents(
         conversationId: Int,
         fromDate: String?,
         toDate: String?
-    ): Response<GetEventsResponse> {
+    ): Response<List<GetEventsResponse>> {
         val conversationEvents = events.filter { it.conversation_id == conversationId }
             .map { internal ->
-                Event(
+                GetEventsResponse(
                     event_id = internal.event_id,
                     title = internal.title,
                     start_at = internal.start_at,
@@ -275,16 +296,29 @@ class FakeEventApi : EventApi {
                     is_subscribed = internal.participants.isNotEmpty(), // anyone subscribed
                     recurrence_rule = internal.recurrence_rule
                 )
-            }.toTypedArray()
+            }.toList()
 
-        return Response.success(GetEventsResponse(events = conversationEvents))
+        return Response.success(conversationEvents)
     }
 
-    override suspend fun getEventParticipants(eventId: Int): Response<GetParticipantsResponse> {
+    override suspend fun getEventParticipants(eventId: Int): Response<List<GetParticipantsResponse>> {
         val event = events.find { it.event_id == eventId }
 
+        val participants: MutableList<GetParticipantsResponse> = mutableListOf()
+
+        event?.participants?.forEach { participant ->
+            participants.add(
+                GetParticipantsResponse(
+                    user_id = participant.user_id,
+                    full_name = participant.full_name,
+                    is_subscribed = participant.status == "subscribed",
+                    student_number = ""
+                )
+            )
+        }
+
         return if (event != null) {
-            Response.success(GetParticipantsResponse(participant = event.participants.toTypedArray()))
+            Response.success(participants)
         } else {
             val errorJson = """{"error":"Event not found"}"""
             Response.error(404, errorJson.toResponseBody("application/json".toMediaType()))

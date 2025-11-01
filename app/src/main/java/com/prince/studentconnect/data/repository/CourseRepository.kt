@@ -7,19 +7,19 @@ import retrofit2.Response
 class CourseRepository(
     private val courseApi: CourseApi
 ) {
-    suspend fun getCourses(campusId: Int): Response<GetCoursesResponse> {
+    suspend fun getCourses(campusId: Int): Response<List<GetCoursesResponse>> {
         return courseApi.getCourses(campusId)
     }
 
-    suspend fun addCourse(createCourseRequest: CreateCourseRequest): Response<Unit> {
+    suspend fun addCourse(createCourseRequest: CreateCourseRequest): Response<CreateCourseResponse> {
         return courseApi.addCourse(createCourseRequest)
     }
 
-    suspend fun updateCourse(updateCourseRequest: UpdateCourseRequest, courseId: Int): Response<Unit> {
+    suspend fun updateCourse(updateCourseRequest: UpdateCourseRequest, courseId: Int): Response<UpdateCourseResponse> {
         return courseApi.updateCourse(updateCourseRequest, courseId)
     }
 
-    suspend fun deleteCourse(courseId: Int): Response<Unit> {
+    suspend fun deleteCourse(courseId: Int): Response<DeleteCourseResponse> {
         return courseApi.deleteCourse(courseId)
     }
 }
