@@ -25,7 +25,7 @@ interface UserApi {
         @Query("role") role: String? = null,
         @Query("campus_id") campusId: Int? = null,
         @Query("course_id") courseId: Int? = null
-    ): Response<GetUsersResponse>
+    ): Response<List<GetUsersResponse>>
 
     @PUT("users/{user_id}")
     suspend fun updateUser(
