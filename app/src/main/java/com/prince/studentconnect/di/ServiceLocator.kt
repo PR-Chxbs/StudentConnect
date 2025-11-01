@@ -34,7 +34,7 @@ object ServiceLocator {
     // ---------------- Toggle flag ----------------
     private const val USE_FAKE_API = false // switch to false for real backend
 
-    private const val SERVER_URL = "https://studentconnect-server-js.onrender.com"
+    private const val SERVER_URL = "https://studentconnect-server-js.onrender.com/"
 
     // ---------------- Retrofit ----------------
     private val retrofit: Retrofit by lazy {

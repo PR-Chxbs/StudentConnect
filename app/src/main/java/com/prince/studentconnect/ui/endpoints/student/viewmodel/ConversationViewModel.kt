@@ -39,11 +39,13 @@ class ConversationViewModel(
     private val allConversations = mutableListOf<ConversationUiModel>()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun instantiate(currentUserId: String) {
-        this.currentUserId = currentUserId
-        if (isInitialized) return
+    fun instantiate(currentUserId: String?) {
+        if (isInitialized) {
+            Log.d("ConversationViewModel", "Attempting re-initialization...\nError: Already initialized")
+            return
+        }
 
-        isInitialized = true
+        isInitialized = !currentUserId.isNullOrEmpty()
 
         // Start collecting WebSocket messages automatically
         viewModelScope.launch {
@@ -51,6 +53,9 @@ class ConversationViewModel(
                 handleIncomingMessage(message)
             }
         }
+
+        this.currentUserId = currentUserId ?: ""
+        Log.d("ConversationViewModel", "User Id: ${this.currentUserId}")
 
         // You could even preload conversations here if you want
         loadConversations()
@@ -75,7 +80,7 @@ class ConversationViewModel(
                 val response = conversationRepository.getConversations(currentUserId, search, type, campusId)
 
                 if (response.isSuccessful) {
-                    val data: List<Conversation> = response.body()?.conversations?.toList() ?: emptyList()
+                    val data: List<Conversation> = response.body()?.toList() ?: emptyList()
 
                     Log.d("ConversationViewModel", "loadConversations() triggered $data")
 
@@ -141,6 +146,11 @@ class ConversationViewModel(
             )
             conversationRepository.sendMessageViaWebSocket(request, conversationId)
         }
+    }
+
+    fun setUserId(userId: String?) {
+        this.currentUserId = userId ?: ""
+        Log.d("ConversationViewModel", "Set new user id: ${this.currentUserId}")
     }
 
     override fun onCleared() {

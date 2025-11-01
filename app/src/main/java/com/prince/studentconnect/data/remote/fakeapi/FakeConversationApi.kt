@@ -160,7 +160,7 @@ class FakeConversationApi : ConversationApi {
         search: String?,
         type: String?,
         campusId: Int?
-    ): Response<GetConversationsResponse> {
+    ): Response<List<Conversation>> {
         // Step 1: Filter by active membership
         var filtered = conversations.filter { conv ->
             conv.members.any { it.user_id == userId && it.status == "active" }
@@ -213,11 +213,11 @@ class FakeConversationApi : ConversationApi {
                         lastName = member.last_name,
                         profilePictureUrl = member.profile_picture_url ?: ""
                     )
-                }.toTypedArray()
+                }.toList()
             )
-        }.toTypedArray()
+        }.toList()
 
-        return Response.success(GetConversationsResponse(responseConversations))
+        return Response.success(responseConversations)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

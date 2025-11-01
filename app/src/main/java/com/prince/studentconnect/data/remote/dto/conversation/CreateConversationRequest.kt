@@ -6,5 +6,5 @@ data class CreateConversationRequest(
     val module_id: Int,
     val visibility: String,
     val max_members: Int,
-    val initial_members: Array<String>
+    val initial_members: List<String>
 )

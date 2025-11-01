@@ -9,6 +9,7 @@ import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinC
 import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinConversationResponse
 import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberRequest
 import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberResponse
+import com.prince.studentconnect.data.remote.dto.conversation.Conversation
 import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationRequest
 import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationResponse
 import com.prince.studentconnect.data.remote.dto.conversation.GetConversationResponse
@@ -54,7 +55,7 @@ interface ConversationApi {
         @Query("search") search: String? = null,
         @Query("type") type: String? = null,
         @Query("campus_id") campusId: Int? = null
-    ): Response<GetConversationsResponse>
+    ): Response<List<Conversation>>
 
     @POST("conversations/{conversation_id}/messages")
     suspend fun sendMessage(

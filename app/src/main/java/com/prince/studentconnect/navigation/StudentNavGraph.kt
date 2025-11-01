@@ -39,7 +39,8 @@ fun NavGraphBuilder.studentNavGraph(
         startDestination = Screen.StudentHome.route,
         route = Graph.STUDENT
     ){
-        conversationViewModel.instantiate(currentUserId)
+        Log.d("StudentNavGraph", "Student nav graph entered\nUser id: $currentUserId")
+        //conversationViewModel.instantiate(currentUserId)
         calendarViewModel.instantiate(currentUserId)
 
         val bottomNavItems = listOf(

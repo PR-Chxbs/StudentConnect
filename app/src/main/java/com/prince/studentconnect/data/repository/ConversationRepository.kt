@@ -29,7 +29,7 @@ class ConversationRepository(
         return conversationApi.getConversation(conversationId)
     }
 
-    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<GetConversationsResponse> {
+    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<List<Conversation>> {
         return conversationApi.getConversations(userId, search, type, campusId)
     }
 

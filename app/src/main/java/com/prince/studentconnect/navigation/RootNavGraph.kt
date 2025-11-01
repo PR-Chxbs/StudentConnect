@@ -31,14 +31,7 @@ fun RootNavGraph(
 
     val context = LocalContext.current
     val userPrefs = UserPreferencesRepository(context)
-    val currentUserId by userPrefs.userIdFlow.collectAsState(initial = null)
-
-    LaunchedEffect(currentUserId) {
-        if (currentUserId != null) {
-            println("User is logged in with ID: $currentUserId")
-            Log.d("RootNavGraph", "(Auth) User is logged in with ID: $currentUserId")
-        }
-    }
+    val currentUserId: String? by userPrefs.userIdFlow.collectAsState(initial = null)
 
     // --- ViewModels via ViewModelProvider ---
     val conversationViewModel: ConversationViewModel = viewModel(
@@ -60,6 +53,15 @@ fun RootNavGraph(
     val authViewModel: AuthViewModel = viewModel(
         factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
     )
+
+    LaunchedEffect(currentUserId) {
+        if (currentUserId != null) {
+            println("User is logged in with ID: $currentUserId")
+            Log.d("RootNavGraph", "(Auth) User is logged in with ID: $currentUserId")
+            conversationViewModel.instantiate(currentUserId)
+            conversationViewModel.loadConversations()
+        }
+    }
 
     // ------ Navigation ------
     NavHost(
