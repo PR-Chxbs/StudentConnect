@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.event.Event
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
+import com.prince.studentconnect.data.remote.dto.event.GetEventsResponse
 import com.prince.studentconnect.utils.parseTimestamp
 import java.time.Instant
 import java.time.LocalDate
@@ -39,7 +40,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EventList(
-    events: List<Event>,
+    events: List<GetEventsResponse>,
     onEventClick: (Int) -> Unit
 ) {
     Log.d("CalendarScreen", "Events: $events")
@@ -65,7 +66,7 @@ fun EventList(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun EventItem(event: Event, onClick: () -> Unit) {
+fun EventItem(event: GetEventsResponse, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

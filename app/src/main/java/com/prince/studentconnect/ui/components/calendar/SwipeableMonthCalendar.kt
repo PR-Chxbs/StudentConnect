@@ -24,13 +24,14 @@ import java.time.*
 import java.time.format.TextStyle
 import java.util.*
 import androidx.core.graphics.toColorInt
+import com.prince.studentconnect.data.remote.dto.event.GetEventsResponse
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SwipeableMonthCalendar(
     modifier: Modifier = Modifier,
-    eventsByDate: Map<LocalDate, List<Event>>,
+    eventsByDate: Map<LocalDate, List<GetEventsResponse>>,
     onDateSelected: (LocalDate) -> Unit,
     selectedDate: LocalDate? = null,
 ) {
@@ -100,7 +101,7 @@ private fun MonthGrid(
     month: YearMonth,
     today: LocalDate,
     selectedDate: LocalDate?,
-    eventsByDate: Map<LocalDate, List<Event>>,
+    eventsByDate: Map<LocalDate, List<GetEventsResponse>>,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val firstDayOfMonth = month.atDay(1)
