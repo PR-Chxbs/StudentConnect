@@ -6,8 +6,10 @@ data class UpdateEventRequest(
     val title: String,
     val description: String,
     val start_at: String,
+    val icon_url: String,
+    val color_code: String,
     val recurrence_rule: String,
     val reminder_at: String,
     val created_at: String,
-    val participants: Array<String>
+    val participants: List<String>
 )
