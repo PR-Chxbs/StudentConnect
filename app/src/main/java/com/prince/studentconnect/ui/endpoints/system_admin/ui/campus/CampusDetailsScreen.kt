@@ -35,11 +35,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.prince.studentconnect.data.remote.dto.campus.Campus
+import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CampusDetailsScreen(
-    campus: Campus,
+    campus: GetCampusesResponse,
     onEditClick: (Int) -> Unit,
     onDeleteClick: (Int) -> Unit,
     onBackClick: () -> Unit,
