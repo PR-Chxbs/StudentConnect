@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.prince.studentconnect.data.remote.dto.user.GetUsersResponse
 import com.prince.studentconnect.data.remote.dto.user.User
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
 
@@ -104,7 +105,7 @@ fun SystemAdminManageUsersScreen(
 
 @Composable
 fun UserItem(
-    user: User,
+    user: GetUsersResponse,
     onClick: () -> Unit
 ) {
     Card(
