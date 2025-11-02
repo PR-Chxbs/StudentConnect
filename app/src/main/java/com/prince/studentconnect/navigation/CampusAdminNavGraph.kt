@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -25,12 +27,11 @@ import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCm
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.campusAdminNavGraph(
     navController: NavController,
-    currentUserId: String,
+
+    // View Models
     userCmsViewModel: UserCmsViewModel,
     authViewModel: AuthViewModel
     ) {
-
-    Log.d("UserCmsViewModel", "Entered campus admin nav graph")
 
     navigation(
         startDestination = Screen.CampusAdminHome.route,
@@ -58,13 +59,15 @@ fun NavGraphBuilder.campusAdminNavGraph(
                 iconRes = R.drawable.ic_book_icon
             ),
             BottomNavItem(
-                route = Screen.CampusAdminViewProfile.route.replace("{user_id}", currentUserId),
+                route = Screen.CampusAdminViewProfile.route,
                 label = "Profile",
                 iconRes = R.drawable.ic_user_icon
             )
         )
 
         composable(Screen.CampusAdminHome.route) {
+            val currentUserId by authViewModel.currentUserId.collectAsState()
+
             userCmsViewModel.initialize(currentUserId)
             CampusAdminHomeScreen(
                 navController = navController,
@@ -125,10 +128,11 @@ fun NavGraphBuilder.campusAdminNavGraph(
         }
 
         composable(Screen.CampusAdminViewProfile.route) { backStackEntry ->
+            val currentUserId by authViewModel.currentUserId.collectAsState()
+
             val userId = backStackEntry.arguments?.getString("user_id") ?: ""
 
             if (userId.isBlank()) {
-//                Log.e("CampusAdminNavGraph", "Invalid user id: $userId")
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),

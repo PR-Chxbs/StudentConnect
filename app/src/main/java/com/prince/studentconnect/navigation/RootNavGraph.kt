@@ -89,7 +89,6 @@ fun RootNavGraph(
 
         systemAdminNavGraph(
             navController = navController,
-            currentUserId = currentUserId,
 
             // View Models
             userCmsViewModel = userCmsViewModel,
@@ -99,7 +98,6 @@ fun RootNavGraph(
 
         campusAdminNavGraph(
             navController = navController,
-            currentUserId = currentUserId,
             userCmsViewModel = userCmsViewModel,
             authViewModel = authViewModel
         )

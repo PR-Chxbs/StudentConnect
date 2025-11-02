@@ -8,6 +8,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -30,7 +32,6 @@ import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCm
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.systemAdminNavGraph(
     navController: NavController,
-    currentUserId: String,
 
     // View Model
     userCmsViewModel: UserCmsViewModel,
@@ -64,7 +65,7 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 iconRes = R.drawable.ic_calendar_icon
             ),
             BottomNavItem(
-                route = Screen.SystemAdminViewProfile.route.replace("{user_id}", currentUserId),
+                route = Screen.SystemAdminViewProfile.route,
                 label = "Profile",
                 iconRes = R.drawable.ic_user_icon
             )
@@ -136,6 +137,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
         }
 
         composable(Screen.SystemAdminViewProfile.route) { backStackEntry ->
+            val currentUserId by authViewModel.currentUserId.collectAsState()
+
             val userId = backStackEntry.arguments?.getString("user_id") ?: currentUserId
 
             ProfileScreen(
