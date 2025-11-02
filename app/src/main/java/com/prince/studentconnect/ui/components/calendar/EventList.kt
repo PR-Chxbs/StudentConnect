@@ -43,7 +43,6 @@ fun EventList(
     events: List<GetEventsResponse>,
     onEventClick: (Int) -> Unit
 ) {
-    Log.d("CalendarScreen", "Events: $events")
     LazyColumn {
         if (events.isEmpty()) {
             item {
@@ -58,6 +57,7 @@ fun EventList(
             }
         } else {
             items(events) { event ->
+                Log.d("EventList", "Event ids ${event.event_id}")
                 EventItem(event = event, onClick = { onEventClick(event.event_id) })
             }
         }

@@ -14,13 +14,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.prince.studentconnect.navigation.Screen
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
 fun BottomNavBar(
     items: List<BottomNavItem>,
     navController: NavController,
-    currentRoute: String
+    currentRoute: String,
+    authViewModel: AuthViewModel
 ) {
+    val currentUserId by authViewModel.currentUserId.collectAsState()
+
     Column( modifier = Modifier.fillMaxWidth()) {
         HorizontalDivider(
             thickness = 0.5.dp,
@@ -42,11 +49,21 @@ fun BottomNavBar(
 
             items.forEach { item ->
                 val isSelected = currentRoute == item.route
+                var itemRoute = item.route
+
+                if (
+                    itemRoute == Screen.StudentProfile.route ||
+                    itemRoute == Screen.LecturerProfile.route ||
+                    itemRoute == Screen.CampusAdminViewProfile.route ||
+                    itemRoute == Screen.SystemAdminViewProfile.route
+                    ) {
+                    itemRoute = itemRoute.replace("{user_id}", currentUserId)
+                }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clickable { navController.navigate(item.route) }
+                        .clickable { navController.navigate(itemRoute) }
                         .padding(horizontal = 8.dp)
                 ) {
                     Icon(
@@ -55,11 +72,6 @@ fun BottomNavBar(
                         tint = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Gray,
                         modifier = Modifier.size(24.dp)
                     )
-                    /*Text(
-                        text = item.label,
-                        color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Gray,
-                        style = MaterialTheme.typography.labelSmall
-                    )*/
                 }
             }
         }

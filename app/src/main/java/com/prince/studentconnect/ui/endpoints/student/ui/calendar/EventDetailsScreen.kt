@@ -42,7 +42,7 @@ import com.prince.studentconnect.ui.components.calendar.formatEpochMillis
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventDetailScreen(
+fun EventDetailsScreen(
     event: GetAnEventResponse,
     onBackClick: () -> Unit
 ) {
@@ -94,7 +94,7 @@ fun EventDetailScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Created by: ${event.creator_id}",
+                        text = "Created by: ${event.creator_name}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                     )

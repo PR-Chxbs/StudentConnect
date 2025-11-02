@@ -124,6 +124,8 @@ class MessageViewModel(
                 attachment_type = attachmentType,
                 conversation_id = conversationId
             )
+
+            Log.d("ChatScreen", "(MessageViewModel) Web socket request: $webSocketRequest")
             repository.sendMessage(request, conversationId)
             repository.sendMessageViaWebSocket(webSocketRequest)
         }

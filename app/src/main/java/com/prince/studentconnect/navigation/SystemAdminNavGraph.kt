@@ -18,6 +18,7 @@ import com.prince.studentconnect.R
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.components.shared.SearchBar
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.CampusDetailsScreen
@@ -33,7 +34,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
 
     // View Model
     userCmsViewModel: UserCmsViewModel,
-    campusCmsViewModel: CampusCmsViewModel
+    campusCmsViewModel: CampusCmsViewModel,
+    authViewModel: AuthViewModel
 ) {
     navigation(
         startDestination = Screen.SystemAdminHome.route,
@@ -78,7 +80,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.SystemAdminHome.route
+                        currentRoute = Screen.SystemAdminHome.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -93,7 +96,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.SystemAdminManageUsers.route
+                        currentRoute = Screen.SystemAdminManageUsers.route,
+                        authViewModel = authViewModel
                     )
                 },
                 topBar = { SearchBar("Search users...") }
@@ -109,7 +113,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.SystemAdminManageCampuses.route
+                        currentRoute = Screen.SystemAdminManageCampuses.route,
+                        authViewModel = authViewModel
                     )
                 },
                 topBar = { SearchBar("Search campuses...") },
@@ -123,7 +128,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.SystemAdminManageInterests.route
+                        currentRoute = Screen.SystemAdminManageInterests.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -143,7 +149,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
                         BottomNavBar(
                             items = bottomNavItems,
                             navController = navController,
-                            currentRoute = Screen.SystemAdminViewProfile.route.replace("{user_id}", currentUserId)
+                            currentRoute = Screen.SystemAdminViewProfile.route,
+                            authViewModel = authViewModel
                         )
                     }
                 },

@@ -26,10 +26,11 @@ import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCm
 fun RootNavGraph(
     navController: NavHostController,
     settingsViewModel: SettingsViewModel,
-    userPrefs: UserPreferencesRepository
+    userPrefs: UserPreferencesRepository,
+    authViewModel: AuthViewModel
 ) {
 
-    val currentUserId: String? by userPrefs.userIdFlow.collectAsState("f4ba5836-ed54-4e88-8268-a110d6ed675e")
+    val currentUserId by authViewModel.currentUserId.collectAsState()
 
     // --- ViewModels via ViewModelProvider ---
     val conversationViewModel: ConversationViewModel = viewModel(
@@ -48,16 +49,17 @@ fun RootNavGraph(
         factory = ServiceLocator.provideCampusCmsViewModelFactory()
     )
 
-    val authViewModel: AuthViewModel = viewModel(
-        factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
-    )
+
 
     LaunchedEffect(currentUserId) {
         if (!currentUserId.isNullOrEmpty()) {
             println("User is logged in with ID: $currentUserId")
             Log.d("RootNavGraph", "(Auth) User is logged in with ID: $currentUserId")
+
             conversationViewModel.instantiate(currentUserId)
             conversationViewModel.loadConversations()
+
+            calendarViewModel.instantiate(currentUserId)
         }
     }
 
@@ -73,29 +75,33 @@ fun RootNavGraph(
 
         studentNavGraph(
             navController = navController,
-            currentUserId = currentUserId ?: "",
-
             // View Models
             conversationViewModel = conversationViewModel,
             calendarViewModel = calendarViewModel,
-            settingsViewModel = settingsViewModel
+            settingsViewModel = settingsViewModel,
+            authViewModel = authViewModel
         )
 
-        lecturerNavGraph(navController = navController)
+        lecturerNavGraph(
+            navController = navController,
+            authViewModel = authViewModel
+        )
 
         systemAdminNavGraph(
             navController = navController,
-            currentUserId = currentUserId ?: "",
+            currentUserId = currentUserId,
 
             // View Models
             userCmsViewModel = userCmsViewModel,
-            campusCmsViewModel = campusCmsViewModel
+            campusCmsViewModel = campusCmsViewModel,
+            authViewModel = authViewModel
         )
 
         campusAdminNavGraph(
             navController = navController,
-            currentUserId = currentUserId ?: "",
-            userCmsViewModel = userCmsViewModel
+            currentUserId = currentUserId,
+            userCmsViewModel = userCmsViewModel,
+            authViewModel = authViewModel
         )
     }
 }

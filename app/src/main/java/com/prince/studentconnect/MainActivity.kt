@@ -9,9 +9,12 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
+import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.navigation.RootNavGraph
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
@@ -54,13 +57,18 @@ fun StudentConnectApp(
     settingsViewModel: SettingsViewModel,
     userPrefs: UserPreferencesRepository
 ) {
+    val authViewModel: AuthViewModel = viewModel(
+        factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
+    )
+
     BaseScreen {
         val navController = rememberNavController()
 
         RootNavGraph(
             navController = navController,
             settingsViewModel = settingsViewModel,
-            userPrefs = userPrefs
+            userPrefs = userPrefs,
+            authViewModel = authViewModel
         )
     }
 }

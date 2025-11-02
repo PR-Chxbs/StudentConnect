@@ -47,7 +47,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun AddEventScreen(
     navController: NavController,
-    viewModel: CalendarViewModel
+    viewModel: CalendarViewModel,
+    currentUserId: String
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -101,7 +102,7 @@ fun AddEventScreen(
                     } else {
                         val selectedDateTime: LocalDateTime = LocalDateTime.of(selectedDate, selectedTime)
                         val request = CreateEventRequest(
-                            creator_id = "student_1", // replace with real user id
+                            creator_id = currentUserId, // replace with real user id
                             conversation_id = null,
                             title = title,
                             description = description,

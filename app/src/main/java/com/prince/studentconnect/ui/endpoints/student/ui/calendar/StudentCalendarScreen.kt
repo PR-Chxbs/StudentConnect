@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.ui.calendar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -70,8 +71,11 @@ fun StudentCalendarScreen(
                 eventsByDate = viewModel.eventsByDate,
                 selectedDate = viewModel.selectedDate,
                 onDateSelected = viewModel::selectDate,
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(12.dp),
+                onChangeMonth = { newMonth -> viewModel.changeMonth(newMonth)}
             )
+
+            Log.d("CalendarScreen", "(StudentCalendarScreen) Rendered events: ${viewModel.eventsByDate}")
 
             Spacer(modifier = Modifier.height(8.dp))
 

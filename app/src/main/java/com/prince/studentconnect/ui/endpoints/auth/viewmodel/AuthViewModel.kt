@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.auth.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.repository.AuthRepository
@@ -29,6 +30,9 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState
 
+    private val _currentUserId = MutableStateFlow("")
+    val currentUserId: StateFlow<String> = _currentUserId
+
     lateinit var redirectScreenRoute: String
 
     fun onEmailChange(newEmail: String) {
@@ -46,34 +50,40 @@ class AuthViewModel(
         _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
         viewModelScope.launch {
-            when (val result = authRepository.login(email, password)) {
-                is AuthResult.Success -> {
-                    val userId = authRepository.getCurrentUser()?.id
-                    if (userId != null) {
-                        userPrefs.saveUserId(userId)
-                        val userDetails = userRepository.getUser(userId).body()
-                        when (userDetails?.role) {
-                            "student" -> redirectScreenRoute = Screen.Student.route
-                            "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
-                            "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
-                            "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+            try {
+                when (val result = authRepository.login(email, password)) {
+                    is AuthResult.Success -> {
+                        val userId = authRepository.getCurrentUser()?.id
+                        if (userId != null) {
+                            userPrefs.saveUserId(userId)
+                            _currentUserId.value = userId
+                            val userDetails = userRepository.getUser(userId).body()
+                            when (userDetails?.role) {
+                                "student" -> redirectScreenRoute = Screen.Student.route
+                                "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
+                                "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
+                                "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+                            }
                         }
-                    }
 
-                    _uiState.value = _uiState.value.copy(
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            successMessage = "Welcome, ${result.email}"
+                        )
+                    }
+                    is AuthResult.Error -> _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        successMessage = "Welcome, ${result.email}"
+                        errorMessage = result.message
+                    )
+                    else -> _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Unexpected result"
                     )
                 }
-                is AuthResult.Error -> _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    errorMessage = result.message
-                )
-                else -> _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    errorMessage = "Unexpected result"
-                )
+            } catch (e: Exception) {
+                Log.e("AuthScreen", "(AuthViewModel) Error: ${e.message}")
             }
+
         }
     }
 

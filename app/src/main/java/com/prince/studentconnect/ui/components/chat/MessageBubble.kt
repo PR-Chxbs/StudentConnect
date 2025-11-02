@@ -177,7 +177,7 @@ fun MessageBubble(
         ) {
             Column {
                 // Sender name
-                if (viewModel.isGroupConversation && !message.isMine) {
+                if (viewModel.isGroupConversation && !message.isMine && displayProfile) {
                     val sender = viewModel.members.firstOrNull {it.userId == message.senderId}
                     var colorIndex = viewModel.members.indexOf(sender)
                     if (colorIndex + 1 > nameColorsList.size)

@@ -80,6 +80,7 @@ class FakeEventApi : EventApi {
                 GetAnEventResponse(
                     event_id = event.event_id,
                     creator_id = event.creator_id,
+                    creator_name = "",
                     conversation_id = event.conversation_id,
                     title = event.title,
                     description = event.description,

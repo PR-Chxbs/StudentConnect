@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.components.calendar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -34,7 +35,10 @@ fun SwipeableMonthCalendar(
     eventsByDate: Map<LocalDate, List<GetEventsResponse>>,
     onDateSelected: (LocalDate) -> Unit,
     selectedDate: LocalDate? = null,
+    onChangeMonth: (YearMonth) -> Unit
 ) {
+    Log.d("CalendarScreen", "(SwipeableMonthCalendar) Rendered events: $eventsByDate")
+
     val today = LocalDate.now()
     val initialMonth = YearMonth.now()
     val totalRange = 240 // 10 years (-120..+120)
@@ -84,12 +88,14 @@ fun SwipeableMonthCalendar(
             verticalAlignment = Alignment.Top
         ) { page ->
             val month = startMonth.plusMonths(page.toLong())
+
             MonthGrid(
                 month = month,
                 today = today,
                 selectedDate = selectedDate,
                 eventsByDate = eventsByDate,
-                onDateSelected = onDateSelected
+                onDateSelected = onDateSelected,
+                onChangeMonth = { newMonth -> onChangeMonth(newMonth) }
             )
         }
     }
@@ -102,8 +108,12 @@ private fun MonthGrid(
     today: LocalDate,
     selectedDate: LocalDate?,
     eventsByDate: Map<LocalDate, List<GetEventsResponse>>,
-    onDateSelected: (LocalDate) -> Unit
+    onDateSelected: (LocalDate) -> Unit,
+    onChangeMonth: (YearMonth) -> Unit
 ) {
+    Log.d("SwipeableMonthCalendar", "$month")
+    //onChangeMonth(month)
+
     val firstDayOfMonth = month.atDay(1)
     val lastDayOfMonth = month.atEndOfMonth()
     val firstDayOfWeek = (firstDayOfMonth.dayOfWeek.value % 7) // Sunday=0

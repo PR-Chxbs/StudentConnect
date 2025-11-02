@@ -1,5 +1,6 @@
 package com.prince.studentconnect.data.repository
 
+import android.util.Log
 import com.prince.studentconnect.data.remote.api.EventApi
 import com.prince.studentconnect.data.remote.dto.event.*
 import retrofit2.Response
@@ -36,6 +37,7 @@ class EventRepository(
     }
 
     suspend fun getUserEvents(userId: String, fromDate: String, toDate: String): Response<List<GetEventsResponse>> {
+        Log.d("EventRepository", "$userId\n$fromDate\n$toDate")
         return eventApi.getUserEvents(userId, fromDate, toDate)
     }
 

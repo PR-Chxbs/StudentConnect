@@ -3,6 +3,7 @@ package com.prince.studentconnect.data.remote.dto.event
 data class GetAnEventResponse(
     val event_id: Int,
     val creator_id: String,
+    val creator_name: String,
     val conversation_id: Int?,
     val title: String,
     val description: String,

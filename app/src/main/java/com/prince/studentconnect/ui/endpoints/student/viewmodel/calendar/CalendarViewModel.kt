@@ -82,27 +82,34 @@ class CalendarViewModel(
     // --- Private functions to fetch events ---
 
     private fun loadEventsForMonth(month: YearMonth) {
+        Log.d("CalendarScreen", "(CalendarViewModel) isInitialized: $isInitialized")
         if (!isInitialized) return
         isLoading = true
         errorMessage = null
 
         viewModelScope.launch {
             try {
+
                 // Compute start and end of month in ISO-8601 format
-                val startOfMonth = month.atDay(1).toString()
-                val endOfMonth = month.atEndOfMonth().toString()
+                /*val startOfMonth = month.atDay(1).toString()
+                val endOfMonth = month.atEndOfMonth().toString()*/
+                val startOfMonth = "2025-10-01"
+                val endOfMonth = "2025-11-30"
 
                 val response = repository.getUserEvents(userId, startOfMonth, endOfMonth)
+
                 if (response.isSuccessful) {
                     Log.d("CalendarScreen", "(CalendarViewModel) Response is successful")
                     val events = response.body() ?: listOf()
+                    Log.d("CalendarScreen", "(CalendarViewModel) Events new: $events")
                     // Map events by LocalDate
                     eventsByDate = events.groupBy { LocalDate.parse(it.start_at.substring(0, 10)) }
                     // Update today's events if selectedDate is in this month
                     selectedDate?.let { loadEventsForDate(it) }
                 } else {
-                    errorMessage = "Failed to load events: ${response.code()}"
-                    Log.d("CalendarScreen", "Error: $errorMessage")
+                    val errorText = response.errorBody()?.string() ?: "Unknown error"
+                    errorMessage = "Failed to load events: $errorText"
+                    Log.e("CalendarScreen", "Error: $errorMessage")
                 }
             } catch (e: Exception) {
                 errorMessage = e.message
@@ -191,8 +198,11 @@ class CalendarViewModel(
                 val response = repository.getEvent(eventId)
                 if (response.isSuccessful) {
                     selectedEvent = response.body()
+                    Log.d("EventDetailsScreen", "(CalendarViewModel) Successfully got event: $selectedEvent")
                 } else {
-                    errorMessage = "Failed to get event: ${response.code()}"
+                    val errorText = response.errorBody()?.string() ?: "Unknown error"
+                    errorMessage = "Failed to load events: $errorText"
+                    Log.e("EventDetailsScreen", "Error: $errorMessage")
                 }
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Unknown error"
