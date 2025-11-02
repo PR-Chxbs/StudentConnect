@@ -10,7 +10,9 @@ import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MessageUiModel
 import com.prince.studentconnect.ui.endpoints.student.model.chat.toUiModel
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageWebSocketJson
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -22,7 +24,8 @@ class MessageViewModel(
     val userId: String,
     private val conversationId: Int,
     val members: List<MemberUiModel>, // now from ConversationUiModel
-    val conversationName: String
+    val conversationName: String,
+    val conversationType: ConversationType
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<MessageUiModel>>(emptyList())
@@ -39,7 +42,7 @@ class MessageViewModel(
     lateinit var navController: NavController
 
     /** Derived UI properties */
-    val isGroupConversation: Boolean = members.size > 2
+    val isGroupConversation: Boolean = conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT
 
     val otherUserProfile: String? =
         members.firstOrNull { it.userId != userId }?.profilePictureUrl
@@ -113,8 +116,16 @@ class MessageViewModel(
                 attachment_url = attachmentUrl,
                 attachment_type = attachmentType
             )
+
+            val webSocketRequest = SendMessageWebSocketJson(
+                sender_id = userId,
+                message_text = text,
+                attachment_url = attachmentUrl,
+                attachment_type = attachmentType,
+                conversation_id = conversationId
+            )
             repository.sendMessage(request, conversationId)
-            repository.sendMessageViaWebSocket(request, conversationId)
+            repository.sendMessageViaWebSocket(webSocketRequest)
         }
     }
 

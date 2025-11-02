@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.collectAsState
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageWebSocketJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,7 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
         .add(KotlinJsonAdapterFactory())
         .build()
     private val messageAdapter = moshi.adapter(SendMessageResponse::class.java)
-    private val requestAdapter = moshi.adapter(SendMessageRequest::class.java)
+    private val requestAdapter = moshi.adapter(SendMessageWebSocketJson::class.java)
 
     override fun connect() {
         // f
@@ -73,12 +74,12 @@ class FakeChatWebSocketClient : ChatWebSocketClient {
         }
 
     }
-    override suspend fun sendMessage(request: SendMessageRequest, conversationId: Int) {
+    override suspend fun sendMessage(request: SendMessageWebSocketJson) {
         // Simulate echo back as if server processed it
         val json = requestAdapter.toJson(request)
         val message = SendMessageResponse(
             message_id = 999,
-            conversation_id = conversationId,
+            conversation_id = request.conversation_id,
             sender_id = request.sender_id,
             message_text = request.message_text,
             attachment_url = request.attachment_url,

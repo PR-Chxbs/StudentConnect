@@ -29,9 +29,7 @@ fun RootNavGraph(
     userPrefs: UserPreferencesRepository
 ) {
 
-    val context = LocalContext.current
-    val userPrefs = UserPreferencesRepository(context)
-    val currentUserId: String? by userPrefs.userIdFlow.collectAsState(initial = null)
+    val currentUserId: String? by userPrefs.userIdFlow.collectAsState("f4ba5836-ed54-4e88-8268-a110d6ed675e")
 
     // --- ViewModels via ViewModelProvider ---
     val conversationViewModel: ConversationViewModel = viewModel(
@@ -55,7 +53,7 @@ fun RootNavGraph(
     )
 
     LaunchedEffect(currentUserId) {
-        if (currentUserId != null) {
+        if (!currentUserId.isNullOrEmpty()) {
             println("User is logged in with ID: $currentUserId")
             Log.d("RootNavGraph", "(Auth) User is logged in with ID: $currentUserId")
             conversationViewModel.instantiate(currentUserId)
@@ -97,7 +95,6 @@ fun RootNavGraph(
         campusAdminNavGraph(
             navController = navController,
             currentUserId = currentUserId ?: "",
-
             userCmsViewModel = userCmsViewModel
         )
     }

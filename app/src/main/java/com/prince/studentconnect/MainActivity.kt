@@ -9,15 +9,12 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
-import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.navigation.RootNavGraph
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
-import retrofit2.Retrofit
 
 
 class MainActivity : ComponentActivity() {
@@ -59,6 +56,7 @@ fun StudentConnectApp(
 ) {
     BaseScreen {
         val navController = rememberNavController()
+
         RootNavGraph(
             navController = navController,
             settingsViewModel = settingsViewModel,

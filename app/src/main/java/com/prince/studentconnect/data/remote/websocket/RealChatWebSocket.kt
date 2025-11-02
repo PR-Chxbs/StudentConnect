@@ -2,6 +2,7 @@ package com.prince.studentconnect.data.remote.websocket
 
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageWebSocketJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class RealChatWebSocketClient(
         .add(KotlinJsonAdapterFactory())
         .build()
     private val messageAdapter = moshi.adapter(SendMessageResponse::class.java)
-    private val requestAdapter = moshi.adapter(SendMessageRequest::class.java)
+    private val requestAdapter = moshi.adapter(SendMessageWebSocketJson::class.java)
 
     override fun connect() {
         val request = Request.Builder().url(serverUrl).build()
@@ -61,7 +62,7 @@ class RealChatWebSocketClient(
         webSocket = null
     }
 
-    override suspend fun sendMessage(request: SendMessageRequest, conversationId: Int) {
+    override suspend fun sendMessage(request: SendMessageWebSocketJson) {
         val jsonString = requestAdapter.toJson(request)
         webSocket?.send(jsonString)
     }

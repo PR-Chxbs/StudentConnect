@@ -36,6 +36,7 @@ import com.prince.studentconnect.ui.components.chat.ChatTopBar
 import com.prince.studentconnect.ui.components.chat.MessageInputBar
 import com.prince.studentconnect.ui.components.chat.MessagesList
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,7 +46,8 @@ fun ChatScreen(
     conversationId: Int,
     userId: String,
     members: List<MemberUiModel>,
-    conversationName: String
+    conversationName: String,
+    conversationType: ConversationType
 ) {
     Log.d("ChatScreen", "Received conversationId: $conversationId")
 
@@ -54,7 +56,8 @@ fun ChatScreen(
             userId = userId,
             conversationId = conversationId,
             members = members,
-            conversationName = conversationName
+            conversationName = conversationName,
+            conversationType = conversationType
         )
     )
 

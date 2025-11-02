@@ -15,6 +15,7 @@ import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
@@ -120,8 +121,14 @@ object ServiceLocator {
     }
 
     // Extras
-    fun provideMessageViewModelFactory(userId: String, conversationId: Int, members: List<MemberUiModel>, conversationName: String): ViewModelProvider.Factory {
-        return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName)
+    fun provideMessageViewModelFactory(
+        userId: String,
+        conversationId: Int,
+        members: List<MemberUiModel>,
+        conversationName: String,
+        conversationType: ConversationType
+    ): ViewModelProvider.Factory {
+        return MessageViewModelFactory(conversationRepository, userId, conversationId, members, conversationName, conversationType)
     }
 
     fun provideSettingsViewModelFactory(themePreferenceManager: UserPreferencesRepository): ViewModelProvider.Factory {

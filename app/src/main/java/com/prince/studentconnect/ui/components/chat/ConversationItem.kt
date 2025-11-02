@@ -88,12 +88,20 @@ fun ConversationItem(
                 horizontalAlignment = Alignment.End
             ) {
                 // Format timestamp safely
-                val timeFormatted = try {
+                /*val timeFormatted = try {
                     val instant = kotlinx.datetime.Instant.parse(conversation.latestMessageTimestamp)
                     val time = instant.toLocalDateTime(TimeZone.currentSystemDefault())
                     String.format("%02d:%02d", time.hour, time.minute)
                 } catch (e: Exception) {
                     conversation.latestMessageTimestamp.take(5)
+                }*/
+
+                val timeFormatted = if (!conversation.latestMessageTimestamp.isEmpty()) {
+                    val instant = kotlinx.datetime.Instant.parse(conversation.latestMessageTimestamp)
+                    val time = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+                    String.format("%02d:%02d", time.hour, time.minute)
+                } else {
+                    ""
                 }
 
                 Text(

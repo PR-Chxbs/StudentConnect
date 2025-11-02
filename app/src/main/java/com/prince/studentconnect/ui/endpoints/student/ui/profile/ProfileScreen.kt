@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.student.ui.profile
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -101,6 +102,7 @@ fun ProfileScreen(
                 }
                 is ProfileViewModel.UiState.Success -> {
                     val user = uiState.user
+                    Log.d("ProfileScreen", "User: $user")
                     Column(
                         modifier = Modifier
                             .fillMaxSize()

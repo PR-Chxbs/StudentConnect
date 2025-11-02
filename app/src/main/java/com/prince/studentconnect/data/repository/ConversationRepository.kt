@@ -47,8 +47,8 @@ class ConversationRepository(
 
     // ----------- WebSocket -----------
 
-    suspend fun sendMessageViaWebSocket(request: SendMessageRequest, conversationId: Int) {
-        webSocketClient.sendMessage(request, conversationId)
+    suspend fun sendMessageViaWebSocket(request: SendMessageWebSocketJson) {
+        webSocketClient.sendMessage(request)
     }
 
     fun connect() = webSocketClient.connect()

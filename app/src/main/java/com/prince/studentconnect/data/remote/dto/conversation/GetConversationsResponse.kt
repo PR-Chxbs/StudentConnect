@@ -11,7 +11,7 @@ data class GetConversationsResponse(
     @SerializedName("max_members") val maxMembers: Int,
     @SerializedName("member_count") val memberCount: Int,
     @SerializedName("date_created") val dateCreated: String,
-    @SerializedName("last_message") val lastMessage: MessageA,
+    @SerializedName("last_message") val lastMessage: MessageA?,
     val members: List<MemberA>
 )
 

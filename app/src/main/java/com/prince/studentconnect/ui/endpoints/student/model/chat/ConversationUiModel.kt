@@ -14,7 +14,7 @@ data class ConversationUiModel(
     val name: String,
     val latestMessage: String,
     val latestMessageTimestamp: String,
-    val latestMessageEpoch: Long,
+    val latestMessageEpoch: Long?,
     val profileImages: List<String>, // single student/lecturer or 3 for group
     val unreadCount: Int = 0, // >0 means unread indicator should show
     val type: ConversationType,
@@ -32,13 +32,23 @@ data class MemberUiModel(
 fun GetConversationsResponse.toUiModel(userId: String): ConversationUiModel {
     val conversationType = ConversationType.fromValue(type)
 
-    var formatLastMessage: String = if (
+    /*var formatLastMessage: String = if (
         (conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT)
-        && lastMessage.senderName.isNotBlank()
+        && lastMessage?.senderName?.isNotBlank()
     ) {
-        "${lastMessage.senderName}: ${lastMessage.content}".take(50)
+        "${lastMessage?.senderName}: ${lastMessage?.content}".take(50)
     } else {
         lastMessage.content.take(50)
+    }*/
+
+    var formatLastMessage = ""
+
+    if (lastMessage != null) {
+        formatLastMessage = if (conversationType == ConversationType.GROUP || conversationType == ConversationType.MODULE_DEFAULT) {
+            "${lastMessage.senderName}: ${lastMessage.content}".take(50)
+        } else {
+            lastMessage.content.take(50)
+        }
     }
 
     formatLastMessage = if (formatLastMessage.length >= 50) {
@@ -59,8 +69,8 @@ fun GetConversationsResponse.toUiModel(userId: String): ConversationUiModel {
             ConversationType.MODULE_DEFAULT -> name.ifBlank { "Module Chat" }
         },
         latestMessage = formatLastMessage,
-        latestMessageTimestamp = lastMessage.timestamp,
-        latestMessageEpoch = parseTimestamp(lastMessage.timestamp),
+        latestMessageTimestamp = lastMessage?.timestamp ?: "",
+        latestMessageEpoch = if (lastMessage != null) parseTimestamp(lastMessage.timestamp) else null,
         profileImages = when (conversationType) {
             ConversationType.GROUP, ConversationType.MODULE_DEFAULT ->
                 members.take(3).map { it.profilePictureUrl }

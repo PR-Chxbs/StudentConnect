@@ -166,7 +166,8 @@ fun NavGraphBuilder.studentNavGraph(
                 conversationId = conversationId,
                 userId = currentUserId,
                 members = conversation.members,
-                conversationName = conversation.name
+                conversationName = conversation.name,
+                conversationType = conversation.type
             )
         }
 

@@ -7,8 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.conversation.Conversation
 import com.prince.studentconnect.data.remote.dto.conversation.GetConversationsResponse
+import com.prince.studentconnect.data.remote.dto.conversation.MemberA
+import com.prince.studentconnect.data.remote.dto.conversation.MessageA
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
 import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
+import com.prince.studentconnect.data.remote.dto.conversation.SendMessageWebSocketJson
 import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import com.prince.studentconnect.ui.endpoints.student.model.chat.toUiModel
@@ -83,7 +86,9 @@ class ConversationViewModel(
                 if (response.isSuccessful) {
                     val data: List<GetConversationsResponse> = response.body()?.toList() ?: emptyList()
 
-                    Log.d("ConversationViewModel", "loadConversations() triggered $data")
+                    data.forEach { conversation ->
+                        Log.d("ConversationViewModel", "loadConversations() triggered $conversation")
+                    }
 
                     allConversations.clear()
                     allConversations.addAll(data.map { it.toUiModel(currentUserId) }
@@ -133,19 +138,6 @@ class ConversationViewModel(
     fun simulateMessageEmits() {
         viewModelScope.launch {
             conversationRepository.simulateMessageEmits()
-        }
-    }
-
-    fun sendMessage(content: String, conversationId: Int) {
-        if (!isInitialized) return
-        viewModelScope.launch {
-            val request = SendMessageRequest(
-                sender_id = currentUserId,
-                message_text = content,
-                attachment_url = null,
-                attachment_type = null
-            )
-            conversationRepository.sendMessageViaWebSocket(request, conversationId)
         }
     }
 

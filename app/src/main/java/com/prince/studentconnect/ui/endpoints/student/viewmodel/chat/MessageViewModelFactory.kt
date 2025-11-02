@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.repository.ConversationRepository
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
+import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 
 class MessageViewModelFactory(
     private val conversationRepository: ConversationRepository,
     private val userId: String,
     private val conversationId: Int,
     private val members: List<MemberUiModel>,
-    private val conversationName: String
+    private val conversationName: String,
+    private val conversationType: ConversationType
 ) : ViewModelProvider.Factory {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -24,7 +26,8 @@ class MessageViewModelFactory(
                 userId = userId,
                 conversationId = conversationId,
                 members = members,
-                conversationName = conversationName
+                conversationName = conversationName,
+                conversationType = conversationType
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
