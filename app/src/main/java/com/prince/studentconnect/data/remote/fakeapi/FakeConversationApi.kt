@@ -5,6 +5,10 @@ import androidx.annotation.RequiresApi
 import com.prince.studentconnect.data.remote.api.ConversationApi
 import com.prince.studentconnect.data.remote.dto.conversation.*
 import com.prince.studentconnect.data.remote.dto.conversation_membership.*
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.sampleConversations
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextConversationId
+import com.prince.studentconnect.data.remote.fakeapi.fakedata.nextMessageId
+import com.prince.studentconnect.utils.parseTimestamp
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -12,39 +16,18 @@ import java.time.Instant
 
 class FakeConversationApi : ConversationApi {
 
-    private val conversations = mutableListOf<InternalConversation>()
-    private var nextConversationId = 1
-    private var nextMessageId = 1
+    private var conversations = mutableListOf<InternalConversation>()
     private var nextConversationMemberId = 1
 
-    private data class InternalMessage(
-        val message_id: Int,
-        val sender_id: String,
-        val message_text: String,
-        val attachment_url: String?,
-        val attachment_type: String?,
-        val sent_at: String
-    )
-
-    private data class InternalMember(
-        val user_id: String,
-        var role_in_conversation: String = "member",
-        var status: String = "active",
-        var joined_at: String,
-        var left_at: String? = null
-    )
-
-    private data class InternalConversation(
-        val conversation_id: Int,
-        val name: String,
-        val type: String,
-        val module_id: Int?,
-        val visibility: String,
-        val max_members: Int,
-        val members: MutableList<InternalMember>,
-        val date_created: String,
-        val messages: MutableList<InternalMessage> = mutableListOf()
-    )
+    // ---------------- Sample Data ----------------
+    init {
+        conversations = sampleConversations.map { conversation ->
+            conversation.copy(
+                messages = conversation.messages.toMutableList(),
+                members = conversation.members.toMutableList()
+            )
+        }.toMutableList()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createConversation(request: CreateConversationRequest): Response<CreateConversationResponse> {
@@ -158,7 +141,7 @@ class FakeConversationApi : ConversationApi {
                     visibility = conversation.visibility,
                     max_members = conversation.max_members,
                     member_count = conversation.members.size,
-                    members = members,
+                    members = members.toList(),
                     date_created = conversation.date_created
                 )
             )
@@ -168,6 +151,73 @@ class FakeConversationApi : ConversationApi {
                 """{"error":"Conversation not found"}""".toResponseBody("application/json".toMediaType())
             )
         }
+    }
+
+    // ---------- Fake getConversations ----------
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getConversations(
+        userId: String,
+        search: String?,
+        type: String?,
+        campusId: Int?
+    ): Response<List<GetConversationsResponse>> {
+        // Step 1: Filter by active membership
+        var filtered = conversations.filter { conv ->
+            conv.members.any { it.user_id == userId && it.status == "active" }
+        }
+
+        // Step 2: Apply optional search filter
+        if (!search.isNullOrBlank()) {
+            filtered = filtered.filter { conv ->
+                conv.name.contains(search, ignoreCase = true) ||
+                        conv.members.any { "${it.first_name} ${it.last_name}".contains(search, ignoreCase = true) }
+            }
+        }
+
+        // Step 3: Apply optional type filter
+        if (!type.isNullOrBlank()) {
+            filtered = filtered.filter { conv -> conv.type.equals(type, ignoreCase = true) }
+        }
+
+        // Step 4: Map InternalConversation → Conversation DTO
+        val responseConversations = filtered.map { conv ->
+            GetConversationsResponse(
+                conversationId = conv.conversation_id,
+                name = if (conv.type in listOf("private_student", "private_lecturer")) {
+                    val member = conv.members.firstOrNull { it.user_id != userId }
+                    member?.let { "${it.first_name} ${it.last_name}" } ?: "Unknown"
+                } else {
+                    conv.name
+                },
+                type = conv.type,
+                moduleId = conv.module_id ?: -1,
+                visibility = conv.visibility,
+                maxMembers = conv.max_members,
+                memberCount = conv.members.size,
+                dateCreated = conv.date_created,
+                lastMessage = conv.messages.maxByOrNull { msg ->
+                    parseTimestamp(msg.sent_at) // your parser function
+                }?.let { msg ->
+                    val sender = conv.members.firstOrNull { it.user_id == msg.sender_id }
+                    MessageA(
+                        senderId = msg.sender_id,
+                        senderName = sender?.let { "${it.first_name} ${it.last_name}" } ?: "Unknown",
+                        content = msg.message_text,
+                        timestamp = msg.sent_at
+                    )
+                } ?: MessageA("", "", "", ""),
+                members = conv.members.map { member ->
+                    MemberA(
+                        userId = member.user_id,
+                        firstName = member.first_name,
+                        lastName = member.last_name,
+                        profilePictureUrl = member.profile_picture_url ?: ""
+                    )
+                }.toList()
+            )
+        }.toList()
+
+        return Response.success(responseConversations)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -230,7 +280,7 @@ class FakeConversationApi : ConversationApi {
         fromDate: String?,
         toDate: String?,
         limit: Int?
-    ): Response<GetMessagesResponse> {
+    ): Response<List<GetMessagesResponse>> {
         val conversation = conversations.find { it.conversation_id == conversationId }
         return if (conversation != null) {
             val filtered = conversation.messages.filter { msg ->
@@ -240,16 +290,17 @@ class FakeConversationApi : ConversationApi {
                 fromOk && toOk
             }.sortedBy { it.sent_at }
             val limited = limit?.let { filtered.take(it) } ?: filtered
+
             val responseMessages = limited.map {
-                Message(
+                GetMessagesResponse(
                     message_id = it.message_id,
                     sender_id = it.sender_id,
                     message_text = it.message_text,
                     attachment_url = it.attachment_url,
                     sent_at = it.sent_at
                 )
-            }.toTypedArray()
-            Response.success(GetMessagesResponse(messages = responseMessages))
+            }.toList()
+            Response.success(responseMessages)
         } else {
             Response.error(
                 404,
@@ -382,17 +433,17 @@ class FakeConversationApi : ConversationApi {
         }
     }
 
-    override suspend fun getConversationMembers(conversationId: Int): Response<GetConversationMembersResponse> {
+    override suspend fun getConversationMembers(conversationId: Int): Response<List<GetConversationMembersResponse>> {
         val conversation = conversations.find { it.conversation_id == conversationId }
         return if (conversation != null) {
             val responseMembers = conversation.members.map {
-                Member(
+                GetConversationMembersResponse(
                     user_id = it.user_id,
                     role_in_conversation = it.role_in_conversation,
                     status = it.status
                 )
-            }.toTypedArray()
-            Response.success(GetConversationMembersResponse(members = responseMembers))
+            }.toList()
+            Response.success(responseMembers)
         } else {
             Response.error(
                 404,
@@ -400,4 +451,38 @@ class FakeConversationApi : ConversationApi {
             )
         }
     }
+
+    data class InternalMessage(
+        val message_id: Int,
+        val sender_id: String,
+        // val conversation_id: Int = 1, // Need to work on fixing all references
+        val message_text: String,
+        val attachment_url: String? = null,
+        val attachment_type: String? = null,
+        val sent_at: String
+    )
+
+    data class InternalMember(
+        val user_id: String,
+        val first_name: String = "Harry",
+        val last_name: String = "Fowls",
+        val profile_picture_url: String? = "https://randomuser.me/api/portraits/men/11.jpg",
+        var role_in_conversation: String = "member",
+        var status: String = "active",
+        var joined_at: String,
+        var left_at: String? = null
+    )
+
+
+     data class InternalConversation(
+        val conversation_id: Int,
+        val name: String,
+        val type: String,
+        val module_id: Int? = null,
+        val visibility: String = "private",
+        val max_members: Int,
+        val members: MutableList<InternalMember>,
+        val date_created: String,
+        val messages: MutableList<InternalMessage> = mutableListOf()
+    )
 }

@@ -7,9 +7,13 @@ import androidx.navigation.navigation
 import com.prince.studentconnect.R
 import com.prince.studentconnect.ui.components.shared.BottomNavBar
 import com.prince.studentconnect.ui.components.shared.BottomNavItem
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.lecturer.ui.*
 
-fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
+fun NavGraphBuilder.lecturerNavGraph(
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
     navigation(
         startDestination = Screen.LecturerHome.route,
         route = Graph.LECTURER
@@ -50,7 +54,8 @@ fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.LecturerHome.route
+                        currentRoute = Screen.LecturerHome.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -63,7 +68,8 @@ fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.LecturerSearch.route
+                        currentRoute = Screen.LecturerSearch.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -76,7 +82,8 @@ fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.LecturerMessages.route
+                        currentRoute = Screen.LecturerMessages.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -89,7 +96,8 @@ fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.LecturerCalendar.route
+                        currentRoute = Screen.LecturerCalendar.route,
+                        authViewModel = authViewModel
                     )
                 }
             )
@@ -102,7 +110,8 @@ fun NavGraphBuilder.lecturerNavGraph(navController: NavController) {
                     BottomNavBar(
                         items = bottomNavItems,
                         navController = navController,
-                        currentRoute = Screen.LecturerProfile.route
+                        currentRoute = Screen.LecturerProfile.route,
+                        authViewModel = authViewModel
                     )
                 }
             )

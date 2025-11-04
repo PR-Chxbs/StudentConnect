@@ -1,8 +1,11 @@
 package com.prince.studentconnect.data.remote.api
 
 import com.prince.studentconnect.data.remote.dto.module.CreateModuleRequest
+import com.prince.studentconnect.data.remote.dto.module.CreateModuleResponse
+import com.prince.studentconnect.data.remote.dto.module.DeleteModuleResponse
 import com.prince.studentconnect.data.remote.dto.module.GetModulesResponse
 import com.prince.studentconnect.data.remote.dto.module.UpdateModuleRequest
+import com.prince.studentconnect.data.remote.dto.module.UpdateModuleResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -17,7 +20,7 @@ interface ModuleApi {
     suspend fun getModules(
         @Query("course_id") courseId: Int? = null,
         @Query("lecturer_id") lecturerId: String? = null
-    ): Response<GetModulesResponse>
+    ): Response<List<GetModulesResponse>>
 
     @GET("modules/{module_id}")
     suspend fun getModule(
@@ -27,16 +30,16 @@ interface ModuleApi {
     @POST("modules")
     suspend fun addModule(
         @Body request: CreateModuleRequest
-    ): Response<Unit>
+    ): Response<CreateModuleResponse>
 
     @PUT("modules/{module_id}")
     suspend fun updateModule(
         @Body request: UpdateModuleRequest,
         @Path("module_id") moduleId: Int
-    ): Response<Unit>
+    ): Response<UpdateModuleResponse>
 
     @DELETE("modules/{module_id}")
     suspend fun deleteModule(
         @Path("module_id") moduleId: Int
-    ): Response<Unit>
+    ): Response<DeleteModuleResponse>
 }

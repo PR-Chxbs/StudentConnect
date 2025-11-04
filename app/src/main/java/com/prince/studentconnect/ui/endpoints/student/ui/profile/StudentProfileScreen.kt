@@ -1,4 +1,4 @@
-package com.prince.studentconnect.ui.endpoints.student.ui
+package com.prince.studentconnect.ui.endpoints.student.ui.profile
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentChatScreen(
+fun StudentProfileScreen(
     navController: NavController,
     bottomBar: @Composable () -> Unit
 ) {
@@ -23,7 +23,7 @@ fun StudentChatScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Student Chat") }
+                title = { Text("Student Profile") }
             )
         },
         bottomBar = bottomBar
@@ -36,7 +36,7 @@ fun StudentChatScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text("Welcome to the Student Chat Screen!", style = MaterialTheme.typography.headlineSmall)
+            Text("Welcome to the Student Profile Screen!", style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

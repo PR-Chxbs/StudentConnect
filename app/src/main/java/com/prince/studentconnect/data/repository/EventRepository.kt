@@ -1,5 +1,6 @@
 package com.prince.studentconnect.data.repository
 
+import android.util.Log
 import com.prince.studentconnect.data.remote.api.EventApi
 import com.prince.studentconnect.data.remote.dto.event.*
 import retrofit2.Response
@@ -15,7 +16,7 @@ class EventRepository(
         return eventApi.getEvent(eventId)
     }
 
-    suspend fun updateEvent(updateEventRequest: UpdateEventRequest, eventId: Int): Response<Unit> {
+    suspend fun updateEvent(updateEventRequest: UpdateEventRequest, eventId: Int): Response<UpdateEventResponse> {
         return eventApi.updateEvent(updateEventRequest, eventId)
     }
 
@@ -31,19 +32,20 @@ class EventRepository(
         return eventApi.subscribeToEvent(subscribeToEventRequest, eventId)
     }
 
-    suspend fun unsubscribeFromEvent(eventId: Int): Response<Unit> {
-        return eventApi.unsubscribeFromEvent(eventId)
+    suspend fun unsubscribeFromEvent(eventId: Int, userId: String): Response<Unit> {
+        return eventApi.unsubscribeFromEvent(eventId, userId)
     }
 
-    suspend fun getUserEvents(userId: String, fromDate: String, toDate: String): Response<GetEventsResponse> {
+    suspend fun getUserEvents(userId: String, fromDate: String, toDate: String): Response<List<GetEventsResponse>> {
+        Log.d("EventRepository", "$userId\n$fromDate\n$toDate")
         return eventApi.getUserEvents(userId, fromDate, toDate)
     }
 
-    suspend fun getConversationEvents(conversationId: Int, fromDate: String, toDate: String): Response<GetEventsResponse> {
+    suspend fun getConversationEvents(conversationId: Int, fromDate: String, toDate: String): Response<List<GetEventsResponse>> {
         return eventApi.getConversationEvents(conversationId, fromDate, toDate)
     }
 
-    suspend fun getEventParticipants(eventId: Int): Response<GetParticipantsResponse> {
+    suspend fun getEventParticipants(eventId: Int): Response<List<GetParticipantsResponse>> {
         return eventApi.getEventParticipants(eventId)
     }
 }

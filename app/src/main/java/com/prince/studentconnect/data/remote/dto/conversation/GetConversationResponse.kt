@@ -8,7 +8,7 @@ data class GetConversationResponse(
     val visibility: String,
     val max_members: Int,
     val member_count: Int,
-    val members: Array<Member>,
+    val members: List<Member>,
     val date_created: String
 )
 

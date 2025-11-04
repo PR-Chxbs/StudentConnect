@@ -3,11 +3,16 @@ package com.prince.studentconnect.data.repository
 import com.prince.studentconnect.data.remote.api.ConversationApi
 import com.prince.studentconnect.data.remote.dto.conversation.*
 import com.prince.studentconnect.data.remote.dto.conversation_membership.*
+import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class ConversationRepository(
-    private val conversationApi: ConversationApi
+    private val conversationApi: ConversationApi,
+    private val webSocketClient: ChatWebSocketClient
 ) {
+    val incomingMessages: Flow<SendMessageResponse> = webSocketClient.incomingMessages
+
     suspend fun createConversation(createConversationRequest: CreateConversationRequest): Response<CreateConversationResponse> {
         return conversationApi.createConversation(createConversationRequest)
     }
@@ -24,6 +29,10 @@ class ConversationRepository(
         return conversationApi.getConversation(conversationId)
     }
 
+    suspend fun getConversations(userId: String, search: String? = null, type: String? = null, campusId: Int? = null): Response<List<GetConversationsResponse>> {
+        return conversationApi.getConversations(userId, search, type, campusId)
+    }
+
     suspend fun sendMessage(sendMessageRequest: SendMessageRequest, conversationId: Int): Response<SendMessageResponse> {
         return conversationApi.sendMessage(sendMessageRequest, conversationId)
     }
@@ -32,9 +41,19 @@ class ConversationRepository(
         return conversationApi.deleteMessage(conversationId, messageId)
     }
 
-    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String?, toDate: String?, limit: Int?): Response<GetMessagesResponse> {
+    suspend fun getMessagesInConversation(conversationId: Int, fromDate: String? = null, toDate: String? = null, limit: Int? = null): Response<List<GetMessagesResponse>> {
         return conversationApi.getMessagesInConversation(conversationId, fromDate, toDate, limit)
     }
+
+    // ----------- WebSocket -----------
+
+    suspend fun sendMessageViaWebSocket(request: SendMessageWebSocketJson) {
+        webSocketClient.sendMessage(request)
+    }
+
+    fun connect() = webSocketClient.connect()
+    fun disconnect() = webSocketClient.disconnect()
+    fun simulateMessageEmits() = webSocketClient.simulateMessageEmits()
 
     // ----------- Conversation membership -----------
 
@@ -50,7 +69,7 @@ class ConversationRepository(
         return conversationApi.changeRole(changeMemberRoleRequest, conversationId, userId)
     }
 
-    suspend fun getConversationMembers(conversationId: Int): Response<GetConversationMembersResponse> {
+    suspend fun getConversationMembers(conversationId: Int): Response<List<GetConversationMembersResponse>> {
         return conversationApi.getConversationMembers(conversationId)
     }
 }

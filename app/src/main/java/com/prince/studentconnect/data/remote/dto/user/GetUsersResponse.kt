@@ -1,7 +1,12 @@
 package com.prince.studentconnect.data.remote.dto.user
 
 data class GetUsersResponse(
-    val users: Array<User>
+    val user_id: String,
+    val first_name: String,
+    val last_name: String,
+    val role: String,
+    val course: Course?,
+    val module: List<Module>?
 )
 
 data class User(
@@ -10,7 +15,7 @@ data class User(
     val last_name: String,
     val role: String,
     val course: Course?,
-    val module: Array<Module>?
+    val module: List<Module>?
 )
 
 data class Module(

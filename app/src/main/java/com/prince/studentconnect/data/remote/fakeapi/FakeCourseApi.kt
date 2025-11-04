@@ -4,8 +4,11 @@ import com.prince.studentconnect.data.remote.api.CourseApi
 import com.prince.studentconnect.data.remote.dto.course.Course
 import com.prince.studentconnect.data.remote.dto.course.Campus
 import com.prince.studentconnect.data.remote.dto.course.CreateCourseRequest
+import com.prince.studentconnect.data.remote.dto.course.CreateCourseResponse
+import com.prince.studentconnect.data.remote.dto.course.DeleteCourseResponse
 import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.data.remote.dto.course.UpdateCourseRequest
+import com.prince.studentconnect.data.remote.dto.course.UpdateCourseResponse
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -38,15 +41,29 @@ class FakeCourseApi : CourseApi {
     )
     private var nextId = 4
 
-    override suspend fun getCourses(campusId: Int?): Response<GetCoursesResponse> {
+    override suspend fun getCourses(campusId: Int?): Response<List<GetCoursesResponse>> {
         val filteredCourses = campusId?.let { id ->
             courses.filter { it.campus.campus_id == id }
         } ?: courses
 
-        return Response.success(GetCoursesResponse(courses = filteredCourses.toTypedArray()))
+        val returnResponse = mutableListOf<GetCoursesResponse>()
+
+        filteredCourses.forEach { course ->
+            val newCourse = GetCoursesResponse(
+                course_id = course.course_id,
+                name = course.name,
+                description = course.description,
+                duration_years = course.duration_years,
+                campus = course.campus
+            )
+
+            returnResponse.add(newCourse)
+        }
+
+        return Response.success(returnResponse)
     }
 
-    override suspend fun addCourse(request: CreateCourseRequest): Response<Unit> {
+    override suspend fun addCourse(request: CreateCourseRequest): Response<CreateCourseResponse> {
         // Map campus_id to a Campus object (dummy name for now)
         val campus = when (request.campus_id) {
             1 -> Campus(campus_id = 1, name = "Main Campus")
@@ -64,10 +81,16 @@ class FakeCourseApi : CourseApi {
         )
 
         courses.add(newCourse)
-        return Response.success(Unit)
+        return Response.success(CreateCourseResponse(
+            course_id = newCourse.course_id,
+            name = newCourse.name,
+            description = newCourse.description,
+            duration_years = newCourse.duration_years,
+            campus = campus
+        ))
     }
 
-    override suspend fun updateCourse(request: UpdateCourseRequest, courseId: Int): Response<Unit> {
+    override suspend fun updateCourse(request: UpdateCourseRequest, courseId: Int): Response<UpdateCourseResponse> {
         val courseIndex = courses.indexOfFirst { it.course_id == courseId }
 
         return if (courseIndex != -1) {
@@ -87,7 +110,13 @@ class FakeCourseApi : CourseApi {
                 campus = campus
             )
 
-            Response.success(Unit)
+            Response.success(UpdateCourseResponse(
+                course_id = courseId,
+                name = request.name,
+                description = request.description,
+                duration_years = request.duration_years,
+                campus = campus
+            ))
         } else {
             // Simulate 404 error if course not found
             val errorJson = """{"error":"Course not found"}"""
@@ -95,10 +124,12 @@ class FakeCourseApi : CourseApi {
         }
     }
 
-    override suspend fun deleteCourse(courseId: Int): Response<Unit> {
+    override suspend fun deleteCourse(courseId: Int): Response<DeleteCourseResponse> {
         val removed = courses.removeIf { it.course_id == courseId }
         return if (removed) {
-            Response.success(Unit)
+            Response.success(DeleteCourseResponse(
+                message = "Course successfully deactivated"
+            ))
         } else {
             // Simulate 404 error if course not found
             val errorJson = """{"error":"Course not found"}"""

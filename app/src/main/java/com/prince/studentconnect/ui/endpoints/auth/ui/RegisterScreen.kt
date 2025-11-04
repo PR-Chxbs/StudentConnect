@@ -1,41 +1,75 @@
 package com.prince.studentconnect.ui.endpoints.auth.ui
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.prince.studentconnect.navigation.Screen
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-    ){
-        // ----------- Replace all the below content with the actual UI -----------
+fun RegisterScreen(
+    viewModel: AuthViewModel,
+    onNavigateToLogin: () -> Unit
+) {
+    val state by viewModel.uiState.collectAsState()
 
-        Text("Register Screen", style = MaterialTheme.typography.headlineSmall)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Register", style = MaterialTheme.typography.headlineMedium)
 
-        Button(
-            onClick = {navController.navigate(Screen.PostRegister.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Post Register")
-        }
+            Spacer(Modifier.height(20.dp))
 
-        Button(
-            onClick = {navController.navigate(Screen.Login.route)},
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text("Go To Login")
+            OutlinedTextField(
+                value = state.email,
+                onValueChange = { viewModel.onEmailChange(it) },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = state.password,
+                onValueChange = { viewModel.onPasswordChange(it) },
+                label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(20.dp))
+
+            Button(
+                onClick = { viewModel.register() },
+                enabled = !state.isLoading,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(if (state.isLoading) "Registering..." else "Register")
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            TextButton(onClick = onNavigateToLogin) {
+                Text("Already have an account? Login")
+            }
+
+            state.errorMessage?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(text = it, color = MaterialTheme.colorScheme.error)
+            }
+
+            state.successMessage?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(text = it, color = MaterialTheme.colorScheme.primary)
+            }
         }
     }
 }

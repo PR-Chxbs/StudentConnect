@@ -1,8 +1,8 @@
 package com.prince.studentconnect.data.remote.dto.event
 
 data class SubscribeToEventResponse(
+    val event_participation_id: Int,
+    val event_id: Int,
     val user_id: String,
-    val is_creator: Boolean,
-    val status: String,
-    val custom_reminder_at: String
+    val status: String
 )

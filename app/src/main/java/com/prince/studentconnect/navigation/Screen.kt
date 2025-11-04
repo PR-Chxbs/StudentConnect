@@ -12,7 +12,10 @@ sealed class Screen(val route: String) {
     object SystemAdminManageUsers : Screen("system_admin_manage_users")
     object SystemAdminManageCampuses : Screen("system_admin_manage_campuses")
     object SystemAdminManageInterests : Screen("system_admin_manage_interests")
-    object SystemAdminProfile : Screen("system_admin_profile")
+    object SystemAdminViewProfile : Screen("system_admin_view_profile/{user_id}")
+
+    // Extras
+    object CampusDetails : Screen("campus_details/{campus_id}")
 
     // --------- Campus Admin screens ---------
     // Main Nav
@@ -20,7 +23,7 @@ sealed class Screen(val route: String) {
     object CampusAdminManageUsers : Screen("campus_admin_manage_users")
     object CampusAdminManageCourses : Screen("campus_admin_manage_courses")
     object CampusAdminManageModules : Screen("campus_admin_manage_modules")
-    object CampusAdminProfile : Screen("campus_admin_profile")
+    object CampusAdminViewProfile : Screen("campus_admin_profile/{user_id}")
 
     // --------- Student screens ---------
     // Main Nav
@@ -28,7 +31,16 @@ sealed class Screen(val route: String) {
     object StudentSearch : Screen("student_search")
     object StudentMessages : Screen("student_messages")
     object StudentCalendar : Screen("student_calendar")
-    object StudentProfile : Screen("student_profile")
+    object StudentProfile : Screen("student_profile/{user_id}")
+
+    // Chat Extra
+    object StudentConversationMessages : Screen("student_conversation_messages/{conversation_id}")
+
+    // Calendar Extra
+    object StudentEventDetails : Screen("student_event_details/{event_id}")
+    object StudentAddEvent : Screen("student_add_event")
+
+    object StudentSettings: Screen("student_settings")
 
     // --------- Lecturer screens ---------
     // Main Nav

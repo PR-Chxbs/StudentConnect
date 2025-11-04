@@ -9,6 +9,7 @@ import com.prince.studentconnect.data.remote.dto.event.GetParticipantsResponse
 import com.prince.studentconnect.data.remote.dto.event.SubscribeToEventRequest
 import com.prince.studentconnect.data.remote.dto.event.SubscribeToEventResponse
 import com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest
+import com.prince.studentconnect.data.remote.dto.event.UpdateEventResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -34,7 +35,7 @@ interface EventApi {
     suspend fun updateEvent(
         @Body request: UpdateEventRequest,
         @Path("event_id") eventId: Int
-    ): Response<Unit>
+    ): Response<UpdateEventResponse>
 
     @PATCH("events/{event_id}")
     suspend fun patchEvent(
@@ -53,9 +54,10 @@ interface EventApi {
         @Path("event_id") eventId: Int
     ): Response<SubscribeToEventResponse>
 
-    @DELETE("events/{event_id}/participation")
+    @DELETE("events/{event_id}/participation/{user_id}")
     suspend fun unsubscribeFromEvent(
-        @Path("event_id") eventId: Int
+        @Path("event_id") eventId: Int,
+        @Path("user_id") userId: String
     ): Response<Unit>
 
     @GET("users/{user_id}/events")
@@ -63,17 +65,17 @@ interface EventApi {
         @Path("user_id") userId: String,
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null
-    ): Response<GetEventsResponse>
+    ): Response<List<GetEventsResponse>>
 
-    @GET("conversation_id/{conversation_id}/events")
+    @GET("conversations/{conversation_id}/events")
     suspend fun getConversationEvents(
         @Path("conversation_id") conversationId: Int,
         @Query("from") fromDate: String? = null,
         @Query("to") toDate: String? = null
-    ): Response<GetEventsResponse>
+    ): Response<List<GetEventsResponse>>
 
     @GET("events/{event_id}/participants")
     suspend fun getEventParticipants(
         @Path("event_id") eventId: Int,
-    ): Response<GetParticipantsResponse>
+    ): Response<List<GetParticipantsResponse>>
 }

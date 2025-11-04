@@ -70,9 +70,25 @@ dependencies {
     implementation(libs.supabase.postgrest)
     implementation(libs.supabase.storage)
 
+    // Ktor
+    implementation(libs.ktor.client.okhttp)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
     // Icons
     implementation(libs.material.icons.extended)
+
+    // Kotlin Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+
+    // Moshi
+    implementation(libs.moshi.core)
+    implementation(libs.moshi.kotlin)
+
+    // Coil
+    implementation(libs.coil.core)     // Core Coil dependency
+    implementation(libs.coil.compose)
+
+    implementation(libs.androidx.datastore.preferences)
 }
