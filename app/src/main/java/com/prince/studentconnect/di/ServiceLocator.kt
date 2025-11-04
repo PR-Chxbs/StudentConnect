@@ -14,6 +14,7 @@ import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
@@ -151,6 +152,14 @@ object ServiceLocator {
             authRepository = authRepository,
             userRepository = userRepository,
             userPrefs = userPrefs
+        )
+    }
+
+    fun provideOnboardingViewModelFactory(): ViewModelProvider.Factory {
+        return OnboardingViewModelFactory(
+            userRepository = userRepository,
+            campusRepository = campusRepository,
+            courseRepository = courseRepository
         )
     }
 }
