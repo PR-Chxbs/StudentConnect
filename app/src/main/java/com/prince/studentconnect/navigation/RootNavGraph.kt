@@ -16,6 +16,7 @@ import com.prince.studentconnect.di.ServiceLocator
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
+import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
@@ -49,10 +50,14 @@ fun RootNavGraph(
         factory = ServiceLocator.provideCampusCmsViewModelFactory()
     )
 
+    val onboardingViewModel: OnboardingViewModel = viewModel(
+        factory = ServiceLocator.provideOnboardingViewModelFactory()
+    )
+
 
 
     LaunchedEffect(currentUserId) {
-        if (!currentUserId.isNullOrEmpty()) {
+        if (currentUserId.isNotEmpty()) {
             println("User is logged in with ID: $currentUserId")
             Log.d("RootNavGraph", "(Auth) User is logged in with ID: $currentUserId")
 
@@ -70,7 +75,8 @@ fun RootNavGraph(
     ) {
         authNavGraph(
             navController = navController,
-            viewModel = authViewModel
+            authViewModel = authViewModel,
+            onboardingViewModel = onboardingViewModel
         )
 
         studentNavGraph(

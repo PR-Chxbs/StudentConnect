@@ -4,7 +4,9 @@ sealed class Screen(val route: String) {
     // --------- Auth screens ---------
     object Login : Screen("login")
     object Register : Screen("register")
-    object PostRegister: Screen("post_register")
+    object OnboardingPersonalDetails : Screen("onboarding_personal_details")
+    object OnboardingCampus : Screen("onboarding_campus")
+    object OnboardingCourse : Screen("onboarding_course")
 
     // --------- System Admin screens ---------
     // Main Nav

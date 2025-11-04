@@ -81,7 +81,7 @@ class AuthViewModel(
 
                                 Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
 
-                                redirectScreenRoute = Screen.PostRegister.route
+                                redirectScreenRoute = Screen.OnboardingPersonalDetails.route
                             } else {
                                 when (userDetails.role) {
                                     "student" -> redirectScreenRoute = Screen.Student.route
@@ -143,7 +143,7 @@ class AuthViewModel(
 
                     if (userId != null) userPrefs.saveUserId(userId)
 
-                    redirectScreenRoute = Screen.PostRegister.route
+                    redirectScreenRoute = Screen.OnboardingPersonalDetails.route
 
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
