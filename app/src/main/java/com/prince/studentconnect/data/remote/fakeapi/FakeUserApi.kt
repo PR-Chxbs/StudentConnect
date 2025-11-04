@@ -16,6 +16,47 @@ class FakeUserApi : UserApi {
         users = sampleUsers.toMutableList()
     }
 
+    override suspend fun createUser(request: CreateUserRequest): Response<CreateUserResponse> {
+        val newUser = GetUserResponse (
+            user_id = request.user_id,
+            student_number = request.student_number,
+            first_name = request.first_name,
+            last_name = request.last_name,
+            role = request.role,
+            bio = request.bio,
+            profile_picture_url = request.profile_picture_url,
+            campus = Campus(
+                campus_id = request.campus_id ?: 0,
+                name = "New campus"
+            ),
+            course = Course (
+                course_id = request.course_id ?: 0,
+                name = "New course"
+            )
+        )
+
+        users.add(newUser)
+
+        return Response.success(CreateUserResponse(
+            user_id = request.user_id,
+            student_number = request.student_number,
+            first_name = request.first_name,
+            last_name = request.last_name,
+            role = request.role,
+            bio = request.bio,
+            email = request.email,
+            profile_picture_url = request.profile_picture_url,
+            campus = Campus(
+                campus_id = request.campus_id ?: 0,
+                name = "New campus"
+            ),
+            course = Course (
+                course_id = request.course_id ?: 0,
+                name = "New course"
+            )
+        ))
+    }
+
     override suspend fun getUser(userId: String): Response<GetUserResponse> {
         val user = users.find { it.user_id == userId }
         return if (user != null)
