@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.auth.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.repository.AuthRepository
@@ -33,6 +34,9 @@ class AuthViewModel(
     private val _currentUserId = MutableStateFlow("")
     val currentUserId: StateFlow<String> = _currentUserId
 
+    private val _currentUserEmail = MutableStateFlow("")
+    val currentUserEmail: StateFlow<String?> = _currentUserEmail
+
     lateinit var redirectScreenRoute: String
 
     fun onEmailChange(newEmail: String) {
@@ -53,22 +57,44 @@ class AuthViewModel(
             try {
                 when (val result = authRepository.login(email, password)) {
                     is AuthResult.Success -> {
-                        val userId = authRepository.getCurrentUser()?.id
+                        val currentUser = authRepository.getCurrentUser()
+                        val userId = currentUser?.id
+
+                        // Log.d("AuthScreen", "(AuthViewModel) Current user: ${authRepository.getCurrentUser()}")
+
                         if (userId != null) {
                             userPrefs.saveUserId(userId)
                             _currentUserId.value = userId
                             val userDetails = userRepository.getUser(userId).body()
-                            when (userDetails?.role) {
-                                "student" -> redirectScreenRoute = Screen.Student.route
-                                "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
-                                "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
-                                "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+                            // Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
+                            if (userDetails == null) {
+
+                                if (currentUser.email == null) {
+                                    _uiState.value = _uiState.value.copy(
+                                        isLoading = false,
+                                        errorMessage = "Unexpected result"
+                                    )
+                                    return@launch
+                                }
+
+                                _currentUserEmail.value = currentUser.email ?: ""
+
+                                Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+
+                                redirectScreenRoute = Screen.PostRegister.route
+                            } else {
+                                when (userDetails.role) {
+                                    "student" -> redirectScreenRoute = Screen.Student.route
+                                    "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
+                                    "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
+                                    "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+                                }
                             }
                         }
 
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
-                            successMessage = "Welcome, ${result.email}"
+                            successMessage = "Logged in successfully"
                         )
                     }
                     is AuthResult.Error -> _uiState.value = _uiState.value.copy(
@@ -82,6 +108,10 @@ class AuthViewModel(
                 }
             } catch (e: Exception) {
                 Log.e("AuthScreen", "(AuthViewModel) Error: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = e.message
+                )
             }
 
         }
@@ -96,8 +126,24 @@ class AuthViewModel(
         viewModelScope.launch {
             when (val result = authRepository.signUp(email, password)) {
                 is AuthResult.Success -> {
-                    val userId = authRepository.getCurrentUser()?.id
+                    val currentUser = authRepository.getCurrentUser()
+                    val userId = currentUser?.id
+
+                    if (currentUser?.email == null) {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = "Unexpected result"
+                        )
+                        return@launch
+                    }
+
+                    _currentUserEmail.value = currentUser.email ?: ""
+
+                    Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+
                     if (userId != null) userPrefs.saveUserId(userId)
+
+                    redirectScreenRoute = Screen.PostRegister.route
 
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

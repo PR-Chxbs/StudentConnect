@@ -1,5 +1,7 @@
 package com.prince.studentconnect.data.remote.api
 
+import com.prince.studentconnect.data.remote.dto.user.CreateUserRequest
+import com.prince.studentconnect.data.remote.dto.user.CreateUserResponse
 import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
 import com.prince.studentconnect.data.remote.dto.user.GetUsersResponse
 import com.prince.studentconnect.data.remote.dto.user.UpdateUserRequest
@@ -9,11 +11,17 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UserApi {
+
+    @POST("users")
+    suspend fun createUser(
+        @Body request: CreateUserRequest
+    ): Response<CreateUserResponse>
 
     @GET("users/{user_id}")
     suspend fun getUser(

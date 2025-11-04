@@ -34,7 +34,10 @@ fun NavGraphBuilder.authNavGraph(
         }
 
         composable(Screen.PostRegister.route) {
-            PostRegisterScreen(navController = navController)
+            PostRegisterScreen(
+                authViewModel = viewModel,
+                navController = navController
+            )
         }
     }
 }

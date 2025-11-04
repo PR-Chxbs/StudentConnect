@@ -7,6 +7,11 @@ import retrofit2.Response
 class UserRepository(
     private val userApi: UserApi
 ) {
+
+    suspend fun createUser(createUserRequest: CreateUserRequest): Response<CreateUserResponse> {
+        return userApi.createUser(createUserRequest)
+    }
+
     suspend fun getUser(userId: String): Response<GetUserResponse> {
         return userApi.getUser(userId)
     }
