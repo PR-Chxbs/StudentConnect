@@ -56,7 +56,7 @@ fun NavGraphBuilder.authNavGraph(
         composable(Screen.OnboardingCourse.route) {
             CourseSelectionScreen(
                 onboardingViewModel = onboardingViewModel,
-                onNext = {
+                onDone = {
                     navController.navigate(Graph.STUDENT) {
                         popUpTo(Graph.AUTH) { inclusive = true }
                     }
