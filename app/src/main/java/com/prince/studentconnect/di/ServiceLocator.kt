@@ -27,8 +27,10 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.Setting
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModelFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @RequiresApi(Build.VERSION_CODES.O)
 object ServiceLocator {
@@ -39,9 +41,16 @@ object ServiceLocator {
     private const val SERVER_URL = "https://studentconnect-server-js.onrender.com/"
 
     // ---------------- Retrofit ----------------
+    val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(60, TimeUnit.SECONDS)  // for Render cold starts
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .build()
+
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(SERVER_URL) // replace with real URL
+            .baseUrl(SERVER_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

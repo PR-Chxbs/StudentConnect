@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
@@ -145,6 +146,8 @@ class OnboardingViewModel(
         val currentCourse = _selectedCourse.value
 
         if (_userId.value.isBlank() || _email.value.isBlank()) {
+            Log.e("OnboardingScreen", "(OnboardingViewModel) user and/or email is blank")
+            Log.e("OnboardingScreen", "(OnboardingViewModel) User: ${_userId.value}      Email: ${_email.value}")
             _submissionSuccess.value = false
             return
         }
@@ -164,12 +167,19 @@ class OnboardingViewModel(
             profile_picture_url = _profilePictureUrl.value
         )
 
+        // Log.d("OnboardingScreen", "(OnboardingViewModel) Request: $request")
+
         viewModelScope.launch {
             _isSubmitting.value = true
             try {
-                val response: Response<*> = userRepository.createUser(request)
+                val response = userRepository.createUser(request)
                 _submissionSuccess.value = response.isSuccessful
+
+                if (!response.isSuccessful) {
+                    Log.e("OnboardingScreen", "Error: ${response.errorBody()?.string() ?: "Unknown error"}")
+                }
             } catch (e: Exception) {
+                Log.e("OnboardingScreen", "Error: ${e.message}")
                 _submissionSuccess.value = false
             } finally {
                 _isSubmitting.value = false
