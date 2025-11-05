@@ -12,6 +12,7 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 @Composable
 fun RegisterScreen(
     viewModel: AuthViewModel,
+    onRedirectScreen: (screenRoute: String) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -69,6 +70,10 @@ fun RegisterScreen(
             state.successMessage?.let {
                 Spacer(Modifier.height(12.dp))
                 Text(text = it, color = MaterialTheme.colorScheme.primary)
+            }
+
+            if (!state.successMessage.isNullOrEmpty()) {
+                onRedirectScreen(viewModel.redirectScreenRoute)
             }
         }
     }

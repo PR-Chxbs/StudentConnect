@@ -129,7 +129,7 @@ class AuthViewModel(
                     val currentUser = authRepository.getCurrentUser()
                     val userId = currentUser?.id
 
-                    if (currentUser?.email == null) {
+                    if (currentUser?.email == null || userId == null) {
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
                             errorMessage = "Unexpected result"
@@ -137,11 +137,12 @@ class AuthViewModel(
                         return@launch
                     }
 
+                    _currentUserId.value = userId
                     _currentUserEmail.value = currentUser.email ?: ""
 
-                    Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+                    // Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
 
-                    if (userId != null) userPrefs.saveUserId(userId)
+                    userPrefs.saveUserId(userId)
 
                     redirectScreenRoute = Screen.OnboardingPersonalDetails.route
 

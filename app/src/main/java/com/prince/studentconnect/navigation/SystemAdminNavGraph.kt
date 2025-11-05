@@ -24,6 +24,7 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.CampusDetailsScreen
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.EditCampusScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.SystemAdminManageCampusesScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
@@ -108,8 +109,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
         composable(Screen.SystemAdminManageCampuses.route) {
             SystemAdminManageCampusesScreen(
                 viewModel = campusCmsViewModel,
-                onCampusClick = { campusId: Int -> navController.navigate(Screen.CampusDetails.route.replace("{campus_id}", "$campusId"))},
-                onAddCampusClick = {  },
+                onCampusClick = { campusId -> navController.navigate(Screen.CampusDetails.route.replace("{campus_id}", "$campusId"))},
+                onAddCampusClick = { navController.navigate(Screen.EditCampus.route) },
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
@@ -171,8 +172,15 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 is CampusCmsViewModel.UiState.Success -> {
                     CampusDetailsScreen(
                         campus = campusCmsViewModel.currentCampus,
-                        onEditClick = { /* navigate to edit campus screen */ },
-                        onDeleteClick = { /* show delete dialog */ },
+                        onEditClick = { currentCampusId -> navController.navigate(Screen.EditCampus.route.replace("{campus_id}", "$currentCampusId")) },
+                        onDeleteClick = { currentCampusId ->
+                            {
+                                campusCmsViewModel.deleteCampusById(
+                                    currentCampusId
+                                )
+
+                                navController.navigate(Screen.SystemAdminManageCampuses.route)
+                            } },
                         onBackClick = { navController.popBackStack() },
                         bottomBar = { /* pass your bottom bar */ }
                     )
@@ -182,16 +190,32 @@ fun NavGraphBuilder.systemAdminNavGraph(
                     Text(
                         text = uiState.message,
                         color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
                     )
                 }
 
                 else -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
                     )
                 }
             }
+        }
+
+        composable(Screen.EditCampus.route) { backStackEntry ->
+            val campusId = backStackEntry.arguments?.getString("campus_id")?.toIntOrNull()
+
+            val isEditMode = campusId != null && campusId != -1
+
+            EditCampusScreen(
+                viewModel = campusCmsViewModel,
+                isEditMode = isEditMode,
+                onBack = {navController.popBackStack()}
+            )
         }
     }
 }

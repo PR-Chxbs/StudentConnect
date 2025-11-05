@@ -32,6 +32,7 @@ fun NavGraphBuilder.authNavGraph(
         composable(Screen.Register.route) {
             RegisterScreen(
                 viewModel = authViewModel,
+                onRedirectScreen = { screenRoute: String -> navController.navigate(screenRoute) },
                 onNavigateToLogin = { navController.navigate(Screen.Login.route) }
             )
         }

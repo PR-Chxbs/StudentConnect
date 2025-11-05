@@ -1,6 +1,7 @@
 package com.prince.studentconnect.ui.endpoints.system_admin.ui.user
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,8 +36,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.prince.studentconnect.data.remote.dto.user.GetUsersResponse
 import com.prince.studentconnect.data.remote.dto.user.User
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
@@ -124,19 +127,32 @@ fun UserItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Avatar Placeholder (initials)
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = user.first_name.firstOrNull()?.toString() ?: "?",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+            if (user.profile_picture_url.isNullOrEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = user.first_name.firstOrNull()?.toString() ?: "?",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            } else {
+                Image(
+                    painter = rememberAsyncImagePainter(user.profile_picture_url),
+                    contentDescription = "Profile",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .clickable(onClick = {})
                 )
             }
+
 
             Spacer(modifier = Modifier.width(16.dp))
 

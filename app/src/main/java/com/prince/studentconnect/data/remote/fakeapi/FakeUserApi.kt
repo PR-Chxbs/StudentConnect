@@ -77,7 +77,8 @@ class FakeUserApi : UserApi {
                 last_name = user.last_name,
                 role = user.role,
                 course = user.course,
-                module = null // modules can be added if needed
+                module = null, // modules can be added if needed,
+                profile_picture_url = ""
             )
         }.toList()
         return Response.success(returnResponse)

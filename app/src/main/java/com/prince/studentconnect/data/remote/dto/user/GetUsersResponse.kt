@@ -5,6 +5,7 @@ data class GetUsersResponse(
     val first_name: String,
     val last_name: String,
     val role: String,
+    val profile_picture_url: String?,
     val course: Course?,
     val module: List<Module>?
 )
@@ -14,6 +15,7 @@ data class User(
     val first_name: String,
     val last_name: String,
     val role: String,
+    val profile_picture_url: String?,
     val course: Course?,
     val module: List<Module>?
 )
