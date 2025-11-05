@@ -1,14 +1,8 @@
 package com.prince.studentconnect.data.remote.dto.module
 
-data class GetModulesResponse(
+data class GetModuleResponse(
     val module_id: Int,
     val name: String,
     val code: String,
     val description: String
-)
-
-data class Module(
-    val module_id: Int,
-    val name: String,
-    val code: String
 )
