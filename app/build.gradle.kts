@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -27,7 +27,6 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -35,48 +34,61 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-    // 👇 Enable Jetpack Compose
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
-    }
 }
 
 dependencies {
 
-    // Core Android
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
-    // Testing
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    // ------ Room (Local Database) ------
-    implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.material)
 
-    implementation("androidx.room:room-ktx:2.6.1")
+    // ------ PR added ------
 
-    // Lifecycle (needed for lifecycleScope in activities)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-
-    // ------ Jetpack Compose ------
-    implementation(platform("androidx.compose:compose-bom:2024.09.02"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material:material")
-    implementation("androidx.activity:activity-compose:1.9.2")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.02"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-
-    // ------ Retrofit 2 (you already had this) ------
+    // Retrofit 2
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+
+    // OkHttp
+    implementation(libs.okhttp)
+
+    // Supabase
+    implementation(libs.supabase.gotrue)
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.storage)
+
+    // Ktor
+    implementation(libs.ktor.client.okhttp)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Icons
+    implementation(libs.material.icons.extended)
+
+    // Kotlin Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+
+    // Moshi
+    implementation(libs.moshi.core)
+    implementation(libs.moshi.kotlin)
+
+    // Coil
+    implementation(libs.coil.core)     // Core Coil dependency
+    implementation(libs.coil.compose)
+
+    implementation(libs.androidx.datastore.preferences)
 }
