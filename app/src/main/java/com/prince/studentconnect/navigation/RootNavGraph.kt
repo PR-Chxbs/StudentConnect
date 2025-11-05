@@ -20,6 +20,7 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.Onboardi
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -54,7 +55,9 @@ fun RootNavGraph(
         factory = ServiceLocator.provideOnboardingViewModelFactory()
     )
 
-
+    val createUserViewModel: CreateUserViewModel = viewModel (
+        factory = ServiceLocator.provideCreateUserViewModelFactory()
+    )
 
     LaunchedEffect(currentUserId) {
         if (currentUserId.isNotEmpty()) {

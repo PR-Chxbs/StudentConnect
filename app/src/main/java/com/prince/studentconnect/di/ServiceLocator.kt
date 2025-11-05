@@ -26,6 +26,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileV
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModelFactory
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModelFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -153,6 +154,10 @@ object ServiceLocator {
 
     fun provideCampusCmsViewModelFactory(): ViewModelProvider.Factory {
         return CampusCmsViewModelFactory(campusRepository)
+    }
+
+    fun provideCreateUserViewModelFactory(): ViewModelProvider.Factory {
+        return CreateUserViewModelFactory(userRepository, authRepository)
     }
 
     // ----- Auth Endpoint -----
