@@ -120,7 +120,6 @@ fun NavGraphBuilder.campusAdminNavGraph(
 
         composable(Screen.CampusAdminManageModules.route) {
             CampusAdminManageModulesScreen(
-                onAddModuleClick = { navController.navigate(Screen.EditModule.route)},
                 onEditModuleClick = { moduleId -> navController.navigate(Screen.EditModule.route.replace("{module_id}", "$moduleId"))},
                 bottomBar = {
                     BottomNavBar(
@@ -129,7 +128,8 @@ fun NavGraphBuilder.campusAdminNavGraph(
                         currentRoute = Screen.CampusAdminManageModules.route,
                         authViewModel = authViewModel
                     )
-                }
+                },
+                viewModel = moduleCmsViewModel
             )
         }
 

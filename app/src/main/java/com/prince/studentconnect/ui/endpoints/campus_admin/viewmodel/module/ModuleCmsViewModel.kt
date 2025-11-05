@@ -44,7 +44,7 @@ class ModuleCmsViewModel(
         }
     }
 
-    fun setSelectedModule(module: GetModulesResponse) {
+    fun selectModule(module: GetModulesResponse) {
         selectedModule = module
     }
 

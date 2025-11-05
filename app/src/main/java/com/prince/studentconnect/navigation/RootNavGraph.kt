@@ -67,7 +67,7 @@ fun RootNavGraph(
     )
 
     val moduleCmsViewModel: ModuleCmsViewModel = viewModel (
-        factory = ServiceLocator.provideEditModuleViewModelFactory()
+        factory = ServiceLocator.provideModuleCmsViewModelFactory()
     )
 
     LaunchedEffect(currentUserId) {

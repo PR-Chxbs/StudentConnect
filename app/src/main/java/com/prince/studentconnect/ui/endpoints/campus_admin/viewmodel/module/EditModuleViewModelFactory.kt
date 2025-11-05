@@ -6,7 +6,7 @@ import com.prince.studentconnect.data.repository.ModuleRepository
 
 class EditModuleViewModelFactory(
     private val moduleRepository: ModuleRepository
-) : ViewModelProvider.Factory {
+): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EditModuleViewModel::class.java)) {

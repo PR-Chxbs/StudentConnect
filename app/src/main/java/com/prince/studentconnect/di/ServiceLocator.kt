@@ -13,7 +13,6 @@ import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModelFactory
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
-import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
