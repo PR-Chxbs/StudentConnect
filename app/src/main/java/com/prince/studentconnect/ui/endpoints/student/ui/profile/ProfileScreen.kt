@@ -122,9 +122,9 @@ fun ProfileScreen(
                             Spacer(modifier = Modifier.width(16.dp))
                             Column {
                                 user.student_number?.let {
-                                    Text("Student #: $it", style = MaterialTheme.typography.bodyMedium)
+                                    Text("Student No. $it", style = MaterialTheme.typography.bodyMedium)
                                 }
-                                Text(user.campus.name, style = MaterialTheme.typography.bodyMedium)
+                                Text(text = user.campus?.name ?: "No campus", style = MaterialTheme.typography.bodyMedium)
                                 user.course?.let {
                                     Text(it.name, style = MaterialTheme.typography.bodyMedium)
                                 }

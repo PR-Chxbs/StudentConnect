@@ -26,6 +26,8 @@ class CreateUserViewModel(
     var uiState by mutableStateOf<UiState>(UiState.Idle)
         private set
 
+    var isSupabaseCreated = false
+
     // --- Form fields ---
     var email by mutableStateOf("")
     var password by mutableStateOf("")
