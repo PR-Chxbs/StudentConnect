@@ -1,9 +1,13 @@
-package com.prince.studentconnect.ui.endpoints.campus_admin.ui
+package com.prince.studentconnect.ui.endpoints.campus_admin.ui.module
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -16,7 +20,8 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CampusAdminManageModulesScreen(
-    navController: NavController,
+    onAddModuleClick: () -> Unit,
+    onEditModuleClick: (Int) -> Unit,
     bottomBar: @Composable () -> Unit
 ) {
     Scaffold(
@@ -25,7 +30,12 @@ fun CampusAdminManageModulesScreen(
                 title = { Text("Campus Admin Manage Modules Screen") }
             )
         },
-        bottomBar = bottomBar
+        bottomBar = bottomBar,
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAddModuleClick) {
+                Icon(Icons.Default.Add, contentDescription = "Add User")
+            }
+        }
     ) { innerPadding ->
 
         // ------- Placeholder content, replace with real content -------

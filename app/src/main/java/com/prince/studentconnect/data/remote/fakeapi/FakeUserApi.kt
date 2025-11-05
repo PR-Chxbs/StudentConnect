@@ -68,7 +68,7 @@ class FakeUserApi : UserApi {
     override suspend fun getUsers(role: String?, campusId: Int?, courseId: Int?): Response<List<GetUsersResponse>> {
         val returnResponse = users.filter { user ->
             (role == null || user.role == role) &&
-                    (campusId == null || user.campus.campus_id == campusId) &&
+                    (campusId == null || user.campus?.campus_id == campusId) &&
                     (courseId == null || user.course?.course_id == courseId)
         }.map { user ->
             GetUsersResponse(
@@ -92,7 +92,7 @@ class FakeUserApi : UserApi {
                 first_name = request.first_name,
                 last_name = request.last_name,
                 bio = request.bio,
-                campus = Campus(request.campus_id, old.campus.name), // name can be dummy
+                campus = Campus(request.campus_id, old.campus?.name ?: "No campus assigned"), // name can be dummy
                 course = Course(request.course_id, old.course?.name ?: "Course $userId"),
                 profile_picture_url = request.profile_picture_url
             )

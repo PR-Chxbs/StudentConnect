@@ -26,8 +26,10 @@ import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.CampusDetailsScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.EditCampusScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.SystemAdminManageCampusesScreen
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.CreateUserScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +39,8 @@ fun NavGraphBuilder.systemAdminNavGraph(
     // View Model
     userCmsViewModel: UserCmsViewModel,
     campusCmsViewModel: CampusCmsViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    createUserViewModel: CreateUserViewModel
 ) {
     navigation(
         startDestination = Screen.SystemAdminHome.route,
@@ -93,7 +96,7 @@ fun NavGraphBuilder.systemAdminNavGraph(
             SystemAdminManageUsersScreen(
                 viewModel = userCmsViewModel,
                 onUserClick = { userId -> navController.navigate(Screen.SystemAdminViewProfile.route.replace("{user_id}", userId))},
-                onAddUserClick = {},
+                onAddUserClick = { navController.navigate(Screen.CreateUser.route) },
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
@@ -215,6 +218,14 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 viewModel = campusCmsViewModel,
                 isEditMode = isEditMode,
                 onBack = {navController.popBackStack()}
+            )
+        }
+
+        composable(Screen.CreateUser.route) {
+            CreateUserScreen(
+                viewModel = createUserViewModel,
+                onBack = { navController.popBackStack() },
+                onNavBack = { navController.navigate(Screen.SystemAdminManageUsers.route) }
             )
         }
     }
