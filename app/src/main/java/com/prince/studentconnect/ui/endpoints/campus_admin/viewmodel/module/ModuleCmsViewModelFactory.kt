@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.prince.studentconnect.data.repository.ModuleRepository
 
-class EditModuleViewModelFactory(
+class ModuleCmsViewModelFactory(
     private val moduleRepository: ModuleRepository
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(EditModuleViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ModuleCmsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return EditModuleViewModel(
+            return ModuleCmsViewModel(
                 moduleRepository = moduleRepository
             ) as T
         }

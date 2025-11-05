@@ -22,6 +22,7 @@ import com.prince.studentconnect.ui.endpoints.campus_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.CampusAdminManageModulesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.ModuleCreateEditScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
@@ -33,7 +34,8 @@ fun NavGraphBuilder.campusAdminNavGraph(
     // View Models
     userCmsViewModel: UserCmsViewModel,
     authViewModel: AuthViewModel,
-    editModuleViewModel: EditModuleViewModel
+    editModuleViewModel: EditModuleViewModel,
+    moduleCmsViewModel: ModuleCmsViewModel
     ) {
 
     navigation(
@@ -118,7 +120,6 @@ fun NavGraphBuilder.campusAdminNavGraph(
 
         composable(Screen.CampusAdminManageModules.route) {
             CampusAdminManageModulesScreen(
-                onAddModuleClick = { navController.navigate(Screen.EditModule.route)},
                 onEditModuleClick = { moduleId -> navController.navigate(Screen.EditModule.route.replace("{module_id}", "$moduleId"))},
                 bottomBar = {
                     BottomNavBar(
@@ -127,7 +128,8 @@ fun NavGraphBuilder.campusAdminNavGraph(
                         currentRoute = Screen.CampusAdminManageModules.route,
                         authViewModel = authViewModel
                     )
-                }
+                },
+                viewModel = moduleCmsViewModel
             )
         }
 
