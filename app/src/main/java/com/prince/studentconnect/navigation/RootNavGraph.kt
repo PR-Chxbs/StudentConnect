@@ -19,6 +19,7 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
@@ -62,6 +63,10 @@ fun RootNavGraph(
     )
 
     val editModuleViewModel: EditModuleViewModel = viewModel (
+        factory = ServiceLocator.provideEditModuleViewModelFactory()
+    )
+
+    val moduleCmsViewModel: ModuleCmsViewModel = viewModel (
         factory = ServiceLocator.provideEditModuleViewModelFactory()
     )
 
@@ -114,9 +119,11 @@ fun RootNavGraph(
 
         campusAdminNavGraph(
             navController = navController,
+
             userCmsViewModel = userCmsViewModel,
             authViewModel = authViewModel,
-            editModuleViewModel = editModuleViewModel
+            editModuleViewModel = editModuleViewModel,
+            moduleCmsViewModel = moduleCmsViewModel
         )
     }
 }
