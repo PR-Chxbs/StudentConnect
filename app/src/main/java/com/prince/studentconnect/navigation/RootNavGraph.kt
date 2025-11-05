@@ -102,7 +102,8 @@ fun RootNavGraph(
             // View Models
             userCmsViewModel = userCmsViewModel,
             campusCmsViewModel = campusCmsViewModel,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            createUserViewModel = createUserViewModel
         )
 
         campusAdminNavGraph(

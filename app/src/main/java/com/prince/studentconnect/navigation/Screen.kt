@@ -19,6 +19,7 @@ sealed class Screen(val route: String) {
     // Extras
     object CampusDetails : Screen("campus_details/{campus_id}")
     object EditCampus : Screen("edit_campus/{campus_id}")
+    object CreateUser : Screen("create_user")
 
     // --------- Campus Admin screens ---------
     // Main Nav
