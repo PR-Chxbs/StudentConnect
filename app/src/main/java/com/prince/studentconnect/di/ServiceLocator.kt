@@ -1,13 +1,10 @@
 package com.prince.studentconnect.di
 
 import android.os.Build
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
-import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.remote.api.*
-import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.remote.fakeapi.*
 import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
@@ -15,16 +12,13 @@ import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModelFactory
-import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModelFactory
@@ -162,10 +156,10 @@ object ServiceLocator {
         return CreateUserViewModelFactory(userRepository, authRepository)
     }
 
-    // ----- Module Endpoint -----
-    // Main
-    fun provideModuleViewModelFactory(): ViewModelProvider.Factory {
-        return ModuleViewModelFactory(moduleRepository)
+    // ----- Campus Admin Endpoint -----
+    // Extra
+    fun provideEditModuleViewModelFactory(): ViewModelProvider.Factory {
+        return EditModuleViewModelFactory(moduleRepository)
     }
 
     // ----- Auth Endpoint -----

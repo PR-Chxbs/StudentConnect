@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class ModuleViewModel(
+class EditModuleViewModel(
     private val moduleRepository: ModuleRepository
 ) : ViewModel() {
 
@@ -53,7 +53,7 @@ class ModuleViewModel(
                     if (response.isSuccessful) {
                         onSuccess()
                     } else {
-                        onError("Failed to update module: ${response.code()}")
+                        onError("Failed to update module: ${response.errorBody()?.string()}")
                     }
                 } else {
                     val request = CreateModuleRequest(
@@ -65,7 +65,7 @@ class ModuleViewModel(
                     if (response.isSuccessful) {
                         onSuccess()
                     } else {
-                        onError("Failed to create module: ${response.code()}")
+                        onError("Failed to create module: ${response.errorBody()?.string()}")
                     }
                 }
             } catch (e: IOException) {

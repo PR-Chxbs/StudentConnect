@@ -20,6 +20,8 @@ import com.prince.studentconnect.ui.components.shared.SearchBar
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.CampusAdminManageModulesScreen
+import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.ModuleCreateEditScreen
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.profile.ProfileScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
@@ -30,7 +32,8 @@ fun NavGraphBuilder.campusAdminNavGraph(
 
     // View Models
     userCmsViewModel: UserCmsViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    editModuleViewModel: EditModuleViewModel
     ) {
 
     navigation(
@@ -115,7 +118,8 @@ fun NavGraphBuilder.campusAdminNavGraph(
 
         composable(Screen.CampusAdminManageModules.route) {
             CampusAdminManageModulesScreen(
-                navController = navController,
+                onAddModuleClick = { navController.navigate(Screen.EditModule.route)},
+                onEditModuleClick = { moduleId -> navController.navigate(Screen.EditModule.route.replace("{module_id}", "$moduleId"))},
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
@@ -159,6 +163,18 @@ fun NavGraphBuilder.campusAdminNavGraph(
                     }
                 },
                 isAdmin = true
+            )
+        }
+
+        composable(Screen.EditModule.route) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("campus_id")?.toIntOrNull()
+
+            val isEditMode = moduleId != null && moduleId != -1
+
+            ModuleCreateEditScreen(
+                moduleViewModel = editModuleViewModel,
+                isEditMode = isEditMode,
+                onBack = { navController.navigate(Screen.CampusAdminManageModules.route) }
             )
         }
     }
