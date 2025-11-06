@@ -1,10 +1,13 @@
 package com.prince.studentconnect.ui.components.module
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.module.GetModulesResponse
 
@@ -19,7 +22,9 @@ fun ModuleCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(2.dp, Color.Gray.copy(alpha = 0.3f)),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = module.name, style = MaterialTheme.typography.titleMedium)

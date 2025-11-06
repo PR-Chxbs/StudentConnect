@@ -6,6 +6,7 @@ import com.prince.studentconnect.data.remote.dto.course.DeleteCourseResponse
 import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.data.remote.dto.course.UpdateCourseRequest
 import com.prince.studentconnect.data.remote.dto.course.UpdateCourseResponse
+import com.prince.studentconnect.data.remote.dto.relationship.LinkCourseModuleRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -36,4 +37,9 @@ interface CourseApi {
     suspend fun deleteCourse(
         @Path("course_id") courseId: Int
     ): Response<DeleteCourseResponse>
+
+    @POST("course-modules")
+    suspend fun linkCourseModule(
+        @Body request: LinkCourseModuleRequest
+    ): Response<Unit>
 }

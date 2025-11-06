@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.data.remote.dto.course.Campus
+import com.prince.studentconnect.ui.components.course.CourseCard
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,7 +130,10 @@ fun CourseSelectionScreen(
                             CourseCard(
                                 course = course,
                                 isSelected = selectedCourse?.course_id == course.course_id,
-                                onSelect = { onboardingViewModel.selectCourse(course) }
+                                onSelect = { onboardingViewModel.selectCourse(course) },
+                                onDeleteClick = {},
+                                onEditClick = {},
+                                isAdminMode = false
                             )
                         }
                     }
@@ -149,48 +153,6 @@ fun CourseSelectionScreen(
     }
 }
 
-@Composable
-fun CourseCard(
-    course: GetCoursesResponse,
-    isSelected: Boolean,
-    onSelect: () -> Unit
-) {
-    val borderColor =
-        if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray.copy(alpha = 0.3f)
-    val backgroundColor =
-        if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surface
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onSelect() },
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        border = BorderStroke(2.dp, borderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = course.name,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-
-            Text(
-                text = course.description,
-                style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
-            )
-
-            Text(
-                text = "Duration: ${course.duration_years} years",
-                style = MaterialTheme.typography.bodySmall.copy(color = Color.DarkGray)
-            )
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewCourseCard() {
@@ -201,5 +163,5 @@ fun PreviewCourseCard() {
         duration_years = 3,
         campus = Campus(campus_id = 1, name = "Main Campus")
     )
-    CourseCard(course = sample, isSelected = false, onSelect = {})
+    CourseCard(course = sample, isSelected = false, onSelect = {}, onDeleteClick = {}, onEditClick = {})
 }

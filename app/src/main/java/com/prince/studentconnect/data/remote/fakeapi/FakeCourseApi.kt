@@ -9,6 +9,7 @@ import com.prince.studentconnect.data.remote.dto.course.DeleteCourseResponse
 import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.data.remote.dto.course.UpdateCourseRequest
 import com.prince.studentconnect.data.remote.dto.course.UpdateCourseResponse
+import com.prince.studentconnect.data.remote.dto.relationship.LinkCourseModuleRequest
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -135,5 +136,9 @@ class FakeCourseApi : CourseApi {
             val errorJson = """{"error":"Course not found"}"""
             Response.error(404, errorJson.toResponseBody("application/json".toMediaType()))
         }
+    }
+
+    override suspend fun linkCourseModule(request: LinkCourseModuleRequest): Response<Unit> {
+        TODO("Not yet implemented")
     }
 }
