@@ -134,7 +134,8 @@ fun RootNavGraph(
             authViewModel = authViewModel,
             editModuleViewModel = editModuleViewModel,
             moduleCmsViewModel = moduleCmsViewModel,
-            viewAllCoursesViewModel = viewAllCoursesViewModel
+            viewAllCoursesViewModel = viewAllCoursesViewModel,
+            createCourseViewModel = createCourseViewModel
         )
     }
 }
