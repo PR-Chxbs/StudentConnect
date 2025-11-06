@@ -1,7 +1,7 @@
 package com.prince.studentconnect.data.converters
 
 import androidx.room.TypeConverter
-import com.prince.studentconnect.data.entities.User
+import com.prince.studentconnect.data.local.User
 
 class RoleConverter {
     @TypeConverter
