@@ -71,7 +71,7 @@ fun ViewAllCoursesScreen(
                     val courses = (uiState as CourseUiState.Success).courses
                     if (courses.isEmpty()) {
                         Text(
-                            text = stringResource(R.string.course_unavailable)
+                            text = stringResource(R.string.courses_unavailable),
                             modifier = Modifier.align(Alignment.Center)
                         )
                     } else {
@@ -85,7 +85,7 @@ fun ViewAllCoursesScreen(
                                     onSuccess = {
                                         Toast.makeText(
                                             context,
-                                            stringResource(R.string.courses_deleted),
+                                            "Course deleted successfully",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     },

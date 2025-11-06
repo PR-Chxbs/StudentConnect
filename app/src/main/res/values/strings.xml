@@ -21,6 +21,6 @@
     <string name="go_to_login">Already have an account? Login</string>
 
     <!-- Courses Screen-->
-    <string name="Courses_unavailable">No courses available</string>
-    <string name="Courses_deleted">Course deleted successfully</string>
+    <string name="courses_unavailable">No courses available</string>
+    <string name="courses_deleted">Course deleted successfully</string>
 </resources>
