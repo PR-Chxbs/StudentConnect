@@ -14,4 +14,9 @@
     <string name="go_to_register">Don’t have an account? Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+
+    <!-- Register Screen -->
+    <string name="register">Register</string>
+    <string name="registering">Registering...</string>
+    <string name="go_to_login">Already have an account? Login</string>
 </resources>

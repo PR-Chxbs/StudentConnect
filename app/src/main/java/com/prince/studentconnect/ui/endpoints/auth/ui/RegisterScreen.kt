@@ -9,12 +9,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
+import com.prince.studentconnect.R
 
 @Composable
 fun RegisterScreen(
@@ -33,14 +35,14 @@ fun RegisterScreen(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Register", style = MaterialTheme.typography.headlineMedium)
+            Text(text = stringResource(R.string.register), style = MaterialTheme.typography.headlineMedium)
 
             Spacer(Modifier.height(20.dp))
 
             OutlinedTextField(
                 value = state.email,
                 onValueChange = { viewModel.onEmailChange(it) },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.email)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -49,7 +51,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.password,
                 onValueChange = { viewModel.onPasswordChange(it) },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.password)) },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
@@ -71,13 +73,13 @@ fun RegisterScreen(
                 enabled = !state.isLoading,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (state.isLoading) "Registering..." else "Register")
+                Text(if (state.isLoading) stringResource(R.string.registering) else stringResource(R.string.register))
             }
 
             Spacer(Modifier.height(12.dp))
 
             TextButton(onClick = onNavigateToLogin) {
-                Text("Already have an account? Login")
+                Text(stringResource(R.string.go_to_login))
             }
 
             state.errorMessage?.let {
