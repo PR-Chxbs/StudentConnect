@@ -2,6 +2,10 @@ package com.prince.studentconnect.ui.lang
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +22,7 @@ fun LanguageSelector(onLanguageChanged: () -> Unit) {
     var selectedLang by remember { mutableStateOf(LocaleManager.getLanguage(context)) }
 
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-        Text(text = stringResource(id = R.string.select_language), style = MaterialTheme.typography.h6)
+        Text(text = stringResource(id = R.string.select_language), style = MaterialTheme.typography.displaySmall)
         Spacer(modifier = Modifier.height(12.dp))
 
         val languages = listOf(
