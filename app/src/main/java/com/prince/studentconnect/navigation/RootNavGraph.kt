@@ -17,6 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CreateCourseViewModel
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.ViewAllCoursesViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
@@ -68,6 +70,14 @@ fun RootNavGraph(
 
     val moduleCmsViewModel: ModuleCmsViewModel = viewModel (
         factory = ServiceLocator.provideModuleCmsViewModelFactory()
+    )
+
+    val viewAllCoursesViewModel: ViewAllCoursesViewModel = viewModel(
+        factory = ServiceLocator.provideViewAllCoursesViewModelFactory()
+    )
+
+    val createCourseViewModel: CreateCourseViewModel = viewModel(
+        factory = ServiceLocator.provideCreateCourseViewModelFactory()
     )
 
     LaunchedEffect(currentUserId) {
@@ -123,7 +133,9 @@ fun RootNavGraph(
             userCmsViewModel = userCmsViewModel,
             authViewModel = authViewModel,
             editModuleViewModel = editModuleViewModel,
-            moduleCmsViewModel = moduleCmsViewModel
+            moduleCmsViewModel = moduleCmsViewModel,
+            viewAllCoursesViewModel = viewAllCoursesViewModel,
+            createCourseViewModel = createCourseViewModel
         )
     }
 }
