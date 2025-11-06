@@ -43,16 +43,16 @@ fun NavGraphBuilder.systemAdminNavGraph(
     createUserViewModel: CreateUserViewModel
 ) {
     navigation(
-        startDestination = Screen.SystemAdminHome.route,
+        startDestination = Screen.SystemAdminManageUsers.route,
         route = Graph.SYSTEM_ADMIN
     ) {
 
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.SystemAdminHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.SystemAdminManageUsers.route,
                 label = "Users",
@@ -63,11 +63,11 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 label = "Campuses",
                 iconRes = R.drawable.ic_book_icon
             ),
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.SystemAdminManageInterests.route,
                 label = "Interests",
                 iconRes = R.drawable.ic_calendar_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.SystemAdminViewProfile.route,
                 label = "Profile",
