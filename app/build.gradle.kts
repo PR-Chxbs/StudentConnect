@@ -101,4 +101,10 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
+
+
+//-------OR added-----
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+
 }
