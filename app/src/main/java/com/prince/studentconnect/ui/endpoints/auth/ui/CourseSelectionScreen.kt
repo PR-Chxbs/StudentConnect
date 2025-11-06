@@ -22,6 +22,9 @@ import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.data.remote.dto.course.Campus
 import com.prince.studentconnect.ui.components.course.CourseCard
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
+import com.prince.studentconnect.R
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -15,6 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
 import com.prince.studentconnect.ui.components.campus.CampusCard
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
+import com.prince.studentconnect.R
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -19,4 +19,8 @@
     <string name="register">Register</string>
     <string name="registering">Registering...</string>
     <string name="go_to_login">Already have an account? Login</string>
+
+    <!-- Courses Screen-->
+    <string name="Courses_unavailable">No courses available</string>
+    <string name="Courses_deleted">Course deleted successfully</string>
 </resources>

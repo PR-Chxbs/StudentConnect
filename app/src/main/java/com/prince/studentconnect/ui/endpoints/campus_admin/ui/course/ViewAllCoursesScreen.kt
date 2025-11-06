@@ -10,11 +10,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.course.GetCoursesResponse
 import com.prince.studentconnect.ui.components.course.CourseCard
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CourseUiState
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.ViewAllCoursesViewModel
+import com.prince.studentconnect.R
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +71,7 @@ fun ViewAllCoursesScreen(
                     val courses = (uiState as CourseUiState.Success).courses
                     if (courses.isEmpty()) {
                         Text(
-                            text = "No courses available.",
+                            text = stringResource(R.string.course_unavailable)
                             modifier = Modifier.align(Alignment.Center)
                         )
                     } else {
@@ -82,7 +85,7 @@ fun ViewAllCoursesScreen(
                                     onSuccess = {
                                         Toast.makeText(
                                             context,
-                                            "Course deleted successfully.",
+                                            stringResource(R.string.courses_deleted),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     },
