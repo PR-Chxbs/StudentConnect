@@ -77,7 +77,7 @@ fun RootNavGraph(
     )
 
     val createCourseViewModel: CreateCourseViewModel = viewModel(
-        factory = ServiceLocator.provideCreateUserViewModelFactory()
+        factory = ServiceLocator.provideCreateCourseViewModelFactory()
     )
 
     LaunchedEffect(currentUserId) {
