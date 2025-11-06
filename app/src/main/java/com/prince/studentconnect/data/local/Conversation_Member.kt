@@ -12,22 +12,30 @@ import kotlinx.datetime.DateTimePeriod
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey (
-        entity = Conversation::class,
-        parentColumns = ["conversation_id"],
-        childColumns = ["conversation_id"],
-        onDelete = ForeignKey.CASCADE
+            entity = Conversation::class,
+            parentColumns = ["conversation_id"],
+            childColumns = ["conversation_id"],
+            onDelete = ForeignKey.CASCADE
     )
+    ],
+    indices = [
+        Index(value = ["user_id"]),
+        Index(value = ["conversation_id"])
     ])
+
 data class Conversation_Member(
     @PrimaryKey(autoGenerate = true)
-    val conversation_member_id: Int = 0,
+    @ColumnInfo(name = "conversation_member_id")
+    val conversationMemberId: Int = 0,
     val status: Status,
-    val joined_at: DateTimePeriod,
-    val left_at: DateTimePeriod,
-    @ColumnInfo(name = "user_id")
-    val user_id: String,
-    @ColumnInfo(name = "conversation_id")
-    val conversation_id: Int
+    @ColumnInfo(name = "joined_at")
+    val joinedAt: DateTimePeriod,
+    @ColumnInfo(name = "left_at")
+    val leftAt: DateTimePeriod,
+    @ColumnInfo(name = "user_id", index = true)
+    val userId: String,
+    @ColumnInfo(name = "conversation_id", index = true)
+    val conversationId: Int
 )
 
 enum class Status {

@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Entity(tableName = "courses",
     foreignKeys = [
-        foreignKey(
+        ForeignKey(
             entity = Campus::class,
             parentColumns = ["campus_id"],
             childColumns = ["campus_id"],
@@ -17,11 +17,14 @@ import androidx.room.*
     )
 data class Course(
     @PrimaryKey(autoGenerate = true)
-    val course_id: Int = 0,
+    @ColumnInfo(name = "course_id")
+    val courseId: Int = 0,
     val name: String,
     val description: String,
-    val duration_years: Int,
-    val is_active: Boolean,
-    @ColumnInfo(name = "campus_id")
-    val campus_id: String
+    @ColumnInfo(name = "duration_years")
+    val durationYears: Int,
+    @ColumnInfo(name = "is_active")
+    val isActive: Boolean,
+    @ColumnInfo(name = "campus_id", index = true)
+    val campusId: String
 )

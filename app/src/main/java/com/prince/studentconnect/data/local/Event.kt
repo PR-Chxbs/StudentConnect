@@ -24,18 +24,26 @@ import kotlinx.datetime.DateTimePeriod
     ])
 data class Event(
     @PrimaryKey (autoGenerate = true)
-    val event_id: Int = 0,
+    @ColumnInfo(name = "event_id")
+    val eventId: Int = 0,
     val title: String,
     val description: String,
-    val start_at: DateTimePeriod,
-    val icon_url: String,
-    val color_code: String,
-    val recurrence_rule: Recurrence_rule,
-    val reminder_at: DateTimePeriod,
-    val created_at: DateTimePeriod,
-    @ColumnInfo(name = "creator_id")
-    val creator_id: Int,
-    @ColumnInfo(name)
+    @ColumnInfo(name = "start_at")
+    val startAt: DateTimePeriod,
+    @ColumnInfo(name = "icon_url")
+    val iconUrl: String,
+    @ColumnInfo(name = "color_code")
+    val colorCode: String,
+    @ColumnInfo(name = "recurrence_rule")
+    val recurrenceRule: Recurrence_rule,
+    @ColumnInfo(name = "reminder_at")
+    val reminderAt: DateTimePeriod,
+    @ColumnInfo(name = "created_at")
+    val createdAt: DateTimePeriod,
+    @ColumnInfo(name = "creator_id", index = true)
+    val creatorId: Int,
+    @ColumnInfo(name = "conversation_id", index = true)
+    val conversationId: Int
 )
 
 enum class Recurrence_rule {

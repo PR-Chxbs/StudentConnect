@@ -3,25 +3,35 @@ package com.prince.studentconnect.data.local
 import androidx.room.*
 
 @Entity(tableName = "event_participations",
-    ForeignKeys = [
-        foreignKey(
+    foreignKeys = [
+        ForeignKey(
             entity = Event::class,
             parentColumns = ["event_id"],
             childColumns = ["event_id"],
             onDelete = ForeignKey.CASCADE
         ),
-        foreignKey(
+        ForeignKey(
             entity = User::class,
             parentColumns = ["user_id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["event_id"]),
+        Index(value = ["user_id"])
     ])
 data class Event_participation(
     @PrimaryKey(autoGenerate = true)
-    val event_participation_id: Int = 0,
-    val is_creator: Boolean,
-    val status: Participation_status
+    @ColumnInfo(name = "event_participation_id")
+    val eventParticipationId: Int = 0,
+    @ColumnInfo(name = "is_creator")
+    val isCreator: Boolean,
+    val status: Participation_status,
+    @ColumnInfo(name = "event_id", index = true)
+    val eventId: Int,
+    @ColumnInfo(name = "user_id", index = true)
+    val userId: String
 )
 
 enum class Participation_status {

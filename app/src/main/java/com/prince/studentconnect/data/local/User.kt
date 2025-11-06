@@ -1,7 +1,6 @@
-package com.prince.studentconnect.data.entities
+package com.prince.studentconnect.data.local
 
 import androidx.room.*
-import com.prince.studentconnect.data.converters.RoleConverter
 
 @Entity(
     tableName = "users",
@@ -25,21 +24,31 @@ import com.prince.studentconnect.data.converters.RoleConverter
         Index(value = ["course_id"])
     ]
 )
-@TypeConverters(RoleConverter::class)
+
 data class User(
-    @PrimaryKey val user_id: String,
-    val first_name: String,
-    val middle_name: String? = null,
-    val last_name: String,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
+    val userId: String,
+    @ColumnInfo(name = "first_name")
+    val firstName: String,
+    @ColumnInfo(name = "middle_name")
+    val middleName: String? = null,
+    @ColumnInfo(name = "last_name")
+    val lastName: String,
     val email: String,
     val phone: String? = null,
-    val student_number: String? = null,
+    @ColumnInfo(name = "student_number")
+    val studentNumber: String? = null,
     val role: Role,
     val bio: String,
-    val campus_id: Int,
-    val course_id: Int? = null,
-    val profile_picture_url: String,
-    val is_active: Boolean
+    @ColumnInfo(name = "campus_id", index = true)
+    val campusId: Int,
+    @ColumnInfo(name = "course_id", index = true)
+    val courseId: Int? = null,
+    @ColumnInfo(name = "profile_picture_url")
+    val profilePictureUrl: String,
+    @ColumnInfo(name = "is_active")
+    val isActive: Boolean
 )
 {
     enum class Role {

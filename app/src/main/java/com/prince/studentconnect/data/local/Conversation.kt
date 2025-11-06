@@ -17,15 +17,19 @@ import kotlinx.datetime.LocalDateTime
 )
 data class Conversation(
     @PrimaryKey(autoGenerate = true)
-    val conversation_id: Int = 0,
+    @ColumnInfo(name = "conversation_id")
+    val conversationId: Int = 0,
     val name: String? = null,
-    val max_members: Int,
+    @ColumnInfo(name = "max_members")
+    val maxMembers: Int,
     val type: Type,
     val visibility: Visibility,
-    val member_count: Int,
-    val date_created: LocalDateTime,
-    @ColumnInfo(index = true)
-    val module_id: Int
+    @ColumnInfo(name = "member_count")
+    val memberCount: Int,
+    @ColumnInfo(name = "date_created")
+    val dateCreated: LocalDateTime,
+    @ColumnInfo(name = "module_id", index = true)
+    val moduleId: Int
 )
 
 enum class Type {

@@ -1,14 +1,18 @@
 package com.prince.studentconnect.data.local
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "courses")
+@Entity(tableName = "modules",
+    indices = [
+        Index(value = ["name"], unique = true),
+        Index(value = ["code"], unique = true)
+    ])
 data class Module(
     @PrimaryKey(autoGenerate = true)
     val module_id: Int,
-    val name: String? unique,
-    val code: String unique,
+    val name: String,
+    val code: String,
     val description: String,
-    val is_active: Boolean
+    @ColumnInfo(name = "is_active")
+    val isActive: Boolean
 )

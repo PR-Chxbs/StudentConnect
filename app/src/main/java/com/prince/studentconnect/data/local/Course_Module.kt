@@ -22,13 +22,15 @@ import androidx.room.*
         Index(value = ["module_id"])
     ]
 )
+
 data class Course_Module(
     @PrimaryKey(autoGenerate = true)
-    val course_module_id: Int = 0,
-    val year_level: Int,
-    @ColumnInfo(name = "course_id")
-    val course_id: Int,
-
-    @ColumnInfo(name = "module_id")
-    val module_id: Int
+    @ColumnInfo(name = "course_module_id")
+    val courseModuleId: Int = 0,
+    @ColumnInfo(name = "year_level")
+    val yearLevel: Int,
+    @ColumnInfo(name = "course_id", index = true)
+    val courseId: Int,
+    @ColumnInfo(name = "module_id", index = true)
+    val moduleId: Int
 )
