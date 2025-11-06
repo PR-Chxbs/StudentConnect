@@ -128,7 +128,8 @@ fun RootNavGraph(
             userCmsViewModel = userCmsViewModel,
             authViewModel = authViewModel,
             editModuleViewModel = editModuleViewModel,
-            moduleCmsViewModel = moduleCmsViewModel
+            moduleCmsViewModel = moduleCmsViewModel,
+            viewAllCoursesViewModel = viewAllCoursesViewModel
         )
     }
 }
