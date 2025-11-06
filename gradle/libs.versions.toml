@@ -47,6 +47,8 @@ room = "2.6.1"
 
 ksp = "1.9.23-1.0.20"
 
+work = "2.9.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -106,6 +108,9 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+# Android Work
+androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

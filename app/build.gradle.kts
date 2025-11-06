@@ -105,6 +105,6 @@ dependencies {
 
 //-------OR added-----
     // WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation(libs.androidx.work.runtime)
 
 }

@@ -1,7 +1,9 @@
 package com.prince.studentconnect.work
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.prince.studentconnect.data.local.db.AppDatabase
@@ -16,6 +18,7 @@ import kotlinx.coroutines.withContext
  * Worker that syncs PendingEvent rows to remote EventApi.
  * It uses ServiceLocator to obtain EventApi / repositories if available in project.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class SyncPendingEventsWorker(
     context: Context,
     workerParams: WorkerParameters
