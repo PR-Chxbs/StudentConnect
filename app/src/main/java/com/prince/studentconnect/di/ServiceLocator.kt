@@ -12,6 +12,7 @@ import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CreateCourseViewModelFactory
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.ViewAllCoursesViewModelFactory
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModelFactory
@@ -170,6 +171,10 @@ object ServiceLocator {
 
     fun provideViewAllCoursesViewModelFactory(): ViewModelProvider.Factory {
         return ViewAllCoursesViewModelFactory(courseRepository)
+    }
+
+    fun provideCreateCourseViewModelFactory(): ViewModelProvider.Factory {
+        return CreateCourseViewModelFactory(courseRepository, moduleRepository)
     }
 
     // ----- Auth Endpoint -----
