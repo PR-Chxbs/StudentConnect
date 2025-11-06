@@ -1,10 +1,24 @@
 package com.prince.studentconnect.ui.endpoints.auth.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
@@ -16,11 +30,9 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -54,6 +66,17 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(if (state.isLoading) "Logging in..." else "Login")
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Google login button
+            Button(
+                onClick = { viewModel.loginWithGoogle(context) },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Login with Google")
             }
 
             Spacer(Modifier.height(12.dp))
