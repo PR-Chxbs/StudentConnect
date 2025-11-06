@@ -41,24 +41,24 @@ fun NavGraphBuilder.studentNavGraph(
 ) {
 
     navigation(
-        startDestination = Screen.StudentHome.route,
+        startDestination = Screen.StudentMessages.route,
         route = Graph.STUDENT
     ){
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.StudentHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
+            ),*/
+            BottomNavItem(
+                route = Screen.StudentMessages.route,
+                label = "Messages",
+                iconRes = R.drawable.ic_chat_icon
             ),
             BottomNavItem(
                 route = Screen.StudentSearch.route,
                 label = "Search",
                 iconRes = R.drawable.ic_search_icon
-            ),
-            BottomNavItem(
-                route = Screen.StudentMessages.route,
-                label = "Messages",
-                iconRes = R.drawable.ic_chat_icon
             ),
             BottomNavItem(
                 route = Screen.StudentCalendar.route,

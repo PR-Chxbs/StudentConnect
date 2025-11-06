@@ -1,6 +1,7 @@
 package com.prince.studentconnect.navigation
 
 import android.os.Build
+import android.text.Selection
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,9 +20,12 @@ import com.prince.studentconnect.ui.components.shared.BottomNavItem
 import com.prince.studentconnect.ui.components.shared.SearchBar
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.*
+import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.CreateCourseScreen
+import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.SelectModulesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.ViewAllCoursesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.CampusAdminManageModulesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.ModuleCreateEditScreen
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CreateCourseViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.ViewAllCoursesViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
@@ -38,19 +42,20 @@ fun NavGraphBuilder.campusAdminNavGraph(
     authViewModel: AuthViewModel,
     editModuleViewModel: EditModuleViewModel,
     moduleCmsViewModel: ModuleCmsViewModel,
-    viewAllCoursesViewModel: ViewAllCoursesViewModel
+    viewAllCoursesViewModel: ViewAllCoursesViewModel,
+    createCourseViewModel: CreateCourseViewModel
     ) {
 
     navigation(
-        startDestination = Screen.CampusAdminHome.route,
+        startDestination = Screen.CampusAdminManageUsers.route,
         route = Graph.CAMPUS_ADMIN
     ) {
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.CampusAdminHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.CampusAdminManageUsers.route,
                 label = "Users",
@@ -118,7 +123,7 @@ fun NavGraphBuilder.campusAdminNavGraph(
                     )
                 },
                 viewModel = viewAllCoursesViewModel,
-                onAddCourseClick = {},
+                onAddCourseClick = { navController.navigate(Screen.CreateCourse.route)},
                 onEditCourseClick = {}
             )
         }
@@ -182,6 +187,26 @@ fun NavGraphBuilder.campusAdminNavGraph(
                 moduleViewModel = editModuleViewModel,
                 isEditMode = isEditMode,
                 onBack = { navController.navigate(Screen.CampusAdminManageModules.route) }
+            )
+        }
+
+        composable(Screen.CreateCourse.route) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("campus_id")?.toIntOrNull()
+
+            val isEditMode = courseId != null && courseId != -1
+
+            CreateCourseScreen(
+                viewModel = createCourseViewModel,
+                onNextClick = { navController.navigate(Screen.SelectModules.route)},
+                bottomBar = {}
+            )
+        }
+
+        composable(Screen.SelectModules.route) {
+            SelectModulesScreen(
+                viewModel = createCourseViewModel,
+                onCourseCreated = { navController.popBackStack(Screen.CampusAdminManageCourses.route, inclusive = false) },
+                bottomBar = {}
             )
         }
     }
