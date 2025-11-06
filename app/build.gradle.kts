@@ -2,7 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
+
+    // ------ PR added ------
+
+    // dagger
+    kotlin("kapt")
 }
 
 android {
@@ -92,5 +96,9 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.androidx.datastore.preferences)
-    ksp(libs.room.compiler)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 }
