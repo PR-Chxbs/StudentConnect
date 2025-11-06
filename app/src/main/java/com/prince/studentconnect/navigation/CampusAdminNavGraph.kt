@@ -1,6 +1,7 @@
 package com.prince.studentconnect.navigation
 
 import android.os.Build
+import android.text.Selection
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import com.prince.studentconnect.ui.components.shared.SearchBar
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.CreateCourseScreen
+import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.SelectModulesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.course.ViewAllCoursesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.CampusAdminManageModulesScreen
 import com.prince.studentconnect.ui.endpoints.campus_admin.ui.module.ModuleCreateEditScreen
@@ -45,15 +47,15 @@ fun NavGraphBuilder.campusAdminNavGraph(
     ) {
 
     navigation(
-        startDestination = Screen.CampusAdminHome.route,
+        startDestination = Screen.CampusAdminManageUsers.route,
         route = Graph.CAMPUS_ADMIN
     ) {
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.CampusAdminHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.CampusAdminManageUsers.route,
                 label = "Users",
@@ -121,7 +123,7 @@ fun NavGraphBuilder.campusAdminNavGraph(
                     )
                 },
                 viewModel = viewAllCoursesViewModel,
-                onAddCourseClick = {},
+                onAddCourseClick = { navController.navigate(Screen.CreateCourse.route)},
                 onEditCourseClick = {}
             )
         }
@@ -195,7 +197,15 @@ fun NavGraphBuilder.campusAdminNavGraph(
 
             CreateCourseScreen(
                 viewModel = createCourseViewModel,
-                onNextClick = {},
+                onNextClick = { navController.navigate(Screen.SelectModules.route)},
+                bottomBar = {}
+            )
+        }
+
+        composable(Screen.SelectModules.route) {
+            SelectModulesScreen(
+                viewModel = createCourseViewModel,
+                onCourseCreated = { navController.popBackStack(Screen.CampusAdminManageCourses.route, inclusive = false) },
                 bottomBar = {}
             )
         }

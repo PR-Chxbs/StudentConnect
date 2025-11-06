@@ -32,6 +32,7 @@ sealed class Screen(val route: String) {
     // Extras
     object EditModule : Screen("edit_module/{module_id}")
     object CreateCourse : Screen("create_course/{course_id}")
+    object SelectModules : Screen("select_modules")
 
     // --------- Student screens ---------
     // Main Nav
