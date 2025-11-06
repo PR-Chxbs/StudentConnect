@@ -1,7 +1,6 @@
 package com.prince.studentconnect.data.local
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "courses",
     foreignKeys = [
@@ -11,6 +10,9 @@ import androidx.room.PrimaryKey
             childColumns = ["campus_id"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["campus_id"])
     ]
     )
 data class Course(
@@ -19,5 +21,7 @@ data class Course(
     val name: String,
     val description: String,
     val duration_years: Int,
-    val is_active: Boolean
+    val is_active: Boolean,
+    @ColumnInfo(name = "campus_id")
+    val campus_id: String
 )

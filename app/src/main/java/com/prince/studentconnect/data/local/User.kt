@@ -40,7 +40,8 @@ data class User(
     val course_id: Int? = null,
     val profile_picture_url: String,
     val is_active: Boolean
-) {
+)
+{
     enum class Role {
         student,
         lecturer,

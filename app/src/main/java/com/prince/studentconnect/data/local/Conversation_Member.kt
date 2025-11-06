@@ -4,14 +4,14 @@ import androidx.room.*
 import kotlinx.datetime.DateTimePeriod
 
 @Entity(tableName = "conversation_members",
-    ForeignKeys = [
-        foreignKey (
+    foreignKeys = [
+        ForeignKey (
             entity = User::class,
             parentColumns = ["user_id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
         ),
-        foreignKey (
+        ForeignKey (
         entity = Conversation::class,
         parentColumns = ["conversation_id"],
         childColumns = ["conversation_id"],
@@ -23,7 +23,11 @@ data class Conversation_Member(
     val conversation_member_id: Int = 0,
     val status: Status,
     val joined_at: DateTimePeriod,
-    val left_at: DateTimePeriod
+    val left_at: DateTimePeriod,
+    @ColumnInfo(name = "user_id")
+    val user_id: String,
+    @ColumnInfo(name = "conversation_id")
+    val conversation_id: Int
 )
 
 enum class Status {

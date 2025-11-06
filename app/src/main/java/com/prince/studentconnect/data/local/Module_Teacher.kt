@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey
         )
     ])
 data class Module_Teacher(
+    @PrimaryKey(autoGenerate = true)
     val module_teacher_id: Int,
-    val year-level: Int
+    val year_level: Int
 )
