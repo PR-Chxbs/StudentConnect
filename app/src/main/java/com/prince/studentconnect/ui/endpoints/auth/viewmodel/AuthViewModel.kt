@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.repository.AuthRepository
 import com.prince.studentconnect.data.repository.AuthResult
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
+import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
 import com.prince.studentconnect.data.repository.UserRepository
 import com.prince.studentconnect.navigation.Graph
 import com.prince.studentconnect.navigation.Screen
@@ -36,6 +37,8 @@ class AuthViewModel(
 
     private val _currentUserEmail = MutableStateFlow("")
     val currentUserEmail: StateFlow<String?> = _currentUserEmail
+
+    lateinit var currentUser: GetUserResponse
 
     lateinit var redirectScreenRoute: String
 
