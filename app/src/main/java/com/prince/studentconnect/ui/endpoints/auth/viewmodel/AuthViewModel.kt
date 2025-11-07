@@ -189,6 +189,10 @@ class AuthViewModel(
             user_id = _currentUserId.value
         )
 
-        notificationRepository.createDeviceToken(createDeviceTokenRequest)
+        val response = notificationRepository.createDeviceToken(createDeviceTokenRequest)
+
+        if (response.isSuccessful) {
+            Log.d("FCM", "(AuthViewModel) Token successfully created")
+        }
     }
 }
