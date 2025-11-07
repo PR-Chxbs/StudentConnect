@@ -38,7 +38,7 @@ fun SystemAdminHomeScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.sytem_admin_home_screen), style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.system_admin_home_screen), style = MaterialTheme.typography.headlineSmall)
         }
     }
 }
