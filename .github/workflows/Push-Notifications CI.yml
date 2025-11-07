@@ -28,7 +28,7 @@ jobs:
       # New step: inject google-services.json from GitHub secret
       - name: Add google-services.json
         run: |
-          echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+          echo "$GOOGLE_SERVICES_JSON" > ./app/google-services.json
         # Make sure the secret GOOGLE_SERVICES_JSON exists in repo Settings -> Secrets
 
       - name: Build with Gradle
