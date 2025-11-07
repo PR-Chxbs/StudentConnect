@@ -8,10 +8,15 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.navigation.RootNavGraph
@@ -20,10 +25,11 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.Setting
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
 import com.prince.studentconnect.util.LocaleManager
+import com.prince.studentconnect.utils.NotificationPermissionRequester
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var usePrefs: UserPreferencesRepository
+    private lateinit var userPrefs: UserPreferencesRepository
     private lateinit var settingsViewModel: SettingsViewModel
 
     override fun attachBaseContext(newBase: Context?) {
@@ -36,9 +42,10 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        usePrefs = UserPreferencesRepository(this)
 
-        settingsViewModel = SettingsViewModel(usePrefs)
+        userPrefs = UserPreferencesRepository(this)
+
+        settingsViewModel = SettingsViewModel(userPrefs)
 
         setContent {
             val themeMode by settingsViewModel.themeMode.collectAsState(initial = 0)
@@ -49,10 +56,24 @@ class MainActivity : ComponentActivity() {
                 else -> isSystemInDarkTheme() // System Default
             }
 
+            var device_token by remember { mutableStateOf("Fetching token...") }
+
+            val authViewModel: AuthViewModel = viewModel(
+                factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
+            )
+
+            LaunchedEffect(Unit) {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    device_token = if (task.isSuccessful) task.result else "Error getting token"
+                    authViewModel.setNewDeviceToken(device_token)
+                }
+            }
+
             StudentConnectTheme(isDarkTheme) {
                 StudentConnectApp(
                     settingsViewModel = settingsViewModel,
-                    userPrefs = usePrefs
+                    authViewModel = authViewModel,
+                    userPrefs = userPrefs
                 )
             }
         }
@@ -63,11 +84,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StudentConnectApp(
     settingsViewModel: SettingsViewModel,
+    authViewModel: AuthViewModel,
     userPrefs: UserPreferencesRepository
 ) {
-    val authViewModel: AuthViewModel = viewModel(
-        factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
-    )
+    NotificationPermissionRequester()
 
     BaseScreen {
         val navController = rememberNavController()

@@ -79,6 +79,10 @@ object ServiceLocator {
         if (USE_FAKE_API) FakeUserApi() else retrofit.create(UserApi::class.java)
     }
 
+    private val notificationApi: NotificationApi by lazy {
+        retrofit.create(NotificationApi::class.java)
+    }
+
     // ---------------- WebSocket ----------------
     private val chatWebSocketClient: ChatWebSocketClient by lazy {
         if (USE_FAKE_API) FakeChatWebSocketClient() else RealChatWebSocketClient(SERVER_URL)
@@ -111,6 +115,10 @@ object ServiceLocator {
 
     val userRepository: UserRepository by lazy {
         UserRepository(userApi)
+    }
+
+    val notificationRepository: NotificationRepository by lazy {
+        NotificationRepository(notificationApi)
     }
 
     // ---------------- ViewModel Factory ----------------
@@ -182,6 +190,7 @@ object ServiceLocator {
         return AuthViewModelFactory(
             authRepository = authRepository,
             userRepository = userRepository,
+            notificationRepository = notificationRepository,
             userPrefs = userPrefs
         )
     }
