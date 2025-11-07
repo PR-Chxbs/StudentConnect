@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,9 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.prince.studentconnect.R
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
@@ -40,11 +46,14 @@ fun RegisterScreen(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Register", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = "Register",
+                style = MaterialTheme.typography.headlineMedium
+            )
 
             Spacer(Modifier.height(20.dp))
 
-            // Email field
+            // Email Field
             OutlinedTextField(
                 value = state.email,
                 onValueChange = { viewModel.onEmailChange(it) },
@@ -54,7 +63,7 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // Password field
+            // Password Field
             OutlinedTextField(
                 value = state.password,
                 onValueChange = { viewModel.onPasswordChange(it) },
@@ -65,7 +74,7 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(20.dp))
 
-            // Register button
+            // Register Button
             Button(
                 onClick = { viewModel.register() },
                 enabled = !state.isLoading,
@@ -76,29 +85,41 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // Google signup button
+            // Google Sign-Up Button (with colored G logo)
             Button(
                 onClick = { viewModel.loginWithGoogle(context) },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Sign up with Google")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google_logo),
+                    contentDescription = "Google logo",
+                    tint = Color.Unspecified, // Keep Google colors
+                    modifier = Modifier.size(20.dp)
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Text("Sign up with Google", color = Color.Black)
             }
 
             Spacer(Modifier.height(12.dp))
 
-            // Navigate to login
+            // Navigate to Login
             TextButton(onClick = onNavigateToLogin) {
                 Text("Already have an account? Login")
             }
 
-            // Error message
+            // Error Message
             state.errorMessage?.let {
                 Spacer(Modifier.height(12.dp))
                 Text(text = it, color = MaterialTheme.colorScheme.error)
             }
 
-            // Success message
+            // Success Message
             state.successMessage?.let {
                 Spacer(Modifier.height(12.dp))
                 Text(text = it, color = MaterialTheme.colorScheme.primary)
