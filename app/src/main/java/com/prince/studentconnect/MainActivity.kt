@@ -46,11 +46,11 @@ class MainActivity : ComponentActivity() {
                 else -> isSystemInDarkTheme() // System Default
             }
 
-            var token by remember { mutableStateOf("Fetching token...") }
+            var device_token by remember { mutableStateOf("Fetching token...") }
 
             LaunchedEffect(Unit) {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                    token = if (task.isSuccessful) task.result else "Error getting token"
+                    device_token = if (task.isSuccessful) task.result else "Error getting token"
                 }
             }
 
