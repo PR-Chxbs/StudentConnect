@@ -1,0 +1,149 @@
+<resources>
+    <string name="app_name">StudentConnect</string>
+    <string name="greeting">StudentConnect CMS werk!</string>
+    <string name="select_language">Kies taal</string>
+    <string name="lang_english">Engels</string>
+    <string name="lang_afrikaans">Afrikaans</string>
+    <string name="lang_zulu">Zulu</string>
+    <string name="save">Stoor</string>
+    <string name="cancel">Kanselleer</string>
+
+    <!-- Login Page -->
+    <string name="login">Meld aan</string>
+    <string name="logging_in">Besig om aan te meld...</string>
+    <string name="go_to_register">Het jy nie \'n rekening nie? Registreer</string>
+    <string name="email">E-pos</string>
+    <string name="password">Wagwoord</string>
+
+    <!-- Register Screen -->
+    <string name="register">Registreer</string>
+    <string name="registering">Besig om te registreer...</string>
+    <string name="go_to_login">Het jy reeds \'n rekening? Meld aan</string>
+
+    <!-- Courses Screen-->
+    <string name="courses_unavailable">Geen kursusse beskikbaar nie</string>
+    <string name="courses_deleted">Kursus suksesvol uitgevee</string>
+
+    <!-- Campus Screen-->
+    <string name="steps">Stap 2 van 3: Kies Kampus</string>
+    <string name="next">Volgende</string>
+    <string name="campuses_unavailable">Geen kampusse beskikbaar nie.</string>
+
+    <!-- Personal Screen -->
+    <string name="step">Stap 1 van 3: Persoonlike Besonderhede</string>
+    <string name="name">Voornaam*</string>
+    <string name="student_number">Studentenommer</string>
+    <string name="phone_number">Telefoonnommer*</string>
+    <string name="bio">Biografie</string>
+    <string name="profile_picture">Profielprent-URL</string>
+
+    <!-- Create Course Screen-->
+    <string name="create_course">Skep Nuwe Kursus</string>
+    <string name="course_description">Kursusbeskrywing</string>
+    <string name="duration">Duur (jare)</string>
+
+    <!-- Modules Screen -->
+    <string name="select_module">Kies asseblief ten minste een module.</string>
+    <string name="course_created">Kursus suksesvol geskep</string>
+    <string name="module_unavailable">Geen modules beskikbaar nie</string>
+
+    <!-- Campus Admin Screen-->
+    <string name="modules">Alle Modules</string>
+    <string name="module_delete">Vee Module uit</string>
+    <string name="module_deleted">Module suksesvol uitgevee.</string>
+
+    <!-- Module Create Screen-->
+    <string name="module_name">Modulenaam</string>
+    <string name="module_code">Modulekode</string>
+    <string name="description">Beskrywing</string>
+
+    <!-- Campus Admin Home Screen -->
+    <string name="campus_admin">Kampusadministrateur Tuisblad</string>
+    <string name="campus_screen">Welkom by die Kampusadministrateur Tuisblad!</string>
+
+    <!-- Campus Admin Manage Screen -->
+    <string name="campus_manage">Kampusadministrateur Bestuur Gebruikers</string>
+    <string name="campus_manage_screen">Welkom by die Kampusadministrateur Bestuur Gebruikers-skerm!</string>
+
+    <!-- Campus Admin Profile Screen-->
+    <string name="campus_profile">Kampusadministrateur Profielskerm</string>
+
+    <!-- Lecturer Calender Screen-->
+    <string name="lecturer_calender">Dosent Kalender</string>
+    <string name="lecturer_calender_screen">Welkom by die Dosent Kalender-skerm!</string>
+
+    <!-- Lecturer Chat Screen -->
+    <string name="lecturer_chat">Dosentgesels</string>
+    <string name="lecturer_chat_screen">Welkom by die Dosentgesels-skerm!</string>
+
+    <!-- Lecturer Home screen -->
+    <string name="lecturer_home">Dosent Tuisblad</string>
+    <string name="lecturer_home_screen">Welkom by die Dosent Tuisblad!</string>
+
+    <!-- Lecturer Profile screen-->
+    <string name="lecturer_profile">Dosentprofiel</string>
+    <string name="lecturer_profile_screen">Welkom by die Dosentprofiel-skerm!</string>
+
+    <!-- Lecturer Search Screen -->
+    <string name="lecturer_search">Dosent Soek</string>
+    <string name="lecturer_search_screen">Welkom by die Dosent Soek-skerm!</string>
+
+    <!-- Event Screen-->
+    <string name="add_event">Voeg Gebeurtenis by</string>
+    <string name="missing_fields">Vul asseblief die ontbrekende velde in</string>
+    <string name="event_created">Gebeurtenis geskep</string>
+    <string name="tittle">Titel</string>
+    <string name="event_icon">Gebeurtenis-ikoon</string>
+    <string name="event_color">Gebeurtenis-kleur</string>
+
+    <!-- Event Details Screen-->
+    <string name="event_details">Gebeurtenisbesonderhede</string>
+
+    <!-- Student Chat Screen -->
+    <string name="conversation_unavailable">Geen gesprekke begin nog nie</string>
+
+    <!-- Profile Screen-->
+    <string name="edit_profile">Wysig Profiel</string>
+
+    <!-- Student Profile Screen-->
+    <string name="student_profile">Studentprofiel</string>
+    <string name="student_profile_screen">Welkom by die Studentprofiel-skerm!</string>
+
+    <string name="settings">Instellings</string>
+    <string name="appearance">Voorkoms</string>
+
+    <!-- Student Home Screen -->
+    <string name="student_home">Student Tuisblad</string>
+    <string name="student_home_screen">Welkom by die Student Tuisblad!</string>
+
+    <!-- Student Search Screen -->
+    <string name="student_search">Student Soek</string>
+    <string name="student_search_screen">Welkom by die Student Soek-skerm!</string>
+
+    <!-- Campus Details Screen -->
+    <string name="edit">Wysig</string>
+    <string name="delete">Vee uit</string>
+
+    <!-- Edit Campus Screen -->
+    <string name="location">Ligging</string>
+    <string name="image_URL">Beeld-URL</string>
+    <string name="operation_successful">Operasie suksesvol!</string>
+
+    <!-- Create User Screen -->
+    <string name="create_user">Skep Nuwe Gebruiker</string>
+    <string name="middle_name">Tweede Naam (opsioneel)</string>
+    <string name="last_name">Van</string>
+    <string name="role">Rol (bv. student, admin)</string>
+    <string name="profile_picture_URL">Profielprent-URL</string>
+    <string name="confirm_password">Bevestig Wagwoord</string>
+    <string name="creating_user">Besig om gebruiker te skep...</string>
+
+    <!-- System Admin Home Screen -->
+    <string name="system_admin_home">Stelseladministrateur Tuisblad</string>
+    <string name="sytem_admin_home_screen">Welkom by die Stelseladministrateur Tuisblad!</string>
+
+    <!-- System Admin Manage Interest Screen -->
+    <string name="system_admin_manage">Stelseladministrateur Bestuur Belangstellings</string>
+    <string name="sytem_admin_manage_screen">Welkom by die Stelseladministrateur Bestuur Belangstellings-skerm!</string>
+
+</resources>

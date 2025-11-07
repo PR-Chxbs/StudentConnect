@@ -16,7 +16,9 @@ import com.prince.studentconnect.R
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.util.LocaleManager
 import com.prince.studentconnect.util.Prefs
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun LanguageSelector(
@@ -25,7 +27,14 @@ fun LanguageSelector(
     ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val selectedLang by repo.languageFlow.collectAsState(initial = "en")
+
+    val currentLocaleLang = remember { LocaleManager.getLanguageBlocking(context) }
+
+    val savedLang by repo.languageFlow.collectAsState(initial = currentLocaleLang)
+
+    // Local state for currently selected radio button
+    var tempSelectedLang by remember { mutableStateOf(savedLang) }
+
 
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         Text(text = stringResource(id = R.string.select_language), style = MaterialTheme.typography.displaySmall)
@@ -36,8 +45,6 @@ fun LanguageSelector(
             "af" to stringResource(R.string.lang_afrikaans),
             "zu" to stringResource(R.string.lang_zulu)
         )
-
-        var tempSelectedLang by remember { mutableStateOf(selectedLang) }
 
         languages.forEach { (code, label) ->
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {

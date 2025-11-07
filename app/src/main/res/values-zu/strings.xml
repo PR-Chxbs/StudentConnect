@@ -1,0 +1,149 @@
+<resources>
+    <string name="app_name">StudentConnect</string>
+    <string name="greeting">I-StudentConnect CMS iyasebenza!</string>
+    <string name="select_language">Khetha ulimi</string>
+    <string name="lang_english">IsiNgisi</string>
+    <string name="lang_afrikaans">IsiBhunu</string>
+    <string name="lang_zulu">IsiZulu</string>
+    <string name="save">Londoloza</string>
+    <string name="cancel">Khansela</string>
+
+    <!-- Login Page -->
+    <string name="login">Ngena ngemvume</string>
+    <string name="logging_in">Kuyangenwa...</string>
+    <string name="go_to_register">Awunayo i-akhawunti? Bhalisa</string>
+    <string name="email">I-imeyili</string>
+    <string name="password">Iphasiwedi</string>
+
+    <!-- Register Screen -->
+    <string name="register">Bhalisa</string>
+    <string name="registering">Kuyabhaliswa...</string>
+    <string name="go_to_login">Usunayo i-akhawunti? Ngena ngemvume</string>
+
+    <!-- Courses Screen-->
+    <string name="courses_unavailable">Awekho amakhosi atholakalayo</string>
+    <string name="courses_deleted">Ikhosi isusiwe ngempumelelo</string>
+
+    <!-- Campus Screen-->
+    <string name="steps">Isinyathelo 2 kwezi-3: Khetha Ikhampasi</string>
+    <string name="next">Okulandelayo</string>
+    <string name="campuses_unavailable">Awekho amakhampasi atholakalayo.</string>
+
+    <!-- Personal Screen -->
+    <string name="step">Isinyathelo 1 kwezi-3: Imininingwane Yakho</string>
+    <string name="name">Igama*</string>
+    <string name="student_number">Inombolo yomfundi</string>
+    <string name="phone_number">Inombolo yocingo*</string>
+    <string name="bio">Ulwazi ngawe</string>
+    <string name="profile_picture">I-URL yesithombe sephrofayela</string>
+
+    <!-- Create Course Screen-->
+    <string name="create_course">Dala Ikhosi Entsha</string>
+    <string name="course_description">Incazelo yekhosi</string>
+    <string name="duration">Isikhathi (iminyaka)</string>
+
+    <!-- Modules Screen -->
+    <string name="select_module">Sicela ukhethe okungenani imojuli eyodwa.</string>
+    <string name="course_created">Ikhosi idalwe ngempumelelo</string>
+    <string name="module_unavailable">Awekho amamojuli atholakalayo</string>
+
+    <!-- Campus Admin Screen-->
+    <string name="modules">Zonke Iimojuli</string>
+    <string name="module_delete">Susa Imojuli</string>
+    <string name="module_deleted">Imojuli isusiwe ngempumelelo.</string>
+
+    <!-- Module Create Screen-->
+    <string name="module_name">Igama lemojuli</string>
+    <string name="module_code">Ikhodi yemoju</string>
+    <string name="description">Incazelo</string>
+
+    <!-- Campus Admin Home Screen -->
+    <string name="campus_admin">Ikhaya Lomphathi Wekhampasi</string>
+    <string name="campus_screen">Siyakwamukela ekhasini lomphathi wekhampasi!</string>
+
+    <!-- Campus Admin Manage Screen -->
+    <string name="campus_manage">Isikrini Somphathi Wekhampasi Sokuphatha Abasebenzisi</string>
+    <string name="campus_manage_screen">Siyakwamukela esikrinini sokuphatha abasebenzisi!</string>
+
+    <!-- Campus Admin Profile Screen-->
+    <string name="campus_profile">Isikrini Sephrofayela Yomphathi Wekhampasi</string>
+
+    <!-- Lecturer Calender Screen-->
+    <string name="lecturer_calender">Ikhalenda Likathisha</string>
+    <string name="lecturer_calender_screen">Siyakwamukela ekhalendeni likathisha!</string>
+
+    <!-- Lecturer Chat Screen -->
+    <string name="lecturer_chat">Ingxoxo Kathisha</string>
+    <string name="lecturer_chat_screen">Siyakwamukela esikrinini sengxoxo kathisha!</string>
+
+    <!-- Lecturer Home screen -->
+    <string name="lecturer_home">Ikhaya Likathisha</string>
+    <string name="lecturer_home_screen">Siyakwamukela ekhaya likathisha!</string>
+
+    <!-- Lecturer Profile screen-->
+    <string name="lecturer_profile">Iphrofayela Kathisha</string>
+    <string name="lecturer_profile_screen">Siyakwamukela ephrofayeleni kathisha!</string>
+
+    <!-- Lecturer Search Screen -->
+    <string name="lecturer_search">Ukusesha Kathisha</string>
+    <string name="lecturer_search_screen">Siyakwamukela esikrinini sokusesha kathisha!</string>
+
+    <!-- Event Screen-->
+    <string name="add_event">Engeza Umcimbi</string>
+    <string name="missing_fields">Sicela ugcwalise amasimu alahlekile</string>
+    <string name="event_created">Umcimbi udaliwe</string>
+    <string name="tittle">Isihloko</string>
+    <string name="event_icon">Isithonjana Somcimbi</string>
+    <string name="event_color">Umbala Womcimbi</string>
+
+    <!-- Event Details Screen-->
+    <string name="event_details">Imininingwane Yomcimbi</string>
+
+    <!-- Student Chat Screen -->
+    <string name="conversation_unavailable">Awekho ama-conversation aqalile okwamanje</string>
+
+    <!-- Profile Screen-->
+    <string name="edit_profile">Hlela Iphrofayela</string>
+
+    <!-- Student Profile Screen-->
+    <string name="student_profile">Iphrofayela Yomfundi</string>
+    <string name="student_profile_screen">Siyakwamukela ephrofayeleni yomfundi!</string>
+
+    <string name="settings">Izilungiselelo</string>
+    <string name="appearance">Ukubukeka</string>
+
+    <!-- Student Home Screen -->
+    <string name="student_home">Ikhaya Lomfundi</string>
+    <string name="student_home_screen">Siyakwamukela ekhaya lomfundi!</string>
+
+    <!-- Student Search Screen -->
+    <string name="student_search">Ukusesha Komfundi</string>
+    <string name="student_search_screen">Siyakwamukela esikrinini sokusesha umfundi!</string>
+
+    <!-- Campus Details Screen -->
+    <string name="edit">Hlela</string>
+    <string name="delete">Susa</string>
+
+    <!-- Edit Campus Screen -->
+    <string name="location">Indawo</string>
+    <string name="image_URL">I-URL yesithombe</string>
+    <string name="operation_successful">Umsebenzi uphumelele!</string>
+
+    <!-- Create User Screen -->
+    <string name="create_user">Dala Umsebenzisi Omusha</string>
+    <string name="middle_name">Igama eliphakathi (ngokuzithandela)</string>
+    <string name="last_name">Isibongo</string>
+    <string name="role">Indima (isb. umfundi, admin)</string>
+    <string name="profile_picture_URL">I-URL yesithombe sephrofayela</string>
+    <string name="confirm_password">Qinisekisa Iphasiwedi</string>
+    <string name="creating_user">Kudalwa umsebenzisi...</string>
+
+    <!-- System Admin Home Screen -->
+    <string name="system_admin_home">Ikhaya Lomphathi Wesistimu</string>
+    <string name="sytem_admin_home_screen">Siyakwamukela ekhaya lomphathi wesistimu!</string>
+
+    <!-- System Admin Manage Interest Screen -->
+    <string name="system_admin_manage">Umphathi Wesistimu Phatha Izintshisekelo</string>
+    <string name="sytem_admin_manage_screen">Siyakwamukela esikrinini sokuphatha izintshisekelo!</string>
+
+</resources>
