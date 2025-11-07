@@ -193,6 +193,9 @@ class AuthViewModel(
 
         if (response.isSuccessful) {
             Log.d("FCM", "(AuthViewModel) Token successfully created")
+        } else {
+            val errorMessage = response.errorBody()?.string()
+            Log.d("FCM", "(AuthViewModel) Error: $errorMessage")
         }
     }
 }
