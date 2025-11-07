@@ -190,6 +190,7 @@ object ServiceLocator {
         return AuthViewModelFactory(
             authRepository = authRepository,
             userRepository = userRepository,
+            notificationRepository = notificationRepository,
             userPrefs = userPrefs
         )
     }

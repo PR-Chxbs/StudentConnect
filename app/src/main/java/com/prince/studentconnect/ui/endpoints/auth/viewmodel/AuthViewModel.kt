@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.repository.AuthRepository
 import com.prince.studentconnect.data.repository.AuthResult
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
+import com.prince.studentconnect.data.remote.dto.notification.CreateDeviceTokenRequest
+import com.prince.studentconnect.data.remote.dto.notification.CreateDeviceTokenResponse
 import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
+import com.prince.studentconnect.data.repository.NotificationRepository
 import com.prince.studentconnect.data.repository.UserRepository
 import com.prince.studentconnect.navigation.Graph
 import com.prince.studentconnect.navigation.Screen
@@ -26,6 +29,7 @@ data class AuthUiState(
 class AuthViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
+    private val notificationRepository: NotificationRepository,
     private val userPrefs: UserPreferencesRepository
 ) : ViewModel() {
 
@@ -34,6 +38,9 @@ class AuthViewModel(
 
     private val _currentUserId = MutableStateFlow("")
     val currentUserId: StateFlow<String> = _currentUserId
+
+    private val _deviceToken = MutableStateFlow("Fetching token...")
+    val deviceToken: StateFlow<String> = _deviceToken
 
     private val _currentUserEmail = MutableStateFlow("")
     val currentUserEmail: StateFlow<String?> = _currentUserEmail
@@ -68,6 +75,9 @@ class AuthViewModel(
                         if (userId != null) {
                             userPrefs.saveUserId(userId)
                             _currentUserId.value = userId
+
+                            setNewDeviceTokenCall()
+
                             val userDetails = userRepository.getUser(userId).body()
                             // Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
                             if (userDetails == null) {
@@ -143,6 +153,8 @@ class AuthViewModel(
                     _currentUserId.value = userId
                     _currentUserEmail.value = currentUser.email ?: ""
 
+                    setNewDeviceTokenCall()
+
                     // Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
 
                     userPrefs.saveUserId(userId)
@@ -165,5 +177,18 @@ class AuthViewModel(
                 )
             }
         }
+    }
+
+    fun setNewDeviceToken(newDeviceToken: String) {
+        _deviceToken.value = newDeviceToken
+    }
+
+    private suspend fun setNewDeviceTokenCall() {
+        val createDeviceTokenRequest = CreateDeviceTokenRequest(
+            device_token = _deviceToken.value,
+            user_id = _currentUserId.value
+        )
+
+        notificationRepository.createDeviceToken(createDeviceTokenRequest)
     }
 }

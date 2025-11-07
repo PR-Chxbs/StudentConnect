@@ -26,16 +26,16 @@ import com.prince.studentconnect.ui.theme.StudentConnectTheme
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var usePrefs: UserPreferencesRepository
+    private lateinit var userPrefs: UserPreferencesRepository
     private lateinit var settingsViewModel: SettingsViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        usePrefs = UserPreferencesRepository(this)
+        userPrefs = UserPreferencesRepository(this)
 
-        settingsViewModel = SettingsViewModel(usePrefs)
+        settingsViewModel = SettingsViewModel(userPrefs)
 
         setContent {
             val themeMode by settingsViewModel.themeMode.collectAsState(initial = 0)
@@ -48,16 +48,22 @@ class MainActivity : ComponentActivity() {
 
             var device_token by remember { mutableStateOf("Fetching token...") }
 
+            val authViewModel: AuthViewModel = viewModel(
+                factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
+            )
+
             LaunchedEffect(Unit) {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     device_token = if (task.isSuccessful) task.result else "Error getting token"
+                    authViewModel.setNewDeviceToken(device_token)
                 }
             }
 
             StudentConnectTheme(isDarkTheme) {
                 StudentConnectApp(
                     settingsViewModel = settingsViewModel,
-                    userPrefs = usePrefs
+                    authViewModel = authViewModel,
+                    userPrefs = userPrefs
                 )
             }
         }
@@ -68,11 +74,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StudentConnectApp(
     settingsViewModel: SettingsViewModel,
+    authViewModel: AuthViewModel,
     userPrefs: UserPreferencesRepository
 ) {
-    val authViewModel: AuthViewModel = viewModel(
-        factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
-    )
 
     BaseScreen {
         val navController = rememberNavController()
