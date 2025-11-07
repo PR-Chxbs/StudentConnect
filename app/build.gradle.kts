@@ -98,4 +98,13 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime)
+
 }

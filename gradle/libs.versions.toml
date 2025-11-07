@@ -46,6 +46,8 @@ coil = "2.7.0"
 firebase-bom = "33.3.0"
 google-services = "4.4.2"
 
+work = "2.9.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -104,6 +106,9 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+
+# Android Work
+androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

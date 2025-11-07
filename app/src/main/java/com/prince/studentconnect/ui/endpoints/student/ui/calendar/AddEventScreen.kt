@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -42,6 +43,19 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import com.prince.studentconnect.R
+
+// --- NEW imports for offline + sync ---
+import androidx.work.NetworkType
+import androidx.work.Constraints
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.prince.studentconnect.data.local.db.AppDatabase
+import com.prince.studentconnect.data.local.db.PendingEvent
+import com.prince.studentconnect.work.SyncPendingEventsWorker
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,6 +80,7 @@ fun AddEventScreen(
     var selectedIcon by remember { mutableStateOf<String?>(null) }
 
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(imePadding.calculateBottomPadding()) {
         listState.animateScrollToItem(6)
@@ -85,6 +100,63 @@ fun AddEventScreen(
     }
 
     val eventCreatedText = stringResource(R.string.event_created)
+    // Helper: save pending event locally and enqueue a WorkManager job to sync later
+    fun savePendingEventAndEnqueue(
+        creatorId: String,
+        conversationId: Int?,
+        title: String,
+        description: String,
+        startAtIso: String,
+        iconUrl: String,
+        colorCode: String,
+        recurrenceRule: String,
+        reminderAtIso: String
+    ) {
+        // Launch coroutine to insert into Room on IO
+        coroutineScope.launch {
+            // Insert pending event
+            withContext(Dispatchers.IO) {
+                try {
+                    val pending = PendingEvent(
+                        // id auto-generated
+                        creatorId = creatorId,
+                        conversationId = conversationId,
+                        title = title,
+                        description = description,
+                        startAt = startAtIso,
+                        iconUrl = iconUrl,
+                        colorCode = colorCode,
+                        recurrenceRule = recurrenceRule,
+                        reminderAt = reminderAtIso,
+                        createdAtMillis = System.currentTimeMillis()
+                    )
+                    AppDatabase.getInstance(context).pendingEventDao().insert(pending)
+                } catch (e: Exception) {
+                    // optional: log insertion failure
+                    e.printStackTrace()
+                }
+            }
+
+            // Enqueue WorkManager to sync when network available
+            try {
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+
+                val request = OneTimeWorkRequestBuilder<SyncPendingEventsWorker>()
+                    .setConstraints(constraints)
+                    .build()
+
+                WorkManager.getInstance(context).enqueueUniqueWork(
+                    "sync_pending_events",
+                    ExistingWorkPolicy.KEEP,
+                    request
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -121,8 +193,26 @@ fun AddEventScreen(
                                 Toast.makeText(context, eventCreatedText, Toast.LENGTH_SHORT).show()
                                 navController.popBackStack()
                             },
-                            onError = {
-                                Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
+                            onError = { errorMsg ->
+                                // Show toast as before
+                                Toast.makeText(context, "Error: $errorMsg", Toast.LENGTH_SHORT).show()
+
+                                // Save to Room + enqueue sync so it will be uploaded later
+                                // Build ISO strings again (we already used them above)
+                                val startIso = selectedDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
+                                val reminderIso = reminder.format(DateTimeFormatter.ISO_DATE_TIME)
+
+                                savePendingEventAndEnqueue(
+                                    creatorId = currentUserId,
+                                    conversationId = null,
+                                    title = title,
+                                    description = description,
+                                    startAtIso = startIso,
+                                    iconUrl = selectedIcon ?: "https://img.icons8.com/fluency/48/000000/laptop.png",
+                                    colorCode = selectedColor ?: "#4CAF50",
+                                    recurrenceRule = selectedRecurrence,
+                                    reminderAtIso = reminderIso
+                                )
                             }
                         )
                     }
@@ -136,9 +226,7 @@ fun AddEventScreen(
             state = listState,
             modifier = Modifier
                 .padding(padding)
-                .padding(16.dp)/*
-                .verticalScroll(rememberScrollState())
-                .imePadding()*/,
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
