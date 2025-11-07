@@ -67,7 +67,7 @@ fun RegisterScreen(
 
             // Register button
             Button(
-                onClick = { viewModel.login() }, // Using login method as email signup is handled there
+                onClick = { viewModel.register() },
                 enabled = !state.isLoading,
                 modifier = Modifier.fillMaxWidth()
             ) {

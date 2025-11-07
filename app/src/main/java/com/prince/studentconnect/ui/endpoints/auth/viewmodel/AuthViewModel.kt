@@ -30,6 +30,12 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState
 
+    private val _currentUserId = MutableStateFlow("")
+    val currentUserId: StateFlow<String> = _currentUserId
+
+    private val _currentUserEmail = MutableStateFlow("")
+    val currentUserEmail: StateFlow<String?> = _currentUserEmail
+
     lateinit var redirectScreenRoute: String
 
     fun onEmailChange(newEmail: String) {
@@ -50,6 +56,41 @@ class AuthViewModel(
             try {
                 when (val result = authRepository.login(email, password)) {
                     is AuthResult.Success -> {
+                        val currentUser = authRepository.getCurrentUser()
+                        val userId = currentUser?.id
+
+                        // Log.d("AuthScreen", "(AuthViewModel) Current user: ${authRepository.getCurrentUser()}")
+
+                        if (userId != null) {
+                            userPrefs.saveUserId(userId)
+                            _currentUserId.value = userId
+                            val userDetails = userRepository.getUser(userId).body()
+                            // Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
+                            if (userDetails == null) {
+
+                                if (currentUser.email == null) {
+                                    _uiState.value = _uiState.value.copy(
+                                        isLoading = false,
+                                        errorMessage = "Unexpected result"
+                                    )
+                                    return@launch
+                                }
+
+                                _currentUserEmail.value = currentUser.email ?: ""
+
+                                Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+
+                                redirectScreenRoute = Screen.OnboardingPersonalDetails.route
+                            } else {
+                                when (userDetails.role) {
+                                    "student" -> redirectScreenRoute = Screen.Student.route
+                                    "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
+                                    "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
+                                    "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+                                }
+                            }
+                        }
+
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
                             successMessage = "Logged in successfully"
@@ -70,6 +111,54 @@ class AuthViewModel(
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     errorMessage = e.message
+                )
+            }
+        }
+    }
+
+    fun register() {
+        val email = _uiState.value.email
+        val password = _uiState.value.password
+
+        _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+
+        viewModelScope.launch {
+            when (val result = authRepository.signUp(email, password)) {
+                is AuthResult.Success -> {
+                    val currentUser = authRepository.getCurrentUser()
+                    val userId = currentUser?.id
+
+                    if (currentUser?.email == null || userId == null) {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = "Unexpected result"
+                        )
+                        return@launch
+                    }
+
+                    _currentUserId.value = userId
+                    _currentUserEmail.value = currentUser.email ?: ""
+
+                    // Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+
+                    userPrefs.saveUserId(userId)
+
+                    redirectScreenRoute = Screen.OnboardingPersonalDetails.route
+
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        successMessage = "Registration successful!"
+                    )
+                }
+
+                is AuthResult.RequiresEmailConfirmation -> _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    successMessage = "Please confirm your email."
+                )
+
+                is AuthResult.Error -> _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = result.message
                 )
             }
         }
