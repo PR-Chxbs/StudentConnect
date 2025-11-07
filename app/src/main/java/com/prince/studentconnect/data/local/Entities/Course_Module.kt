@@ -1,6 +1,11 @@
-package com.prince.studentconnect.data.local
+package com.prince.studentconnect.data.local.Entities
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import com.prince.studentconnect.data.local.Entities.Module
 
 @Entity(tableName = "course_modules",
     foreignKeys = [
@@ -8,13 +13,13 @@ import androidx.room.*
             entity = Course::class,
             parentColumns = ["course_id"],
             childColumns = ["course_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.Companion.CASCADE
         ),
         ForeignKey(
             entity = Module::class,
             parentColumns = ["module_id"],
             childColumns = ["module_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.Companion.CASCADE
         )
     ],
     indices = [

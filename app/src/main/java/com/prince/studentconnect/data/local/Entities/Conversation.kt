@@ -1,6 +1,7 @@
-package com.prince.studentconnect.data.local
+package com.prince.studentconnect.data.local.Entities
 
 import androidx.room.*
+import com.prince.studentconnect.data.local.Entities.Module
 import kotlinx.datetime.LocalDateTime
 
 @Entity(

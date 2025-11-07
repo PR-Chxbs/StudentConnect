@@ -1,6 +1,7 @@
-package com.prince.studentconnect.data.local
+package com.prince.studentconnect.data.local.Entities
 
 import androidx.room.*
+import com.prince.studentconnect.data.local.Entities.User
 import kotlinx.datetime.DateTimePeriod
 
 @Entity(tableName = "events",

@@ -1,6 +1,8 @@
-package com.prince.studentconnect.data.local
+package com.prince.studentconnect.data.local.Entities
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "interests")
 data class Interest(
