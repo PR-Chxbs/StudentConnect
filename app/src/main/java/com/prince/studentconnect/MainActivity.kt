@@ -23,6 +23,7 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
+import com.prince.studentconnect.utils.NotificationPermissionRequester
 
 
 class MainActivity : ComponentActivity() {
@@ -77,6 +78,7 @@ fun StudentConnectApp(
     authViewModel: AuthViewModel,
     userPrefs: UserPreferencesRepository
 ) {
+    NotificationPermissionRequester()
 
     BaseScreen {
         val navController = rememberNavController()
