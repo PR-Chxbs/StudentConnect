@@ -7,10 +7,15 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.di.ServiceLocator
 import com.prince.studentconnect.navigation.RootNavGraph
@@ -39,6 +44,14 @@ class MainActivity : ComponentActivity() {
                 1 -> false // Light
                 2 -> true  // Dark
                 else -> isSystemInDarkTheme() // System Default
+            }
+
+            var token by remember { mutableStateOf("Fetching token...") }
+
+            LaunchedEffect(Unit) {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    token = if (task.isSuccessful) task.result else "Error getting token"
+                }
             }
 
             StudentConnectTheme(isDarkTheme) {
