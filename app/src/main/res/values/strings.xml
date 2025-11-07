@@ -141,10 +141,10 @@
 
     <!-- System Admin Home Screen -->
     <string name="system_admin_home">System Admin Home</string>
-    <string name="sytem_admin_home_screen">Welcome to the System Admin Home Screen!</string>
+    <string name="system_admin_home_screen">Welcome to the System Admin Home Screen!</string>
 
     <!-- System Admin Manage Interest Screen -->
     <string name="system_admin_manage">System Admin Manage Interests</string>
-    <string name="sytem_admin_manage_screen">Welcome to the System Admin Manage Interests Screen!</string>
+    <string name="system_admin_manage_screen">Welcome to the System Admin Manage Interests Screen!</string>
 
     </resources>
