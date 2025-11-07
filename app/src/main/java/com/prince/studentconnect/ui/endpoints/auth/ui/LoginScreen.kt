@@ -26,11 +26,9 @@ fun LoginScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -74,6 +72,17 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(if (state.isLoading) stringResource(R.string.logging_in) else stringResource(R.string.login))
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Google login button
+            Button(
+                onClick = { viewModel.loginWithGoogle(context) },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Login with Google")
             }
 
             Spacer(Modifier.height(12.dp))

@@ -1,9 +1,10 @@
 package com.prince.studentconnect.ui.endpoints.auth.viewmodel
 
+import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.repository.AuthRepository
 import com.prince.studentconnect.data.repository.AuthResult
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
@@ -12,7 +13,6 @@ import com.prince.studentconnect.data.remote.dto.notification.CreateDeviceTokenR
 import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
 import com.prince.studentconnect.data.repository.NotificationRepository
 import com.prince.studentconnect.data.repository.UserRepository
-import com.prince.studentconnect.navigation.Graph
 import com.prince.studentconnect.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -109,6 +109,7 @@ class AuthViewModel(
                             isLoading = false,
                             successMessage = "Logged in successfully"
                         )
+                        redirectScreenRoute = Screen.Student.route
                     }
                     is AuthResult.Error -> _uiState.value = _uiState.value.copy(
                         isLoading = false,
@@ -120,13 +121,12 @@ class AuthViewModel(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("AuthScreen", "(AuthViewModel) Error: ${e.message}")
+                Log.e("AuthViewModel", "Error: ${e.message}")
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     errorMessage = e.message
                 )
             }
-
         }
     }
 
@@ -171,6 +171,7 @@ class AuthViewModel(
                     isLoading = false,
                     successMessage = "Please confirm your email."
                 )
+
                 is AuthResult.Error -> _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     errorMessage = result.message
@@ -197,5 +198,12 @@ class AuthViewModel(
             val errorMessage = response.errorBody()?.string()
             Log.d("FCM", "(AuthViewModel) Error: $errorMessage")
         }
+    fun loginWithGoogle(context: Context) {
+        val result = authRepository.loginWithGoogle(context)
+        _uiState.value = _uiState.value.copy(
+            isLoading = false,
+            successMessage = if (result is AuthResult.Success) "Redirecting to Google login..." else null,
+            errorMessage = if (result is AuthResult.Error) result.message else null
+        )
     }
 }

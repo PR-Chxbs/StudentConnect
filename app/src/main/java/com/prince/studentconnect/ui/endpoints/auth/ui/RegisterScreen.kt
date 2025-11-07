@@ -26,6 +26,7 @@ fun RegisterScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -39,6 +40,7 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(20.dp))
 
+            // Email field
             OutlinedTextField(
                 value = state.email,
                 onValueChange = { viewModel.onEmailChange(it) },
@@ -48,6 +50,7 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(12.dp))
 
+            // Password field
             OutlinedTextField(
                 value = state.password,
                 onValueChange = { viewModel.onPasswordChange(it) },
@@ -68,6 +71,7 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(20.dp))
 
+            // Register button
             Button(
                 onClick = { viewModel.register() },
                 enabled = !state.isLoading,
@@ -78,20 +82,35 @@ fun RegisterScreen(
 
             Spacer(Modifier.height(12.dp))
 
+            // Google signup button
+            Button(
+                onClick = { viewModel.loginWithGoogle(context) },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Sign up with Google")
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Navigate to login
             TextButton(onClick = onNavigateToLogin) {
                 Text(stringResource(R.string.go_to_login))
             }
 
+            // Error message
             state.errorMessage?.let {
                 Spacer(Modifier.height(12.dp))
                 Text(text = it, color = MaterialTheme.colorScheme.error)
             }
 
+            // Success message
             state.successMessage?.let {
                 Spacer(Modifier.height(12.dp))
                 Text(text = it, color = MaterialTheme.colorScheme.primary)
             }
 
+            // Redirect on success
             if (!state.successMessage.isNullOrEmpty()) {
                 onRedirectScreen(viewModel.redirectScreenRoute)
             }
