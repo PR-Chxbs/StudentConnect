@@ -1,18 +1,8 @@
 package com.prince.studentconnect.data.remote.api
 
-import com.prince.studentconnect.data.remote.dto.campus.AddCampusRequest
-import com.prince.studentconnect.data.remote.dto.campus.AddCampusResponse
-import com.prince.studentconnect.data.remote.dto.campus.DeleteCampusResponse
-import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
-import com.prince.studentconnect.data.remote.dto.campus.UpdateCampusRequest
-import com.prince.studentconnect.data.remote.dto.campus.UpdateCampusResponse
+import com.prince.studentconnect.data.remote.dto.campus.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface CampusApi {
     @GET("campuses")

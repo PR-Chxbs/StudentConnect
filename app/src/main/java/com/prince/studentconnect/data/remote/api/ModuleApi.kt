@@ -1,19 +1,8 @@
 package com.prince.studentconnect.data.remote.api
 
-import com.prince.studentconnect.data.remote.dto.module.CreateModuleRequest
-import com.prince.studentconnect.data.remote.dto.module.CreateModuleResponse
-import com.prince.studentconnect.data.remote.dto.module.DeleteModuleResponse
-import com.prince.studentconnect.data.remote.dto.module.GetModulesResponse
-import com.prince.studentconnect.data.remote.dto.module.UpdateModuleRequest
-import com.prince.studentconnect.data.remote.dto.module.UpdateModuleResponse
+import com.prince.studentconnect.data.remote.dto.module.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ModuleApi {
     @GET("modules")
