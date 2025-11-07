@@ -33,9 +33,9 @@ data class Conversation_Member(
     val joinedAt: DateTimePeriod,
     @ColumnInfo(name = "left_at")
     val leftAt: DateTimePeriod,
-    @ColumnInfo(name = "user_id", index = true)
+    @ColumnInfo(name = "user_id")
     val userId: String,
-    @ColumnInfo(name = "conversation_id", index = true)
+    @ColumnInfo(name = "conversation_id")
     val conversationId: Int
 )
 

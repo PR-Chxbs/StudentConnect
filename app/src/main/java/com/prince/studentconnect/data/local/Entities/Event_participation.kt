@@ -29,9 +29,9 @@ data class Event_participation(
     @ColumnInfo(name = "is_creator")
     val isCreator: Boolean,
     val status: Participation_status,
-    @ColumnInfo(name = "event_id", index = true)
+    @ColumnInfo(name = "event_id")
     val eventId: Int,
-    @ColumnInfo(name = "user_id", index = true)
+    @ColumnInfo(name = "user_id")
     val userId: String
 )
 

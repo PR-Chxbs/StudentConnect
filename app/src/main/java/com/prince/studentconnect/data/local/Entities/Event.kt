@@ -41,9 +41,9 @@ data class Event(
     val reminderAt: DateTimePeriod,
     @ColumnInfo(name = "created_at")
     val createdAt: DateTimePeriod,
-    @ColumnInfo(name = "creator_id", index = true)
+    @ColumnInfo(name = "creator_id")
     val creatorId: Int,
-    @ColumnInfo(name = "conversation_id", index = true)
+    @ColumnInfo(name = "conversation_id")
     val conversationId: Int
 )
 

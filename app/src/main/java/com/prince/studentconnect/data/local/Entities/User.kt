@@ -48,9 +48,9 @@ data class User(
     val studentNumber: String? = null,
     val role: Role,
     val bio: String = "",
-    @ColumnInfo(name = "campus_id", index = true)
+    @ColumnInfo(name = "campus_id")
     val campusId: Int,
-    @ColumnInfo(name = "course_id", index = true)
+    @ColumnInfo(name = "course_id")
     val courseId: Int? = null,
     @ColumnInfo(name = "profile_picture_url")
     val profilePictureUrl: String,

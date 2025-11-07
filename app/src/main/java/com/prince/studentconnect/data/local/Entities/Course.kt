@@ -29,6 +29,6 @@ data class Course(
     val durationYears: Int,
     @ColumnInfo(name = "is_active")
     val isActive: Boolean,
-    @ColumnInfo(name = "campus_id", index = true)
+    @ColumnInfo(name = "campus_id")
     val campusId: String
 )

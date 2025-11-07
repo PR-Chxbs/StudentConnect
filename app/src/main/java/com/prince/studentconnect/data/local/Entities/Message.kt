@@ -35,7 +35,7 @@ data class Message(
     val attachmentType: Attachment_type? = null,
     @ColumnInfo(name = "sent_at")
     val sentAt: DateTimePeriod,
-    @ColumnInfo(name = "conversation_id", index = true)
+    @ColumnInfo(name = "conversation_id")
     val conversationId: Int
 )
 

@@ -34,8 +34,8 @@ data class Course_Module(
     val courseModuleId: Int = 0,
     @ColumnInfo(name = "year_level")
     val yearLevel: Int,
-    @ColumnInfo(name = "course_id", index = true)
+    @ColumnInfo(name = "course_id")
     val courseId: Int,
-    @ColumnInfo(name = "module_id", index = true)
+    @ColumnInfo(name = "module_id")
     val moduleId: Int
 )

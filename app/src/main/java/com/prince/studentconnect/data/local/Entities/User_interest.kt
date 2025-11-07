@@ -30,9 +30,9 @@ data class User_interest(
     @PrimaryKey(autoGenerate = true)
     val user_interest_id: Int = 0,
 
-    @ColumnInfo(name = "user_id", index = true)
+    @ColumnInfo(name = "user_id")
     val user_id: String,
 
-    @ColumnInfo(name = "interest_id", index = true)
+    @ColumnInfo(name = "interest_id")
     val interest_id: Int
 )

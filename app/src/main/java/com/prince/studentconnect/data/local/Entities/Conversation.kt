@@ -29,7 +29,7 @@ data class Conversation(
     val memberCount: Int,
     @ColumnInfo(name = "date_created")
     val dateCreated: LocalDateTime,
-    @ColumnInfo(name = "module_id", index = true)
+    @ColumnInfo(name = "module_id")
     val moduleId: Int
 )
 

@@ -24,10 +24,6 @@ class EventRepository(
         return eventApi.patchEvent(patchEventRequest, eventId)
     }
 
-    suspend fun deleteEvent(eventId: Int): Response<Unit> {
-        return eventApi.deleteEvent(eventId)
-    }
-
     suspend fun subscribeToEvent(subscribeToEventRequest: SubscribeToEventRequest, eventId: Int): Response<SubscribeToEventResponse> {
         return eventApi.subscribeToEvent(subscribeToEventRequest, eventId)
     }
