@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -11,6 +12,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
@@ -21,6 +23,8 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
+import io.github.jan.supabase.gotrue.auth
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var usePrefs: UserPreferencesRepository
@@ -53,7 +57,7 @@ class MainActivity : ComponentActivity() {
         handleIntent(intent)
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         // Handle intent when activity is already running
         handleIntent(intent)
@@ -62,10 +66,19 @@ class MainActivity : ComponentActivity() {
     private fun handleIntent(intent: Intent?) {
         val data: Uri? = intent?.data
         if (data != null && data.scheme == "com.prince.studentconnect") {
+            // Convert the Uri to a string for Supabase
+            val redirectUrl = data.toString()
+
             // Supabase OAuth redirect received
-            // Parse URL and let Supabase update the session automatically
-            SupabaseClientProvider.client.auth.exchangeCodeForSession(data)
-            // You may also refresh UI or trigger navigation here if needed
+            lifecycleScope.launch {
+                try {
+                    SupabaseClientProvider.client.auth.exchangeCodeForSession(redirectUrl)
+                    // Update UI or navigate after successful session exchange
+                } catch (e: Exception) {
+                    // Handle error gracefully (e.g., show a toast or log)
+                    Log.e("Auth", "Error exchanging code for session", e)
+                }
+            }
         }
     }
 }
