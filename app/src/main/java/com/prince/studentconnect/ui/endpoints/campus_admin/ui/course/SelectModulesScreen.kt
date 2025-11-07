@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.components.module.ModuleCard
+import com.prince.studentconnect.R
 
 @Composable
 fun SelectModulesScreen(
@@ -39,13 +41,13 @@ fun SelectModulesScreen(
             ExtendedFloatingActionButton(
                 onClick = {
                     if (selectedModules.isEmpty()) {
-                        Toast.makeText(context, "Please select at least one module.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, stringResource(R.string.select_module), Toast.LENGTH_SHORT).show()
                         return@ExtendedFloatingActionButton
                     }
 
                     viewModel.createCourse(
                         onSuccess = {
-                            Toast.makeText(context, "Course created successfully.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, stringResource(R.string.course_created), Toast.LENGTH_SHORT).show()
                             onCourseCreated()
                         },
                         onError = {
@@ -55,7 +57,7 @@ fun SelectModulesScreen(
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Text("Create Course")
+                Text(stringResource(R.string.course_created))
             }
         }
     ) { padding ->
@@ -71,7 +73,7 @@ fun SelectModulesScreen(
 
                 modules.isEmpty() -> {
                     Text(
-                        text = "No modules available.",
+                        text = stringResource(R.string.module_unavailable),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

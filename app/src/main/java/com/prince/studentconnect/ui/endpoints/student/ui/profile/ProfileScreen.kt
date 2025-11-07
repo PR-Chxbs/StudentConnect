@@ -31,11 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
 import coil.compose.AsyncImage
 import com.prince.studentconnect.di.ServiceLocator
+import com.prince.studentconnect.R
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -138,7 +140,7 @@ fun ProfileScreen(
 
                         // Bio
                         Column {
-                            Text("Bio", style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.bio), style = MaterialTheme.typography.titleMedium)
                             Text(user.bio, style = MaterialTheme.typography.bodyMedium)
                         }
 
@@ -148,7 +150,7 @@ fun ProfileScreen(
                                 onClick = onEditProfileClick,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Edit Profile")
+                                Text(stringResource(R.string.edit_profile))
                             }
                         }
                     }

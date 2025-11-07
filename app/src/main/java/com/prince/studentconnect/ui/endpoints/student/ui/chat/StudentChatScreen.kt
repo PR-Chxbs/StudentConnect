@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.chat.ConversationItem
@@ -31,6 +32,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
+import com.prince.studentconnect.R
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -177,7 +179,7 @@ fun ConversationListScreen(
             contentAlignment = Alignment.TopCenter
         ) {
             Text(
-                text = "No conversations started yet",
+                text = stringResource(R.string.convesation_unavailable),
                 style = MaterialTheme.typography.bodyMedium
             )
         }

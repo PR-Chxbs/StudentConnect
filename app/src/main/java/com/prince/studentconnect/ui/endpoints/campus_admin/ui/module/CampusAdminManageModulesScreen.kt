@@ -11,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.module.GetModulesResponse
 import com.prince.studentconnect.ui.components.module.ModuleCard
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModel
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +44,7 @@ fun CampusAdminManageModulesScreen(
         },
         topBar = {
             TopAppBar(
-                title = { Text("All Modules") }
+                title = { Text(stringResource(R.string.modules)) }
             )
         }
     ) { padding ->
@@ -68,7 +70,7 @@ fun CampusAdminManageModulesScreen(
                     val modules = uiState.modules
                     if (modules.isEmpty()) {
                         Text(
-                            text = "No modules found.",
+                            text = stringResource(R.string.select_module),
                             modifier = Modifier.align(Alignment.Center),
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -102,7 +104,7 @@ fun CampusAdminManageModulesScreen(
             if (showDeleteDialog && moduleToDelete != null) {
                 AlertDialog(
                     onDismissRequest = { showDeleteDialog = false },
-                    title = { Text("Delete Module") },
+                    title = { Text(stringResource(R.string.module_delete)) },
                     text = { Text("Are you sure you want to delete \"${moduleToDelete?.name}\"?") },
                     confirmButton = {
                         TextButton(
@@ -112,18 +114,18 @@ fun CampusAdminManageModulesScreen(
                                 viewModel.deleteModule(
                                     moduleId = id,
                                     onSuccess = {
-                                        Toast.makeText(context, "Module deleted successfully.", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, stringResource(R.string.module_deleted), Toast.LENGTH_SHORT).show()
                                     },
                                     onError = { msg ->
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                     }
                                 )
                             }
-                        ) { Text("Delete", color = MaterialTheme.colorScheme.error) }
+                        ) { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) }
                     },
                     dismissButton = {
                         TextButton(onClick = { showDeleteDialog = false }) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.cancel))
                         }
                     }
                 )

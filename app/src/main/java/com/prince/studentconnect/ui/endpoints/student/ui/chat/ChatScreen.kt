@@ -39,6 +39,7 @@ import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(

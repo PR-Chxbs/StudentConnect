@@ -5,8 +5,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -15,7 +17,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text("Settings") })
+            CenterAlignedTopAppBar(title = { Text(stringResource(R.string.settings)) })
         }
     ) { padding ->
         Column(
@@ -25,7 +27,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            Text("Appearance", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.appearance), style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(16.dp))
 
             ThemeOption(

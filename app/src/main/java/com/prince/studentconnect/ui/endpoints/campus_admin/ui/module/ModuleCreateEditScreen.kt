@@ -10,10 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.data.remote.dto.module.GetModuleResponse
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModel
+import com.prince.studentconnect.R
 
 // ---------- Screen ----------
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +62,7 @@ fun ModuleCreateEditScreen(
                     OutlinedTextField(
                         value = uiState.name,
                         onValueChange = moduleViewModel::onNameChange,
-                        label = { Text("Module Name") },
+                        label = { Text(stringResource(R.string.module_name)) },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
                     )
@@ -69,7 +71,7 @@ fun ModuleCreateEditScreen(
                     OutlinedTextField(
                         value = uiState.code,
                         onValueChange = moduleViewModel::onCodeChange,
-                        label = { Text("Module Code") },
+                        label = { Text(stringResource(R.string.module_code)) },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
                     )
@@ -78,7 +80,7 @@ fun ModuleCreateEditScreen(
                     OutlinedTextField(
                         value = uiState.description,
                         onValueChange = moduleViewModel::onDescriptionChange,
-                        label = { Text("Description") },
+                        label = { Text(stringResource(R.string.description)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(120.dp),

@@ -23,4 +23,132 @@
     <!-- Courses Screen-->
     <string name="courses_unavailable">No courses available</string>
     <string name="courses_deleted">Course deleted successfully</string>
-</resources>
+
+
+
+    <!-- Campus Screen-->
+    <string name="steps">Step 2 of 3: Select Campus</string>
+    <string name="next">Next</string>
+    <string name="campuses_unavailable">No campuses available.</string>
+
+    <!-- Personal Screen -->
+    <string name="step">Step 1 of 3: Personal Details</string>
+    <string name="name">First Name*</string>
+    <string name="student_number">Student Number</string>
+    <string name="phone_number">Phone Number*</string>
+    <string name="bio">Bio</string>
+    <string name="profile_picture">Profile Picture URL</string>
+
+    <!-- Create Course Screen-->
+    <string name="create_course">Create New Course</string>
+    <string name="course_desccription">Course Description</string>
+    <string name="duration">Duration (years)</string>
+
+
+    <!-- Modules Screen -->
+    <string name="select_module">Please select at least one module.</string>
+    <string name="course_created">Course created successfully</string>
+    <string name="module_unavailable">No modules available</string>
+
+    <!-- Campus Admin Screen-->
+    <string name="modules">All Modules</string>
+    <string name="module_delete">Delete Module</string>
+    <string name="module_deleted">Module deleted successfully.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Module Create Screen-->
+    <string name="module_name">"Module Name</string>
+    <string name="module_code">Module Code</string>
+    <string name="description">Description</string>
+
+    <!-- Campus Admin Home Screenv -->
+    <string name="campus_admin">Campus Admin Home Screen</string>
+    <string name="campus_screen">Welcome to the Campus Admin Home Screen!</string>
+
+    <!-- Campus Admin Manage Screen -->
+    <string name="campus_manage">Campus Admin Manage Users Screen</string>
+    <string name="campus_manage_screen">Welcome to the Campus Admin Manage Users Screen!</string>
+
+    <!-- Campus Admin Profile Screen-->
+    <string name="campus_profile">Campus Admin Profile Screen</string>
+
+    <!-- Lecturer Calender Screen-->
+    <string name="lecturer_calender">Lecturer Calendar</string>
+    <string name="lecturer_calender_screen">Welcome to the Lecturer Calendar Screen!</string>
+
+    <!-- Lecturer Chat Screen -->
+    <string name="lecturer_chat">Lecturer Chat</string>
+    <string name="lecturer_chat_screen">Welcome to the Lecturer Chat Screen!</string>
+
+    <!-- Lecturer Home screen -->
+    <string name="lecturer_home">Lecturer Home</string>
+    <string name="lecturer_home_screen">Welcome to the Lecturer Home Screen!</string>
+
+    <!-- Lecturer Profile screen-->
+    <string name="lecturer_profile">Lecturer Profile</string>
+    <string name="lecturer_profile_screen">Welcome to the Lecturer Profile Screen!</string>
+
+    <!-- Lecturer Search Screen -->
+    <string name="lecturer_search">Lecturer Search</string>
+    <string name="lecturer_search_screen">Welcome to the Lecturer Search Screen!</string>
+
+    <!-- Event Screen-->
+<string name="add_event">Add Event</string>
+    <string name="missing_fields">Please enter missing fields</string>
+    <string name="event_created">Event created</string>
+    <string name="tittle">Title</string>
+    <string name="event_icon">Event Icon</string>
+    <string name="event_color">Event Color</string>
+
+    <!-- Event Details Screen-->
+    <string name="event_details">Event Details</string>
+
+    <!-- Student Chat Screen -->
+    <string name="conversation_unavailable">No conversations started yet</string>
+
+    <!-- Profile Screen-->
+    <string name="edit_profile">Edit Profile</string>
+
+    <!-- Student Profile Screen-->
+    <string name="student_profile">Student Profile</string>
+    <string name="student_profile_screen">Welcome to the Student Profile Screen!</string>
+
+    <string name="settings">Settings</string>
+    <string name="appearance">Appearance</string>
+
+    <!-- Student Home Screen -->
+    <string name="student_home">Student Home</string>
+    <string name="student_home_screen">Welcome to the Student Home Screen!</string>
+
+    <!-- Student Search Screen -->
+    <string name="student_search">Student Search</string>
+    <string name="student_search_screen">Welcome to the Student Search Screen!</string>
+
+    <!-- Campus Details Screen -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- Edit Campus Screen -->
+    <string name="location">Location</string>
+    <string name="image_URL">Image URL</string>
+    <string name="operation_successful">Operation successful!</string>
+
+    <!-- Create User Screen -->
+    <string name="create_user">Create New User</string>
+    <string name="middle_name">Middle Name (optional)</string>
+    <string name="last_name">Last Name</string>
+    <string name="role">Role (e.g. student, admin)</string>
+    <string name="profile_picture_URL">Profile Picture URL</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_user">Creating User...</string>
+
+    <!-- System Admin Home Screen -->
+    <string name="system_admin_home">System Admin Home</string>
+    <string name="sytem_admin_home_screen">Welcome to the System Admin Home Screen!</string>
+
+    <!-- System Admin Manage Interest Screen -->
+    <string name="system_admin_manage">System Admin Manage Interests</string>
+    <string name="sytem_admin_manage_screen">Welcome to the System Admin Manage Interests Screen!</string>
+
+    </resources>

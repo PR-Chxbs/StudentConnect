@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +42,7 @@ fun CampusSelectionScreen(
                 title = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Step 2 of 3: Select Campus",
+                            text = stringResource(R.string.steps),
                             style = MaterialTheme.typography.titleMedium,
                             textAlign = TextAlign.Center
                         )
@@ -68,7 +69,7 @@ fun CampusSelectionScreen(
                     .padding(16.dp),
                 enabled = selectedCampus != null
             ) {
-                Text("Next")
+                Text(stringResource(R.string.next))
             }
         }
     ) { paddingValues ->
@@ -86,7 +87,7 @@ fun CampusSelectionScreen(
 
                 campuses.isEmpty() -> {
                     Text(
-                        text = "No campuses available.",
+                        text = stringResource(R.string.campuses_unavailable),
                         modifier = Modifier.align(Alignment.Center),
                         style = MaterialTheme.typography.bodyMedium
                     )

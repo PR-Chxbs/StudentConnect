@@ -7,9 +7,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CreateCourseViewModel
+import com.prince.studentconnect.R
 
 @Composable
 fun CreateCourseScreen(
@@ -30,7 +32,7 @@ fun CreateCourseScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Create New Course",
+                text = stringResource(R.string.create_course),
                 style = MaterialTheme.typography.headlineSmall
             )
 
@@ -44,14 +46,14 @@ fun CreateCourseScreen(
             OutlinedTextField(
                 value = viewModel.courseDescription.collectAsState().value,
                 onValueChange = { viewModel.courseDescription.value = it },
-                label = { Text("Course Description") },
+                label = { Text(stringResource(R.string.course_description)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = viewModel.durationYears.collectAsState().value,
                 onValueChange = { viewModel.durationYears.value = it },
-                label = { Text("Duration (years)") },
+                label = { Text(stringResource(R.string.duration)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
@@ -65,7 +67,7 @@ fun CreateCourseScreen(
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Next")
+                Text(stringResource(R.string.next))
             }
         }
     }

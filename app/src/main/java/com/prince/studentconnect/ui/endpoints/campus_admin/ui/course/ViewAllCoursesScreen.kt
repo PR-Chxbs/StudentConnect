@@ -85,7 +85,7 @@ fun ViewAllCoursesScreen(
                                     onSuccess = {
                                         Toast.makeText(
                                             context,
-                                            "Course deleted successfully",
+                                            stringResource(R.string.couses_deleted),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     },

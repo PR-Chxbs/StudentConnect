@@ -30,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImage
 import com.prince.studentconnect.ui.components.shared.ColorPickerDialog
@@ -40,6 +41,7 @@ import com.prince.studentconnect.ui.components.shared.TimePickerRow
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import com.prince.studentconnect.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,7 +88,7 @@ fun AddEventScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Event") },
+                title = { Text(stringResource(R.string.add_event)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -115,7 +117,7 @@ fun AddEventScreen(
                         viewModel.addEvent(
                             request,
                             onSuccess = {
-                                Toast.makeText(context, "Event created", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, stringResource(R.string.event_created), Toast.LENGTH_SHORT).show()
                                 navController.popBackStack()
                             },
                             onError = {
@@ -142,7 +144,7 @@ fun AddEventScreen(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Title") },
+                    label = { Text(stringResource(R.string.tittle)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -151,7 +153,7 @@ fun AddEventScreen(
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Description") },
+                    label = { Text(stringResource(R.string.description)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -200,7 +202,7 @@ fun AddEventScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Text("Event Icon", style = MaterialTheme.typography.labelSmall)
+                        Text(stringResource(R.string.event_icon), style = MaterialTheme.typography.labelSmall)
                         Text(
                             text = selectedIcon?.substringAfterLast("/") ?: "Pick an icon",
                             style = MaterialTheme.typography.bodyLarge
@@ -230,7 +232,7 @@ fun AddEventScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Text("Event Color", style = MaterialTheme.typography.labelSmall)
+                        Text(stringResource(R.string.event_color), style = MaterialTheme.typography.labelSmall)
                         Text(
                             text = selectedColor ?: "Pick a color",
                             style = MaterialTheme.typography.bodyLarge

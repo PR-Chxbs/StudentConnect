@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModel
 import kotlinx.coroutines.delay
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +56,7 @@ fun CreateUserScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Create New User") },
+                title = { Text(stringResource(R.string.create_user)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -83,7 +85,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.firstName,
                     onValueChange = { viewModel.firstName = it },
-                    label = { Text("First Name") },
+                    label = { Text(stringResource(R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -92,7 +94,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.middleName ?: "",
                     onValueChange = { viewModel.middleName = it },
-                    label = { Text("Middle Name (optional)") },
+                    label = { Text(stringResource(R.string.middle_name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -101,7 +103,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.lastName,
                     onValueChange = { viewModel.lastName = it },
-                    label = { Text("Last Name") },
+                    label = { Text(stringResource(R.string.last_name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -110,7 +112,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.email,
                     onValueChange = { viewModel.email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -119,7 +121,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.phoneNumber,
                     onValueChange = { viewModel.phoneNumber = it },
-                    label = { Text("Phone Number") },
+                    label = { Text(stringResource(R.string.phone_number)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -128,7 +130,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.role,
                     onValueChange = { viewModel.role = it },
-                    label = { Text("Role (e.g. student, admin)") },
+                    label = { Text(stringResource(R.string.role)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -137,7 +139,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.bio,
                     onValueChange = { viewModel.bio = it },
-                    label = { Text("Bio") },
+                    label = { Text(stringResource(R.string.bio)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -146,7 +148,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.profilePictureUrl,
                     onValueChange = { viewModel.profilePictureUrl = it },
-                    label = { Text("Profile Picture URL") },
+                    label = { Text(stringResource(R.string.profile_picture_URL)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -155,7 +157,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.password,
                     onValueChange = { viewModel.password = it },
-                    label = { Text("Password") },
+                    label = { Text(stringResource(R.string.password)) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
@@ -175,7 +177,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.confirmPassword,
                     onValueChange = { viewModel.confirmPassword = it },
-                    label = { Text("Confirm Password") },
+                    label = { Text(stringResource(R.string.confirm_password)) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
@@ -199,7 +201,7 @@ fun CreateUserScreen(
                             onClick = { viewModel.createUser() },
                             modifier = Modifier.fillMaxWidth(),
                         ) {
-                            Text("Creating User...")
+                            Text(stringResource(R.string.create_user))
                         }
                     }
                     else -> {
@@ -207,7 +209,7 @@ fun CreateUserScreen(
                             onClick = { viewModel.createUser() },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Create User")
+                            Text(stringResource(R.string.create_useer))
                         }
                     }
                 }
