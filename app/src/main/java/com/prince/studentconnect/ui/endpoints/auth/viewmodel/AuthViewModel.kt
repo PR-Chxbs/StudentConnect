@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.repository.AuthRepository
 import com.prince.studentconnect.data.repository.AuthResult
-import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.remote.dto.notification.CreateDeviceTokenRequest
 import com.prince.studentconnect.data.remote.dto.notification.CreateDeviceTokenResponse
 import com.prince.studentconnect.data.remote.dto.user.GetUserResponse
@@ -198,6 +197,8 @@ class AuthViewModel(
             val errorMessage = response.errorBody()?.string()
             Log.d("FCM", "(AuthViewModel) Error: $errorMessage")
         }
+    }
+
     fun loginWithGoogle(context: Context) {
         val result = authRepository.loginWithGoogle(context)
         _uiState.value = _uiState.value.copy(

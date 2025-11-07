@@ -11,6 +11,7 @@
     <!-- Login Page -->
     <string name="login">Meld aan</string>
     <string name="logging_in">Besig om aan te meld...</string>
+    <string name="login_with_google">Meld aan met Google</string>
     <string name="go_to_register">Het jy nie \'n rekening nie? Registreer</string>
     <string name="email">E-pos</string>
     <string name="password">Wagwoord</string>

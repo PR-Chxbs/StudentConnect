@@ -11,6 +11,7 @@
     <!-- Login Page -->
     <string name="login">Ngena ngemvume</string>
     <string name="logging_in">Kuyangenwa...</string>
+    <string name="login_with_google">Ngena ngemvume usebenzisa i-Google</string>
     <string name="go_to_register">Awunayo i-akhawunti? Bhalisa</string>
     <string name="email">I-imeyili</string>
     <string name="password">Iphasiwedi</string>
