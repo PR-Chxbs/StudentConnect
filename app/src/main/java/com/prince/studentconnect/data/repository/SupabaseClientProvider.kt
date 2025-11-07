@@ -27,7 +27,7 @@ object SupabaseClientProvider {
             provider = object : OAuthProvider() {
                 override val name = "google"
             },
-            redirectUrl = "com.prince.studentconnect://login-callback"
+            redirectUrl = "https://caedsakqmkdxhjnpfzlp.supabase.co/auth/v1/callback"
         )
     }
 }
