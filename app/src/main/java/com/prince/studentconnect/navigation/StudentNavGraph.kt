@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
@@ -34,10 +35,13 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.Setting
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
+
     conversationViewModel: ConversationViewModel,
     calendarViewModel: CalendarViewModel,
     settingsViewModel: SettingsViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+
+    userPrefs: UserPreferencesRepository
 ) {
 
     navigation(
@@ -217,7 +221,9 @@ fun NavGraphBuilder.studentNavGraph(
         }
 
         composable(Screen.StudentSettings.route) {
-            SettingsScreen(settingsViewModel)
+            SettingsScreen(
+                viewModel = settingsViewModel
+            )
         }
     }
 }

@@ -3,6 +3,9 @@ package com.prince.studentconnect.util
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 object LocaleManager {
@@ -27,5 +30,9 @@ object LocaleManager {
             res.updateConfiguration(config, res.displayMetrics)
             return context
         }
+    }
+
+    fun getLanguageBlocking(context: Context): String = runBlocking {
+        UserPreferencesRepository(context).languageFlow.first()
     }
 }

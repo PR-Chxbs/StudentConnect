@@ -97,7 +97,7 @@ fun EditCampusScreen(
                 }
                 is CampusCmsViewModel.OperationState.Success -> {
                     Text(
-                        text = stringResource(R.string.operation_seccessful),
+                        text = stringResource(R.string.operation_successful),
                         color = Color.Green,
                         modifier = Modifier.padding(top = 8.dp)
                     )

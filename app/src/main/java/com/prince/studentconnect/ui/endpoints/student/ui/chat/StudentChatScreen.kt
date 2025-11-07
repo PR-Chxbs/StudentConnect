@@ -179,7 +179,7 @@ fun ConversationListScreen(
             contentAlignment = Alignment.TopCenter
         ) {
             Text(
-                text = stringResource(R.string.convesation_unavailable),
+                text = stringResource(R.string.conversation_unavailable),
                 style = MaterialTheme.typography.bodyMedium
             )
         }

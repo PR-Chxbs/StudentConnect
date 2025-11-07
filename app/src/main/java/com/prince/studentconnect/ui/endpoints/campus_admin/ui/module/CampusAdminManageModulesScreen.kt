@@ -102,6 +102,8 @@ fun CampusAdminManageModulesScreen(
 
             // Confirmation Dialog
             if (showDeleteDialog && moduleToDelete != null) {
+                val moduleDeletedText = stringResource(R.string.module_deleted)
+
                 AlertDialog(
                     onDismissRequest = { showDeleteDialog = false },
                     title = { Text(stringResource(R.string.module_delete)) },
@@ -114,7 +116,7 @@ fun CampusAdminManageModulesScreen(
                                 viewModel.deleteModule(
                                     moduleId = id,
                                     onSuccess = {
-                                        Toast.makeText(context, stringResource(R.string.module_deleted), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, moduleDeletedText, Toast.LENGTH_SHORT).show()
                                     },
                                     onError = { msg ->
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()

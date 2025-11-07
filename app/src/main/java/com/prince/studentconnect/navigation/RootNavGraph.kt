@@ -105,11 +105,15 @@ fun RootNavGraph(
 
         studentNavGraph(
             navController = navController,
+
             // View Models
             conversationViewModel = conversationViewModel,
             calendarViewModel = calendarViewModel,
             settingsViewModel = settingsViewModel,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+
+            // Prefs
+            userPrefs = userPrefs
         )
 
         lecturerNavGraph(

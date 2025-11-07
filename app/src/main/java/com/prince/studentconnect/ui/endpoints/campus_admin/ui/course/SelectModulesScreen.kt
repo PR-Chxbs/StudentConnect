@@ -35,19 +35,23 @@ fun SelectModulesScreen(
         viewModel.loadModules()
     }
 
+    val selectModuleText = stringResource(R.string.select_module)
+    val courseCreatedText = stringResource(R.string.course_created)
+
     Scaffold(
         bottomBar = bottomBar,
         floatingActionButton = {
             ExtendedFloatingActionButton(
+
                 onClick = {
                     if (selectedModules.isEmpty()) {
-                        Toast.makeText(context, stringResource(R.string.select_module), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, selectModuleText, Toast.LENGTH_SHORT).show()
                         return@ExtendedFloatingActionButton
                     }
 
                     viewModel.createCourse(
                         onSuccess = {
-                            Toast.makeText(context, stringResource(R.string.course_created), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, courseCreatedText, Toast.LENGTH_SHORT).show()
                             onCourseCreated()
                         },
                         onError = {

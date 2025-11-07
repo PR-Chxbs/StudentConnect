@@ -209,7 +209,7 @@ fun CreateUserScreen(
                             onClick = { viewModel.createUser() },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.create_useer))
+                            Text(stringResource(R.string.creating_user))
                         }
                     }
                 }

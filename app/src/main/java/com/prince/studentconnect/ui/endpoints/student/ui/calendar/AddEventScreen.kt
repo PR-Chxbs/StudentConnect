@@ -84,6 +84,7 @@ fun AddEventScreen(
         )
     }
 
+    val eventCreatedText = stringResource(R.string.event_created)
 
     Scaffold(
         topBar = {
@@ -117,7 +118,7 @@ fun AddEventScreen(
                         viewModel.addEvent(
                             request,
                             onSuccess = {
-                                Toast.makeText(context, stringResource(R.string.event_created), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, eventCreatedText, Toast.LENGTH_SHORT).show()
                                 navController.popBackStack()
                             },
                             onError = {

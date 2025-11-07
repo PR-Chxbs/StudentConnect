@@ -35,6 +35,8 @@ fun ViewAllCoursesScreen(
         viewModel.loadCourses()
     }
 
+    val courseDeletedText = stringResource(R.string.courses_deleted)
+
     Scaffold(
         bottomBar = bottomBar,
         floatingActionButton = {
@@ -85,7 +87,7 @@ fun ViewAllCoursesScreen(
                                     onSuccess = {
                                         Toast.makeText(
                                             context,
-                                            stringResource(R.string.couses_deleted),
+                                            courseDeletedText,
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     },

@@ -13,13 +13,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.R
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.util.LocaleManager
 import com.prince.studentconnect.util.Prefs
+import kotlinx.coroutines.launch
 
 @Composable
-fun LanguageSelector(onLanguageChanged: () -> Unit) {
+fun LanguageSelector(
+    onLanguageChanged: (String) -> Unit,
+    repo: UserPreferencesRepository = UserPreferencesRepository(LocalContext.current)
+    ) {
     val context = LocalContext.current
-    var selectedLang by remember { mutableStateOf(LocaleManager.getLanguage(context)) }
+    val scope = rememberCoroutineScope()
+    val selectedLang by repo.languageFlow.collectAsState(initial = "en")
 
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         Text(text = stringResource(id = R.string.select_language), style = MaterialTheme.typography.displaySmall)
@@ -31,9 +37,11 @@ fun LanguageSelector(onLanguageChanged: () -> Unit) {
             "zu" to stringResource(R.string.lang_zulu)
         )
 
+        var tempSelectedLang by remember { mutableStateOf(selectedLang) }
+
         languages.forEach { (code, label) ->
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
-                RadioButton(selected = selectedLang == code, onClick = { selectedLang = code })
+                RadioButton(selected = tempSelectedLang == code, onClick = { tempSelectedLang = code })
                 Spacer(Modifier.width(8.dp))
                 Text(text = label)
             }
@@ -41,8 +49,10 @@ fun LanguageSelector(onLanguageChanged: () -> Unit) {
 
         Spacer(Modifier.height(16.dp))
         Button(onClick = {
-            Prefs.saveLanguage(context, selectedLang)
-            onLanguageChanged()
+            scope.launch {
+                repo.saveLanguage(tempSelectedLang)
+                onLanguageChanged(tempSelectedLang)
+            }
         }) {
             Text(stringResource(R.string.save))
         }

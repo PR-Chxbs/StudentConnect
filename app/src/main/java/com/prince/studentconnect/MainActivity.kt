@@ -1,5 +1,6 @@
 package com.prince.studentconnect
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,11 +19,19 @@ import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
 import com.prince.studentconnect.ui.theme.StudentConnectTheme
+import com.prince.studentconnect.util.LocaleManager
 
 
 class MainActivity : ComponentActivity() {
     private lateinit var usePrefs: UserPreferencesRepository
     private lateinit var settingsViewModel: SettingsViewModel
+
+    override fun attachBaseContext(newBase: Context?) {
+        if (newBase == null) return
+        val lang = LocaleManager.getLanguageBlocking(newBase)
+        val context = LocaleManager.setLocale(newBase, lang)
+        super.attachBaseContext(context)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
