@@ -70,6 +70,7 @@ object ServiceLocator {
     val eventApi: EventApi by lazy {
         if (USE_FAKE_API) FakeEventApi() else retrofit.create(EventApi::class.java)
     }
+    
 
     private val moduleApi: ModuleApi by lazy {
         if (USE_FAKE_API) FakeModuleApi() else retrofit.create(ModuleApi::class.java)
