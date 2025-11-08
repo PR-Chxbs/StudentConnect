@@ -6,7 +6,7 @@ import com.prince.studentconnect.data.local.Entities.Campus
 @Dao
 interface CampusDao {
     @Query(value = "SELECT * FROM campuses")
-    suspend fun getAllModules(): List<Campus>
+    suspend fun getAllCampuses(): List<Campus>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCampuses(campus: List<Campus>)

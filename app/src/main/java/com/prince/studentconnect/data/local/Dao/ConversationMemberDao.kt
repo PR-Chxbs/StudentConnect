@@ -9,7 +9,7 @@ interface ConversationMemberDao {
     suspend fun getAllConversationMembers(): List<Conversation_Member>
 
     @Query("SELECT * FROM conversation_members WHERE conversation_member_id = :id")
-    suspend fun getConversationMemberById(id: Int): Conversation_Member
+    suspend fun getConversationMemberById(id: String): Conversation_Member
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConversationMembers(conversationMember: Conversation_Member)

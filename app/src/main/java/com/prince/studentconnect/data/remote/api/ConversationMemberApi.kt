@@ -20,6 +20,8 @@ interface ConversationMemberApi {
         @Body request: UpdateConversationMemberRequest
     ): Response<UpdateConversationMemberResponse>*/
 
-    @DELETE("conversation_members/{id}")
-    suspend fun leaveConversationMember(@Path("id") memberId: Int): Response<LeaveConversationMemberResponse>
+    /*@DELETE("conversation_members/{id}")
+    suspend fun leaveConversationMember(
+        @Path("id") memberId: Int
+    ): Response<LeaveConversationMemberResponse>*/
 }

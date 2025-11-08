@@ -28,7 +28,7 @@ data class Conversation(
     @ColumnInfo(name = "member_count")
     val memberCount: Int,
     @ColumnInfo(name = "date_created")
-    val dateCreated: LocalDateTime,
+    val dateCreated: String,
     @ColumnInfo(name = "module_id")
     val moduleId: Int
 )

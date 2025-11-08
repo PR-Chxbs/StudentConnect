@@ -42,7 +42,7 @@ fun StudentChatScreen(
     conversationViewModel: ConversationViewModel,
     bottomBar: @Composable () -> Unit
 ) {
-    val tabs = listOf("Students", "Lecturers", "Groups")
+    val tabs = listOf(stringResource(R.string.students), stringResource(R.string.lecturers), stringResource(R.string.groups))
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { tabs.size })
     val scope = rememberCoroutineScope()
 
@@ -70,10 +70,10 @@ fun StudentChatScreen(
             ) {
                 // Determine placeholder based on current page
                 val placeholder = when (pagerState.currentPage) {
-                    0 -> "Search students..."
-                    1 -> "Search lecturers..."
-                    2 -> "Search groups..."
-                    else -> "Search..."
+                    0 -> stringResource(R.string.search_students)
+                    1 -> stringResource(R.string.search_lecturers)
+                    2 -> stringResource(R.string.search_groups)
+                    else -> stringResource(R.string.search)
                 }
 
                 SearchBar(

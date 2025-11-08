@@ -9,7 +9,7 @@ interface UserInterestDao {
     suspend fun getAllUserInterests(): List<User_interest>
 
     @Query("SELECT * FROM user_interests WHERE user_id = :id")
-    suspend fun getUserInterestById(id: Int): User_interest
+    suspend fun getUserInterestById(id: String): User_interest
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserInterest(userInterest: User_interest)

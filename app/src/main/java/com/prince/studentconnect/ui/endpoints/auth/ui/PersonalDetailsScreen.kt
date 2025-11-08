@@ -110,7 +110,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = firstName,
                 onValueChange = { onboardingViewModel.setFirstName(it.take(maxNameLength)) },
-                label = { Text(stringResource(R.string.name)) },
+                label = { Text(stringResource(R.string.first_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -126,7 +126,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = middleName ?: "",
                 onValueChange = { onboardingViewModel.setMiddleName(it.take(maxNameLength)) },
-                label = { Text(stringResource(R.string.name)) },
+                label = { Text(stringResource(R.string.middle_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -135,7 +135,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = lastName,
                 onValueChange = { onboardingViewModel.setLastName(it.take(maxNameLength)) },
-                label = { Text(stringResource(R.string.name)) },
+                label = { Text(stringResource(R.string.last_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)

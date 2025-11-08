@@ -6,9 +6,9 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface EventParticipationApi {
-    @GET("event_participations")
-    suspend fun getEventParticipation(): Response<List<GetEventParticipationResponse>>
+    // @GET("event_participations")
+    // suspend fun getEventParticipation(): Response<List<GetEventParticipationResponse>>
 
-    @POST("event_participations")
-    suspend fun addEventParticipation(@Path("id") id: Int, @Body request: UpdateEventParticipationRequest): Reponse<UpdateEventParticipationResponse>
+    // @POST("event_participations")
+    // suspend fun addEventParticipation(@Path("id") id: Int, @Body request: UpdateEventParticipationRequest): Reponse<UpdateEventParticipationResponse>
 }

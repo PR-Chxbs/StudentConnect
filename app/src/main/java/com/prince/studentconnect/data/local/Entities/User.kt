@@ -33,9 +33,9 @@ import com.prince.studentconnect.data.converters.RoleConverter
 
 @TypeConverters(RoleConverter::class)
 data class User(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "user_id")
-    val userId: Int,
+    val userId: String,
     @ColumnInfo(name = "first_name")
     val firstName: String,
     @ColumnInfo(name = "middle_name")
@@ -59,6 +59,6 @@ data class User(
 )
 {
     enum class Role {
-        student, lecturer, admin
+        student, lecturer, system_admin, campus_admin
     }
 }

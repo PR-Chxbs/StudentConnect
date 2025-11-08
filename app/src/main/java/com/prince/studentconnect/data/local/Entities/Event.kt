@@ -8,7 +8,7 @@ import kotlinx.datetime.DateTimePeriod
     foreignKeys = [
         ForeignKey(
             entity = User::class,
-            parentColumns = ["creator_id"],
+            parentColumns = ["user_id"],
             childColumns = ["creator_id"],
             onDelete = ForeignKey.CASCADE
         ),
@@ -30,7 +30,7 @@ data class Event(
     val title: String,
     val description: String,
     @ColumnInfo(name = "start_at")
-    val startAt: DateTimePeriod,
+    val startAt: String,
     @ColumnInfo(name = "icon_url")
     val iconUrl: String,
     @ColumnInfo(name = "color_code")
@@ -38,11 +38,11 @@ data class Event(
     @ColumnInfo(name = "recurrence_rule")
     val recurrenceRule: Recurrence_rule,
     @ColumnInfo(name = "reminder_at")
-    val reminderAt: DateTimePeriod,
+    val reminderAt: String,
     @ColumnInfo(name = "created_at")
-    val createdAt: DateTimePeriod,
+    val createdAt: String,
     @ColumnInfo(name = "creator_id")
-    val creatorId: Int,
+    val creatorId: String,
     @ColumnInfo(name = "conversation_id")
     val conversationId: Int
 )

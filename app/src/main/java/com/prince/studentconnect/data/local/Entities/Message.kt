@@ -14,7 +14,7 @@ import kotlinx.datetime.DateTimePeriod
             ),
         ForeignKey (
             entity = User::class,
-            parentColumns = ["sender_id"],
+            parentColumns = ["user_id"],
             childColumns = ["sender_id"]
         )
     ],
@@ -29,12 +29,14 @@ data class Message(
     val messageId: Int = 0,
     @ColumnInfo(name = "message_text")
     val messageText: String,
+    @ColumnInfo(name = "sender_id")
+    val senderId: String,
     @ColumnInfo(name = "attachment_url")
     val attachmentUrl: String? = null,
     @ColumnInfo(name = "attachment_type")
     val attachmentType: Attachment_type? = null,
     @ColumnInfo(name = "sent_at")
-    val sentAt: DateTimePeriod,
+    val sentAt: String,
     @ColumnInfo(name = "conversation_id")
     val conversationId: Int
 )

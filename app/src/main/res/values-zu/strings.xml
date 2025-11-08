@@ -32,7 +32,7 @@
 
     <!-- Personal Screen -->
     <string name="step">Isinyathelo 1 kwezi-3: Imininingwane Yakho</string>
-    <string name="name">Igama*</string>
+    <string name="first_name">First Name*</string>
     <string name="student_number">Inombolo yomfundi</string>
     <string name="phone_number">Inombolo yocingo*</string>
     <string name="bio">Ulwazi ngawe</string>
@@ -102,6 +102,14 @@
 
     <!-- Student Chat Screen -->
     <string name="conversation_unavailable">Awekho ama-conversation aqalile okwamanje</string>
+    <string name="search_students">Search students...</string>
+    <string name="search_lecturers">Search lecturers...</string>
+    <string name="search_groups">Search groups</string>
+    <string name="search">Search...</string>
+
+    <string name="students">Students</string>
+    <string name="lecturers">Lecturers</string>
+    <string name="groups">Groups</string>
 
     <!-- Profile Screen-->
     <string name="edit_profile">Hlela Iphrofayela</string>

@@ -78,7 +78,7 @@ class AuthViewModel(
                             setNewDeviceTokenCall()
 
                             val userDetails = userRepository.getUser(userId).body()
-                            // Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
+                            Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
                             if (userDetails == null) {
 
                                 if (currentUser.email == null) {
@@ -108,7 +108,6 @@ class AuthViewModel(
                             isLoading = false,
                             successMessage = "Logged in successfully"
                         )
-                        redirectScreenRoute = Screen.Student.route
                     }
                     is AuthResult.Error -> _uiState.value = _uiState.value.copy(
                         isLoading = false,

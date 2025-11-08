@@ -32,7 +32,7 @@
 
     <!-- Personal Screen -->
     <string name="step">Step 1 of 3: Personal Details</string>
-    <string name="name">First Name*</string>
+    <string name="first_name">First Name*</string>
     <string name="student_number">Student Number</string>
     <string name="phone_number">Phone Number*</string>
     <string name="bio">Bio</string>
@@ -103,6 +103,14 @@
 
     <!-- Student Chat Screen -->
     <string name="conversation_unavailable">No conversations started yet</string>
+    <string name="search_students">Search students...</string>
+    <string name="search_lecturers">Search lecturers...</string>
+    <string name="search_groups">Search groups</string>
+    <string name="search">Search...</string>
+
+    <string name="students">Students</string>
+    <string name="lecturers">Lecturers</string>
+    <string name="groups">Groups</string>
 
     <!-- Profile Screen-->
     <string name="edit_profile">Edit Profile</string>

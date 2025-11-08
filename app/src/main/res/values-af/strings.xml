@@ -32,7 +32,7 @@
 
     <!-- Personal Screen -->
     <string name="step">Stap 1 van 3: Persoonlike Besonderhede</string>
-    <string name="name">Voornaam*</string>
+    <string name="first_name">First Name*</string>
     <string name="student_number">Studentenommer</string>
     <string name="phone_number">Telefoonnommer*</string>
     <string name="bio">Biografie</string>
@@ -102,6 +102,14 @@
 
     <!-- Student Chat Screen -->
     <string name="conversation_unavailable">Geen gesprekke begin nog nie</string>
+    <string name="search_students">Search students...</string>
+    <string name="search_lecturers">Search lecturers...</string>
+    <string name="search_groups">Search groups</string>
+    <string name="search">Search...</string>
+
+    <string name="students">Students</string>
+    <string name="lecturers">Lecturers</string>
+    <string name="groups">Groups</string>
 
     <!-- Profile Screen-->
     <string name="edit_profile">Wysig Profiel</string>

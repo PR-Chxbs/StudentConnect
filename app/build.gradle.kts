@@ -5,6 +5,7 @@ plugins {
 
     // Firebase
     alias(libs.plugins.google.services)
+    kotlin("kapt")
 }
 
 android {

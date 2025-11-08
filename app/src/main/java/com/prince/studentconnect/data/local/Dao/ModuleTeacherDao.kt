@@ -9,7 +9,7 @@ interface ModuleTeacherDao {
     suspend fun getAllModuleTeacher(): List<Module_Teacher>
 
     @Query("SELECT * FROM module_teachers WHERE module_teacher_id = :id")
-    suspend fun getModuleTeacherById(id: Int)
+    suspend fun getModuleTeacherById(id: Int): Module_Teacher?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertModuleTeacher(moduleTeacher: Module_Teacher)

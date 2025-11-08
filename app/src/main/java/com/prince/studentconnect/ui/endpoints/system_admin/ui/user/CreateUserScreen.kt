@@ -85,7 +85,7 @@ fun CreateUserScreen(
                 OutlinedTextField(
                     value = viewModel.firstName,
                     onValueChange = { viewModel.firstName = it },
-                    label = { Text(stringResource(R.string.name)) },
+                    label = { Text(stringResource(R.string.first_name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
