@@ -149,11 +149,9 @@
 
     <!-- System Admin Home Screen -->
     <string name="system_admin_home">Ikhaya Lomphathi Wesistimu</string>
-    <string name="sytem_admin_home_screen">Siyakwamukela ekhaya lomphathi wesistimu!</string>
 
     <!-- System Admin Manage Interest Screen -->
     <string name="system_admin_manage">Umphathi Wesistimu Phatha Izintshisekelo</string>
-    <string name="sytem_admin_manage_screen">Siyakwamukela esikrinini sokuphatha izintshisekelo!</string>
     <string name="default_web_client_id">452524501035-vg25t90n4k8fs941beh2q1lfn4pcs280.apps.googleusercontent.com</string>
 
 </resources>
