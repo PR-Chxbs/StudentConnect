@@ -150,7 +150,7 @@ object ServiceLocator {
     }
 
     fun provideSettingsViewModelFactory(themePreferenceManager: UserPreferencesRepository): ViewModelProvider.Factory {
-        return SettingsViewModelFactory(themePreferenceManager)
+        return SettingsViewModelFactory(themePreferenceManager, authRepository)
     }
 
     // ----- Admin Endpoint -----

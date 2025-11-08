@@ -27,6 +27,8 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.Setting
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -34,10 +36,22 @@ fun RootNavGraph(
     navController: NavHostController,
     settingsViewModel: SettingsViewModel,
     userPrefs: UserPreferencesRepository,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    startDestination: String
 ) {
 
+    LaunchedEffect(Unit) {
+        var tempRole: String? = ""
+        var tempId: String? = ""
+
+        userPrefs.userIdFlow.collect { value -> tempId = value }
+        userPrefs.roleFlow.collect { value -> tempRole = value}
+
+        authViewModel.setUserValues(tempId, tempRole)
+    }
+
     val currentUserId by authViewModel.currentUserId.collectAsState()
+    val userRole by authViewModel.userRole.collectAsState()
 
     // --- ViewModels via ViewModelProvider ---
     val conversationViewModel: ConversationViewModel = viewModel(
@@ -92,10 +106,22 @@ fun RootNavGraph(
         }
     }
 
+    /*var startDestination = Graph.AUTH
+
+    Log.d("RootNavGraph", "(Auth) User ID: $currentUserId        User Role: $userRole")
+    if (!currentUserId.isEmpty() && !userRole.isNullOrEmpty()) {
+        when (userRole) {
+            "student" -> startDestination = Screen.Student.route
+            "campus_admin" -> startDestination = Screen.CampusAdmin.route
+            "system_admin" -> startDestination = Screen.SystemAdmin.route
+            "lecturer" -> startDestination = Screen.Lecturer.route
+        }
+    }*/
+
     // ------ Navigation ------
     NavHost(
         navController = navController,
-        startDestination = Graph.AUTH
+        startDestination = startDestination
     ) {
         authNavGraph(
             navController = navController,

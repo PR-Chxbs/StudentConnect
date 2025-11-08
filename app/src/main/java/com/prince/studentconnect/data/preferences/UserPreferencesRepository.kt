@@ -17,6 +17,7 @@ class UserPreferencesRepository(private val context: Context) {
         // Theme: 0 = System Default, 1 = Light, 2 = Dark
         private val THEME_MODE_KEY = intPreferencesKey("theme_mode")
         private val USER_ID_KEY = stringPreferencesKey("user_id")
+        private val ROLE_KEY = stringPreferencesKey("role")
         private val LANGUAGE_KEY = stringPreferencesKey("language")
         private const val DEFAULT_LANG = "en"
     }
@@ -46,6 +47,23 @@ class UserPreferencesRepository(private val context: Context) {
     suspend fun clearUserId() {
         context.dataStore.edit { prefs ->
             prefs.remove(USER_ID_KEY)
+        }
+    }
+
+
+    val roleFlow: Flow<String?> = context.dataStore.data.map { prefs ->
+        prefs[ROLE_KEY]
+    }
+
+    suspend fun saveRole(role: String) {
+        context.dataStore.edit { prefs ->
+            prefs[ROLE_KEY] = role
+        }
+    }
+
+    suspend fun clearRole() {
+        context.dataStore.edit { prefs ->
+            prefs.remove(ROLE_KEY)
         }
     }
 

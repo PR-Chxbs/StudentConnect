@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.R
+import com.prince.studentconnect.ui.components.auth.GoogleSignInButton
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
@@ -109,7 +110,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(12.dp))
 
             // Google Sign-Up Button (with colored G logo)
-            Button(
+            /*Button(
                 onClick = { viewModel.loginWithGoogle(context) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -127,7 +128,9 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text("Sign up with Google", color = Color.Black)
-            }
+            }*/
+
+            GoogleSignInButton(viewModel)
 
             Spacer(Modifier.height(12.dp))
 

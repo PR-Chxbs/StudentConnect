@@ -1,13 +1,23 @@
 package com.prince.studentconnect.ui.components.auth
 
 import android.util.Base64
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import io.github.jan.supabase.exceptions.RestException
@@ -44,19 +54,9 @@ fun GoogleSignInButton(
     val onClick: () -> Unit = {
         val credentialManager = CredentialManager.create(context)
 
-        // Generate a nonce and hash it with sha-256
-        // Providing a nonce is optional but recommended
-        val rawNonce = UUID.randomUUID().toString() // Generate a random String. UUID should be sufficient, but can also be any other random string.
-        val bytes = rawNonce.toString().toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) } // Hashed nonce to be passed to Google sign-in
-
-
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(clientId)
-            .setNonce(hashedNonce) // Provide the nonce if you have one
             .build()
 
         val request: GetCredentialRequest = GetCredentialRequest.Builder()
@@ -91,9 +91,24 @@ fun GoogleSignInButton(
     }
 
     Button(
-        onClick = onClick,
+        onClick = onClick ,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Sign in with Google")
+        // Row content: icon + space + text
+        Icon(
+            painter = painterResource(id = R.drawable.ic_google_logo),
+            contentDescription = "Google logo",
+            tint = Color.Unspecified, // 👈 prevents Material from recoloring the vector
+            modifier = Modifier.size(20.dp)
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Text("Continue with Google", color = Color.Black)
     }
 }
 private fun generateNonce(): String {

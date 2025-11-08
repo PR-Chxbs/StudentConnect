@@ -75,7 +75,6 @@ class AuthRepository {
             client.auth.signInWith(IDToken) {
                 this.idToken = idToken
                 this.provider = Google
-                this.nonce = nonce
             }
 
             val session = client.auth.currentSessionOrNull()

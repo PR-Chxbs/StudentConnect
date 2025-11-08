@@ -24,7 +24,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.repository.SupabaseClientProvider
 import com.prince.studentconnect.di.ServiceLocator
+import com.prince.studentconnect.navigation.Graph
 import com.prince.studentconnect.navigation.RootNavGraph
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.theme.BaseScreen
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         userPrefs = UserPreferencesRepository(this)
-        settingsViewModel = SettingsViewModel(userPrefs)
+        settingsViewModel = SettingsViewModel(userPrefs, ServiceLocator.authRepository)
 
         setContent {
             val themeMode by settingsViewModel.themeMode.collectAsState(initial = 0)
@@ -62,10 +64,27 @@ class MainActivity : ComponentActivity() {
             }
 
             var device_token by remember { mutableStateOf("Fetching token...") }
+            val userId by userPrefs.userIdFlow.collectAsState("")
+            val userRole by userPrefs.roleFlow.collectAsState("")
+            Log.d("MainScreen", "User role: $userRole       User id: $userId")
 
             val authViewModel: AuthViewModel = viewModel(
                 factory = ServiceLocator.provideAuthViewModelFactory(userPrefs)
             )
+
+            authViewModel.setUserValues(userId, userRole)
+
+            var startDestination = Graph.AUTH
+
+            Log.d("RootNavGraph", "(Auth) User ID: $userId        User Role: $userRole")
+            if (!userId.isNullOrEmpty() && !userRole.isNullOrEmpty()) {
+                when (userRole) {
+                    "student" -> startDestination = Screen.Student.route
+                    "campus_admin" -> startDestination = Screen.CampusAdmin.route
+                    "system_admin" -> startDestination = Screen.SystemAdmin.route
+                    "lecturer" -> startDestination = Screen.Lecturer.route
+                }
+            }
 
             LaunchedEffect(Unit) {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
@@ -78,7 +97,8 @@ class MainActivity : ComponentActivity() {
                 StudentConnectApp(
                     settingsViewModel = settingsViewModel,
                     authViewModel = authViewModel,
-                    userPrefs = userPrefs
+                    userPrefs = userPrefs,
+                    startDestination = startDestination
                 )
             }
         }
@@ -118,7 +138,8 @@ class MainActivity : ComponentActivity() {
 fun StudentConnectApp(
     settingsViewModel: SettingsViewModel,
     authViewModel: AuthViewModel,
-    userPrefs: UserPreferencesRepository
+    userPrefs: UserPreferencesRepository,
+    startDestination: String
 ) {
     NotificationPermissionRequester()
 
@@ -129,7 +150,8 @@ fun StudentConnectApp(
             navController = navController,
             settingsViewModel = settingsViewModel,
             userPrefs = userPrefs,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            startDestination = startDestination
         )
     }
 }

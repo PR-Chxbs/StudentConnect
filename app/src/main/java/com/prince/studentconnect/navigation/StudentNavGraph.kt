@@ -220,7 +220,8 @@ fun NavGraphBuilder.studentNavGraph(
 
         composable(Screen.StudentSettings.route) {
             SettingsScreen(
-                viewModel = settingsViewModel
+                viewModel = settingsViewModel,
+                onLogout = { navController.navigate(Screen.Login.route)}
             )
         }
     }

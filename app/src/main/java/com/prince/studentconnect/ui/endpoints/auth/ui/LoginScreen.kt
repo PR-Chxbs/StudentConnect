@@ -1,5 +1,6 @@
 package com.prince.studentconnect.ui.endpoints.auth.ui
 
+import android.util.Log
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.R
+import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.auth.GoogleSignInButton
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
@@ -48,6 +51,25 @@ fun LoginScreen(
     onRedirectScreen: (screenRoute: String) -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
+    val currentUserId by viewModel.currentUserId.collectAsState()
+    val userRole by viewModel.userRole.collectAsState()
+
+    LaunchedEffect(currentUserId) {
+        Log.d("AuthScreen", "(Auth) User ID: $currentUserId        User Role: $userRole")
+        if (currentUserId.isNotEmpty() && userRole.isNotEmpty()) {
+            var redirectTo = ""
+            when (userRole) {
+                "student" -> redirectTo = Screen.Student.route
+                "campus_admin" -> redirectTo = Screen.CampusAdmin.route
+                "system_admin" -> redirectTo = Screen.SystemAdmin.route
+                "lecturer" -> redirectTo = Screen.Lecturer.route
+            }
+
+            if (redirectTo.isNotEmpty()) onRedirectScreen(redirectTo)
+        }
+    }
+
+
     val state by viewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -103,7 +125,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Google login button with icon
-            Button(
+            /*Button(
                 onClick = { viewModel.loginWithGoogle(context) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -122,7 +144,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text("Continue with Google", color = Color.Black)
-            }
+            }*/
 
             GoogleSignInButton(viewModel)
 

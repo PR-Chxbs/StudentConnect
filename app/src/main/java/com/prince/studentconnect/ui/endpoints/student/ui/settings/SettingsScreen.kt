@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
+    onLogout: () -> Unit
 ) {
     val context = LocalContext.current
     val themeMode by viewModel.themeMode.collectAsState()
@@ -82,6 +83,13 @@ fun SettingsScreen(
                     }
                 }
             )
+
+            Button(onClick = {
+                viewModel.logout()
+                onLogout()
+            }) {
+                Text("Logout")
+            }
         }
     }
 }

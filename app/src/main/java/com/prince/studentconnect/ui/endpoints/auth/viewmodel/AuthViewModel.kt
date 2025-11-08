@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.repository.AuthRepository
 import com.prince.studentconnect.data.repository.AuthResult
@@ -37,6 +38,9 @@ class AuthViewModel(
 
     private val _currentUserId = MutableStateFlow("")
     val currentUserId: StateFlow<String> = _currentUserId
+
+    private val _userRole = MutableStateFlow("")
+    val userRole: StateFlow<String> = _userRole
 
     private val _deviceToken = MutableStateFlow("Fetching token...")
     val deviceToken: StateFlow<String> = _deviceToken
@@ -95,6 +99,7 @@ class AuthViewModel(
 
                                 redirectScreenRoute = Screen.OnboardingPersonalDetails.route
                             } else {
+                                userPrefs.saveRole(userDetails.role)
                                 when (userDetails.role) {
                                     "student" -> redirectScreenRoute = Screen.Student.route
                                     "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
@@ -244,6 +249,8 @@ class AuthViewModel(
 
                                 redirectScreenRoute = Screen.OnboardingPersonalDetails.route
                             } else {
+                                userPrefs.saveRole(userDetails.role)
+                                Log.d("AuthScreen", "Role set")
                                 when (userDetails.role) {
                                     "student" -> redirectScreenRoute = Screen.Student.route
                                     "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
@@ -275,5 +282,10 @@ class AuthViewModel(
                 )
             }
         }
+    }
+
+    fun setUserValues(newId: String?, newRole: String?) {
+        _currentUserId.value = newId ?: ""
+        _userRole.value = newRole ?: ""
     }
 }
