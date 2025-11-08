@@ -51,9 +51,15 @@ work = "2.9.1"
 room = "2.6.1"
 kapt = "1.9.23"
 
-coroutines = "1.8.1"
+androidx-credentials = "1.3.0"
+
+googlePlayServicesAuth = "20.7.0"
+googleIdLibrary = "1.1.1"
+androidx-credentials-beta = "1.6.0-beta03"
+googleid = "1.1.1"
 
 [libraries]
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -119,6 +125,17 @@ androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+
+# Bundle for credentials
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidx-credentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidx-credentials" }
+
+[bundles]
+androidx-credentials = [
+    "androidx-credentials",
+    "androidx-credentials-play-services-auth"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

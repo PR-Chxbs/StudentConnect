@@ -154,5 +154,6 @@
     <!-- System Admin Manage Interest Screen -->
     <string name="system_admin_manage">Stelseladministrateur Bestuur Belangstellings</string>
     <string name="sytem_admin_manage_screen">Welkom by die Stelseladministrateur Bestuur Belangstellings-skerm!</string>
+    <string name="default_web_client_id">452524501035-vg25t90n4k8fs941beh2q1lfn4pcs280.apps.googleusercontent.com</string>
 
 </resources>

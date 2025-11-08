@@ -206,4 +206,74 @@ class AuthViewModel(
             errorMessage = if (result is AuthResult.Error) result.message else null
         )
     }
+
+    fun loginWithGoogleNative(idToken: String, nonce: String) {
+
+        _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+
+        viewModelScope.launch {
+            try {
+                when (val result = authRepository.loginWithGoogleNative(idToken, nonce)) {
+                    is AuthResult.Success -> {
+                        val currentUser = authRepository.getCurrentUser()
+                        val userId = currentUser?.id
+
+                        // Log.d("AuthScreen", "(AuthViewModel) Current user: ${authRepository.getCurrentUser()}")
+
+                        if (userId != null) {
+                            userPrefs.saveUserId(userId)
+                            _currentUserId.value = userId
+
+                            setNewDeviceTokenCall()
+
+                            val userDetails = userRepository.getUser(userId).body()
+                            Log.d("AuthScreen", "(AuthViewModel) User details from api: $userDetails")
+                            if (userDetails == null) {
+
+                                if (currentUser.email == null) {
+                                    _uiState.value = _uiState.value.copy(
+                                        isLoading = false,
+                                        errorMessage = "Unexpected result"
+                                    )
+                                    return@launch
+                                }
+
+                                _currentUserEmail.value = currentUser.email ?: ""
+
+                                Log.d("AuthScreen", "(AuthViewModel) Email: ${_currentUserEmail.value}\n                User Id: ${_currentUserId.value}")
+
+                                redirectScreenRoute = Screen.OnboardingPersonalDetails.route
+                            } else {
+                                when (userDetails.role) {
+                                    "student" -> redirectScreenRoute = Screen.Student.route
+                                    "campus_admin" -> redirectScreenRoute = Screen.CampusAdmin.route
+                                    "system_admin" -> redirectScreenRoute = Screen.SystemAdmin.route
+                                    "lecturer" -> redirectScreenRoute = Screen.Lecturer.route
+                                }
+                            }
+                        }
+
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            successMessage = "Logged in successfully"
+                        )
+                    }
+                    is AuthResult.Error -> _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = result.message
+                    )
+                    else -> _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Unexpected result"
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Error: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = e.message
+                )
+            }
+        }
+    }
 }

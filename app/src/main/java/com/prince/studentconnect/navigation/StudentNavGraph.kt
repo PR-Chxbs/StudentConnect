@@ -39,9 +39,7 @@ fun NavGraphBuilder.studentNavGraph(
     conversationViewModel: ConversationViewModel,
     calendarViewModel: CalendarViewModel,
     settingsViewModel: SettingsViewModel,
-    authViewModel: AuthViewModel,
-
-    userPrefs: UserPreferencesRepository
+    authViewModel: AuthViewModel
 ) {
 
     navigation(

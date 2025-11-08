@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.prince.studentconnect.R
+import com.prince.studentconnect.ui.components.auth.GoogleSignInButton
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 
 @Composable
@@ -120,8 +121,10 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Text("Continue with Google", color = MaterialTheme.colorScheme.onSurface)
+                Text("Continue with Google", color = Color.Black)
             }
+
+            GoogleSignInButton(viewModel)
 
             Spacer(modifier = Modifier.height(12.dp))
 

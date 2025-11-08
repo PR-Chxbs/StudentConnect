@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import io.github.jan.supabase.gotrue.auth
 import com.prince.studentconnect.data.repository.SupabaseClientProvider
+import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
+import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 
 sealed class AuthResult {
     data class Success(val email: String?) : AuthResult()
@@ -65,6 +67,25 @@ class AuthRepository {
             AuthResult.Success(null)
         } catch (e: Exception) {
             AuthResult.Error(e.message ?: "Unknown error during Google login")
+        }
+    }
+
+    suspend fun loginWithGoogleNative(idToken: String, nonce: String): AuthResult {
+        return try {
+            client.auth.signInWith(IDToken) {
+                this.idToken = idToken
+                this.provider = Google
+                this.nonce = nonce
+            }
+
+            val session = client.auth.currentSessionOrNull()
+            if (session != null) {
+                AuthResult.Success(session.user?.email)
+            } else {
+                AuthResult.Error("Invalid credentials or no active session")
+            }
+        } catch (e: Exception) {
+            AuthResult.Error(e.message ?: "Unknown error during login")
         }
     }
 

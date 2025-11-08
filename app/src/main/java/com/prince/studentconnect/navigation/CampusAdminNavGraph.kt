@@ -79,9 +79,6 @@ fun NavGraphBuilder.campusAdminNavGraph(
         )
 
         composable(Screen.CampusAdminHome.route) {
-            val currentUserId by authViewModel.currentUserId.collectAsState()
-
-            userCmsViewModel.initialize(currentUserId)
             CampusAdminHomeScreen(
                 navController = navController,
                 bottomBar = {
@@ -96,6 +93,9 @@ fun NavGraphBuilder.campusAdminNavGraph(
         }
 
         composable(Screen.CampusAdminManageUsers.route) {
+            val currentUserId by authViewModel.currentUserId.collectAsState()
+            userCmsViewModel.initialize(currentUserId)
+
             SystemAdminManageUsersScreen(
                 viewModel = userCmsViewModel,
                 onUserClick = { userId -> navController.navigate(Screen.CampusAdminViewProfile.route.replace("{user_id}", userId))},

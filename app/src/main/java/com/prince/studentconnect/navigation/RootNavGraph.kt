@@ -110,10 +110,7 @@ fun RootNavGraph(
             conversationViewModel = conversationViewModel,
             calendarViewModel = calendarViewModel,
             settingsViewModel = settingsViewModel,
-            authViewModel = authViewModel,
-
-            // Prefs
-            userPrefs = userPrefs
+            authViewModel = authViewModel
         )
 
         lecturerNavGraph(
