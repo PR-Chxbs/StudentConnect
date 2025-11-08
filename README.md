@@ -27,16 +27,15 @@ Here you can **chat with classmates**, **join study groups**, **share resources*
 ---
 
 ## Features
-- **User Authentication:** Sign up and log in securely.
+- **User Authentication:** Sign up and log in securely. SSO Sign up/in's work as well!
 - **Profile Creation:** Create your student profile.
 - **Student Chat:** Chat with fellow students and study partners in real time.
 - **Study Groups:** Be automatically added to groups for the modules you are doing.
-- **Event Notifications:** Create custom events for study sessions or tests you have coming.
+- **Add Events:** Create custom events for study sessions or tests you have coming.
+- **App Notifications:** Receive notifications when new messages have been sent.
 - **Resource Sharing:** Share and access study materials easily.
 - **Admin CMS:** System admins are able to create campuses and users.
 - **Campus Admin CMS:** Campus admins are able to create courses and assign modules for the courses.
-
-> *Add or remove features as per your app.*
 
 ---
 
@@ -108,5 +107,29 @@ Authentication: Supabase Auth / OAuth
 
 *Wahina Prince Chabalala*
 - https://github.com/PR-Chxbs
-- 
+- wp.chabalala@gmail.com
+- https://www.linkedin.com/in/wahina-chabalala/
 
+
+*Ororiseng Seshoka*
+- https://github.com/OrorisengShakes
+- Roriieyseshoka@gmail.com
+- https://www.linkedin.com/in/ororiseng-seshoka-696b65288/
+
+
+*Tinyiko Makamu*
+- https://github.com/Tinyiko09
+- tinyikocharles71@gmail.com
+- https://www.linkedin.com/in/tinyiko-makamu-44203b251/
+
+
+*Omolemo Ramalekana*
+- https://github.com/Omolemoo
+- josephomolemoramalekana@gmail.com
+- https://www.linkedin.com/in/omolemo-joseph-ramalekana-932704377/
+
+
+*Richard Ramokgopa*
+- https://github.com/Richard040829
+- richard292004@gmail.com
+- https://www.linkedin.com/in/richard-ramokgopa-b57917288/
