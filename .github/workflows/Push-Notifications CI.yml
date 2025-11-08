@@ -25,11 +25,5 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # New step: inject google-services.json from GitHub secret
-      - name: Add google-services.json
-        run: |
-          echo "$GOOGLE_SERVICES_JSON" > ./app/google-services.json
-        # Make sure the secret GOOGLE_SERVICES_JSON exists in repo Settings -> Secrets
-
       - name: Build with Gradle
         run: ./gradlew build
