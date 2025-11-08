@@ -38,7 +38,7 @@ fun SystemAdminManageInterestsScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.system_admin_manage_screen), style = MaterialTheme.typography.headlineSmall)
+            Text("", style = MaterialTheme.typography.headlineSmall)
         }
     }
 }
