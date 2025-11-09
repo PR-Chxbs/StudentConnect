@@ -1,24 +1,8 @@
 package com.prince.studentconnect.data.remote.api
 
-import com.prince.studentconnect.data.remote.dto.event.PatchEventRequest
-import com.prince.studentconnect.data.remote.dto.event.CreateEventRequest
-import com.prince.studentconnect.data.remote.dto.event.CreateEventResponse
-import com.prince.studentconnect.data.remote.dto.event.GetAnEventResponse
-import com.prince.studentconnect.data.remote.dto.event.GetEventsResponse
-import com.prince.studentconnect.data.remote.dto.event.GetParticipantsResponse
-import com.prince.studentconnect.data.remote.dto.event.SubscribeToEventRequest
-import com.prince.studentconnect.data.remote.dto.event.SubscribeToEventResponse
-import com.prince.studentconnect.data.remote.dto.event.UpdateEventRequest
-import com.prince.studentconnect.data.remote.dto.event.UpdateEventResponse
+import com.prince.studentconnect.data.remote.dto.event.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface EventApi {
     @POST("events")

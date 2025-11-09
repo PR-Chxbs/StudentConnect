@@ -18,8 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModel
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +69,7 @@ fun PersonalDetailsScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "Step 1 of 3: Personal Details",
+                            text = stringResource(R.string.step),
                             style = MaterialTheme.typography.titleMedium,
                             textAlign = TextAlign.Center
                         )
@@ -94,7 +96,7 @@ fun PersonalDetailsScreen(
                     .padding(16.dp),
                 enabled = isFormValid
             ) {
-                Text("Next")
+                Text(stringResource(R.string.next))
             }
         }
     ) { paddingValues ->
@@ -108,7 +110,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = firstName,
                 onValueChange = { onboardingViewModel.setFirstName(it.take(maxNameLength)) },
-                label = { Text("First Name*") },
+                label = { Text(stringResource(R.string.first_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -124,7 +126,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = middleName ?: "",
                 onValueChange = { onboardingViewModel.setMiddleName(it.take(maxNameLength)) },
-                label = { Text("Middle Name (optional)") },
+                label = { Text(stringResource(R.string.middle_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -133,7 +135,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = lastName,
                 onValueChange = { onboardingViewModel.setLastName(it.take(maxNameLength)) },
-                label = { Text("Last Name*") },
+                label = { Text(stringResource(R.string.last_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -149,7 +151,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = studentNumber,
                 onValueChange = { onboardingViewModel.setStudentNumber(it.take(15)) },
-                label = { Text("Student Number") },
+                label = { Text(stringResource(R.string.student_number)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
@@ -161,7 +163,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = phoneNumber,
                 onValueChange = { onboardingViewModel.setPhoneNumber(it.take(15)) },
-                label = { Text("Phone Number*") },
+                label = { Text(stringResource(R.string.phone_number)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
@@ -173,7 +175,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = bio,
                 onValueChange = { onboardingViewModel.setBio(it.take(maxBioLength)) },
-                label = { Text("Bio") },
+                label = { Text(stringResource(R.string.bio)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -190,7 +192,7 @@ fun PersonalDetailsScreen(
             OutlinedTextField(
                 value = profilePictureUrl,
                 onValueChange = { onboardingViewModel.setProfilePictureUrl(it) },
-                label = { Text("Profile Picture URL") },
+                label = { Text(stringResource(R.string.profile_picture)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(

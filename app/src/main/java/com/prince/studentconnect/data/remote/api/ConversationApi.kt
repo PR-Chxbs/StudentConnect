@@ -1,30 +1,9 @@
 package com.prince.studentconnect.data.remote.api
 
-import com.prince.studentconnect.data.remote.dto.conversation_membership.ChangeMemberRoleRequest
-import com.prince.studentconnect.data.remote.dto.conversation_membership.ChangeMemberRoleResponse
-import com.prince.studentconnect.data.remote.dto.conversation_membership.GetConversationMembersResponse
-import com.prince.studentconnect.data.remote.dto.conversation_membership.JoinConversationRequest
-import com.prince.studentconnect.data.remote.dto.conversation_membership.JoinConversationResponse
-import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinConversationRequest
-import com.prince.studentconnect.data.remote.dto.conversation_membership.RejoinConversationResponse
-import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberRequest
-import com.prince.studentconnect.data.remote.dto.conversation.AddConversationMemberResponse
-import com.prince.studentconnect.data.remote.dto.conversation.Conversation
-import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationRequest
-import com.prince.studentconnect.data.remote.dto.conversation.CreateConversationResponse
-import com.prince.studentconnect.data.remote.dto.conversation.GetConversationResponse
-import com.prince.studentconnect.data.remote.dto.conversation.GetConversationsResponse
-import com.prince.studentconnect.data.remote.dto.conversation.GetMessagesResponse
-import com.prince.studentconnect.data.remote.dto.conversation.SendMessageRequest
-import com.prince.studentconnect.data.remote.dto.conversation.SendMessageResponse
+import com.prince.studentconnect.data.remote.dto.conversation_membership.*
+import com.prince.studentconnect.data.remote.dto.conversation.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ConversationApi {
     @POST("conversations")
@@ -77,8 +56,7 @@ interface ConversationApi {
         @Query("limit") limit: Int? = null
     ): Response<List<GetMessagesResponse>>
 
-    // ----------- Conversation membership -----------
-
+    // conversation membership
     @POST("conversations/{conversation_id}/members/join")
     suspend fun joinConversation(
         @Body request: JoinConversationRequest,

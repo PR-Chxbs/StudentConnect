@@ -11,7 +11,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +24,7 @@ fun LecturerChatScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Lecturer Chat") }
+                title = { Text(stringResource(R.string.lecturer_chat)) }
             )
         },
         bottomBar = bottomBar
@@ -35,7 +37,7 @@ fun LecturerChatScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text("Welcome to the Lecturer Chat Screen!", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.lecturer_chat_screen), style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

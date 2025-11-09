@@ -19,7 +19,8 @@ class FakeModuleApi : ModuleApi {
                 GetModulesResponse(
                     module_id = module.module_id,
                     name = module.name,
-                    code = module.code
+                    code = module.code,
+                    description = module.description
                 )
             )
         }

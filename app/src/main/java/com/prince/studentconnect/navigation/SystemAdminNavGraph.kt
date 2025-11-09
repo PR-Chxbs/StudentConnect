@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -26,8 +27,10 @@ import com.prince.studentconnect.ui.endpoints.system_admin.ui.*
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.CampusDetailsScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.EditCampusScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.campus.SystemAdminManageCampusesScreen
+import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.CreateUserScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.ui.user.SystemAdminManageUsersScreen
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModel
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,19 +40,20 @@ fun NavGraphBuilder.systemAdminNavGraph(
     // View Model
     userCmsViewModel: UserCmsViewModel,
     campusCmsViewModel: CampusCmsViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    createUserViewModel: CreateUserViewModel
 ) {
     navigation(
-        startDestination = Screen.SystemAdminHome.route,
+        startDestination = Screen.SystemAdminManageUsers.route,
         route = Graph.SYSTEM_ADMIN
     ) {
 
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.SystemAdminHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.SystemAdminManageUsers.route,
                 label = "Users",
@@ -60,11 +64,11 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 label = "Campuses",
                 iconRes = R.drawable.ic_book_icon
             ),
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.SystemAdminManageInterests.route,
                 label = "Interests",
                 iconRes = R.drawable.ic_calendar_icon
-            ),
+            ),*/
             BottomNavItem(
                 route = Screen.SystemAdminViewProfile.route,
                 label = "Profile",
@@ -73,9 +77,6 @@ fun NavGraphBuilder.systemAdminNavGraph(
         )
 
         composable(Screen.SystemAdminHome.route) {
-            userCmsViewModel.initialize()
-            campusCmsViewModel.initialize()
-
             SystemAdminHomeScreen(
                 navController = navController,
                 bottomBar = {
@@ -90,10 +91,13 @@ fun NavGraphBuilder.systemAdminNavGraph(
         }
 
         composable(Screen.SystemAdminManageUsers.route) {
+            userCmsViewModel.initialize()
+            campusCmsViewModel.initialize()
+
             SystemAdminManageUsersScreen(
                 viewModel = userCmsViewModel,
                 onUserClick = { userId -> navController.navigate(Screen.SystemAdminViewProfile.route.replace("{user_id}", userId))},
-                onAddUserClick = {},
+                onAddUserClick = { navController.navigate(Screen.CreateUser.route) },
                 bottomBar = {
                     BottomNavBar(
                         items = bottomNavItems,
@@ -102,7 +106,7 @@ fun NavGraphBuilder.systemAdminNavGraph(
                         authViewModel = authViewModel
                     )
                 },
-                topBar = { SearchBar("Search users...") }
+                topBar = { SearchBar(stringResource(R.string.search)) }
             )
         }
 
@@ -215,6 +219,14 @@ fun NavGraphBuilder.systemAdminNavGraph(
                 viewModel = campusCmsViewModel,
                 isEditMode = isEditMode,
                 onBack = {navController.popBackStack()}
+            )
+        }
+
+        composable(Screen.CreateUser.route) {
+            CreateUserScreen(
+                viewModel = createUserViewModel,
+                onBack = { navController.popBackStack() },
+                onNavBack = { navController.navigate(Screen.SystemAdminManageUsers.route) }
             )
         }
     }

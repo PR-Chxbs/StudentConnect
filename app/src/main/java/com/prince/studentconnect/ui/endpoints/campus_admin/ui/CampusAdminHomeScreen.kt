@@ -11,7 +11,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +24,7 @@ fun CampusAdminHomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Campus Admin Home Screen") }
+                title = { Text(stringResource(R.string.campus_admin)) }
             )
         },
         bottomBar = bottomBar
@@ -35,7 +37,7 @@ fun CampusAdminHomeScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text("Welcome to the Campus Admin Home Screen!", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.campus_screen), style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

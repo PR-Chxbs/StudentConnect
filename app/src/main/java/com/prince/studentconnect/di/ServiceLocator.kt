@@ -1,13 +1,10 @@
 package com.prince.studentconnect.di
 
 import android.os.Build
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
-import com.prince.studentconnect.data.fakerepository.FakeAuthRepository
 import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.data.remote.api.*
-import com.prince.studentconnect.data.remote.dto.conversation.MemberA
 import com.prince.studentconnect.data.remote.fakeapi.*
 import com.prince.studentconnect.data.remote.websocket.ChatWebSocketClient
 import com.prince.studentconnect.data.remote.websocket.FakeChatWebSocketClient
@@ -15,17 +12,19 @@ import com.prince.studentconnect.data.remote.websocket.RealChatWebSocketClient
 import com.prince.studentconnect.data.repository.*
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModelFactory
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.onboarding.OnboardingViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.CreateCourseViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.course.ViewAllCoursesViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.EditModuleViewModelFactory
+import com.prince.studentconnect.ui.endpoints.campus_admin.viewmodel.module.ModuleCmsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.model.chat.MemberUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModelFactory
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.chat.MessageViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.profile.ProfileViewModelFactory
-import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.SettingsViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModelFactory
+import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.CreateUserViewModelFactory
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.user.UserCmsViewModelFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -68,9 +67,10 @@ object ServiceLocator {
         if (USE_FAKE_API) FakeCourseApi() else retrofit.create(CourseApi::class.java)
     }
 
-    private val eventApi: EventApi by lazy {
+    val eventApi: EventApi by lazy {
         if (USE_FAKE_API) FakeEventApi() else retrofit.create(EventApi::class.java)
     }
+    
 
     private val moduleApi: ModuleApi by lazy {
         if (USE_FAKE_API) FakeModuleApi() else retrofit.create(ModuleApi::class.java)
@@ -78,6 +78,10 @@ object ServiceLocator {
 
     private val userApi: UserApi by lazy {
         if (USE_FAKE_API) FakeUserApi() else retrofit.create(UserApi::class.java)
+    }
+
+    private val notificationApi: NotificationApi by lazy {
+        retrofit.create(NotificationApi::class.java)
     }
 
     // ---------------- WebSocket ----------------
@@ -114,6 +118,10 @@ object ServiceLocator {
         UserRepository(userApi)
     }
 
+    val notificationRepository: NotificationRepository by lazy {
+        NotificationRepository(notificationApi)
+    }
+
     // ---------------- ViewModel Factory ----------------
 
     // ----- Student Endpoint -----
@@ -142,7 +150,7 @@ object ServiceLocator {
     }
 
     fun provideSettingsViewModelFactory(themePreferenceManager: UserPreferencesRepository): ViewModelProvider.Factory {
-        return SettingsViewModelFactory(themePreferenceManager)
+        return SettingsViewModelFactory(themePreferenceManager, authRepository)
     }
 
     // ----- Admin Endpoint -----
@@ -155,11 +163,35 @@ object ServiceLocator {
         return CampusCmsViewModelFactory(campusRepository)
     }
 
+    // Extra
+    fun provideCreateUserViewModelFactory(): ViewModelProvider.Factory {
+        return CreateUserViewModelFactory(userRepository, authRepository)
+    }
+
+    // ----- Campus Admin Endpoint -----
+    // Extra
+    fun provideEditModuleViewModelFactory(): ViewModelProvider.Factory {
+        return EditModuleViewModelFactory(moduleRepository)
+    }
+
+    fun provideModuleCmsViewModelFactory(): ViewModelProvider.Factory {
+        return ModuleCmsViewModelFactory(moduleRepository)
+    }
+
+    fun provideViewAllCoursesViewModelFactory(): ViewModelProvider.Factory {
+        return ViewAllCoursesViewModelFactory(courseRepository)
+    }
+
+    fun provideCreateCourseViewModelFactory(): ViewModelProvider.Factory {
+        return CreateCourseViewModelFactory(courseRepository, moduleRepository)
+    }
+
     // ----- Auth Endpoint -----
     fun provideAuthViewModelFactory(userPrefs: UserPreferencesRepository): ViewModelProvider.Factory {
         return AuthViewModelFactory(
             authRepository = authRepository,
             userRepository = userRepository,
+            notificationRepository = notificationRepository,
             userPrefs = userPrefs
         )
     }

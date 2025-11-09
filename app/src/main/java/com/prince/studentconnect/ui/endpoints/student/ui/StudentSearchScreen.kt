@@ -11,7 +11,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +25,7 @@ fun StudentSearchScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Student Search") }
+                title = { Text(stringResource(R.string.student_search)) }
             )
         },
         bottomBar = bottomBar
@@ -36,7 +38,7 @@ fun StudentSearchScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text("Welcome to the Student Search Screen!", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.student_search_screen), style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

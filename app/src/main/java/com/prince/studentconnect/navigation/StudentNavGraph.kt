@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.prince.studentconnect.data.preferences.UserPreferencesRepository
 import com.prince.studentconnect.ui.endpoints.auth.viewmodel.AuthViewModel
 import com.prince.studentconnect.ui.endpoints.student.ui.chat.StudentChatScreen
 import com.prince.studentconnect.ui.endpoints.student.ui.StudentHomeScreen
@@ -34,6 +35,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.settings.Setting
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.studentNavGraph(
     navController: NavController,
+
     conversationViewModel: ConversationViewModel,
     calendarViewModel: CalendarViewModel,
     settingsViewModel: SettingsViewModel,
@@ -41,24 +43,24 @@ fun NavGraphBuilder.studentNavGraph(
 ) {
 
     navigation(
-        startDestination = Screen.StudentHome.route,
+        startDestination = Screen.StudentMessages.route,
         route = Graph.STUDENT
     ){
         val bottomNavItems = listOf(
-            BottomNavItem(
+            /*BottomNavItem(
                 route = Screen.StudentHome.route,
                 label = "Home",
                 iconRes = R.drawable.ic_home_icon
+            ),*/
+            BottomNavItem(
+                route = Screen.StudentMessages.route,
+                label = "Messages",
+                iconRes = R.drawable.ic_chat_icon
             ),
             BottomNavItem(
                 route = Screen.StudentSearch.route,
                 label = "Search",
                 iconRes = R.drawable.ic_search_icon
-            ),
-            BottomNavItem(
-                route = Screen.StudentMessages.route,
-                label = "Messages",
-                iconRes = R.drawable.ic_chat_icon
             ),
             BottomNavItem(
                 route = Screen.StudentCalendar.route,
@@ -217,7 +219,10 @@ fun NavGraphBuilder.studentNavGraph(
         }
 
         composable(Screen.StudentSettings.route) {
-            SettingsScreen(settingsViewModel)
+            SettingsScreen(
+                viewModel = settingsViewModel,
+                onLogout = { navController.navigate(Screen.Login.route)}
+            )
         }
     }
 }

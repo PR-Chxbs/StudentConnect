@@ -31,7 +31,7 @@ kotlinx-coroutines = "1.8.1"
 navigation = "2.7.7"
 
 # Material 3
-compose = "1.6.1"           # your Compose version
+compose = "1.6.1"
 activity = "1.7.2"
 
 material = "1.10.0"
@@ -42,7 +42,24 @@ moshi = "1.15.1"
 # Coil
 coil = "2.7.0"
 
+# Firebase (Notifications)
+firebase-bom = "33.3.0"
+google-services = "4.4.2"
+
+work = "2.9.1"
+
+room = "2.6.1"
+kapt = "1.9.23"
+
+androidx-credentials = "1.3.0"
+
+googlePlayServicesAuth = "20.7.0"
+googleIdLibrary = "1.1.1"
+androidx-credentials-beta = "1.6.0-beta03"
+googleid = "1.1.1"
+
 [libraries]
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -97,7 +114,33 @@ moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.re
 coil-core = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+
+# Android Work
+androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+
+# Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+
+# Bundle for credentials
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidx-credentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidx-credentials" }
+
+[bundles]
+androidx-credentials = [
+    "androidx-credentials",
+    "androidx-credentials-play-services-auth"
+]
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# Firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }

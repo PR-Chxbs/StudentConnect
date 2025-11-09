@@ -28,6 +28,7 @@ import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.calendar.EventList
 import com.prince.studentconnect.ui.components.calendar.SwipeableMonthCalendar
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.calendar.CalendarViewModel
+import com.prince.studentconnect.R
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

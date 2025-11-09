@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.prince.studentconnect.navigation.Screen
 import com.prince.studentconnect.ui.components.chat.ConversationItem
@@ -31,6 +32,7 @@ import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationType
 import com.prince.studentconnect.ui.endpoints.student.model.chat.ConversationUiModel
 import com.prince.studentconnect.ui.endpoints.student.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
+import com.prince.studentconnect.R
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +42,7 @@ fun StudentChatScreen(
     conversationViewModel: ConversationViewModel,
     bottomBar: @Composable () -> Unit
 ) {
-    val tabs = listOf("Students", "Lecturers", "Groups")
+    val tabs = listOf(stringResource(R.string.students), stringResource(R.string.lecturers), stringResource(R.string.groups))
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { tabs.size })
     val scope = rememberCoroutineScope()
 
@@ -68,10 +70,10 @@ fun StudentChatScreen(
             ) {
                 // Determine placeholder based on current page
                 val placeholder = when (pagerState.currentPage) {
-                    0 -> "Search students..."
-                    1 -> "Search lecturers..."
-                    2 -> "Search groups..."
-                    else -> "Search..."
+                    0 -> stringResource(R.string.search_students)
+                    1 -> stringResource(R.string.search_lecturers)
+                    2 -> stringResource(R.string.search_groups)
+                    else -> stringResource(R.string.search)
                 }
 
                 SearchBar(
@@ -177,7 +179,7 @@ fun ConversationListScreen(
             contentAlignment = Alignment.TopCenter
         ) {
             Text(
-                text = "No conversations started yet",
+                text = stringResource(R.string.conversation_unavailable),
                 style = MaterialTheme.typography.bodyMedium
             )
         }

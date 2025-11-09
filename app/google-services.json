@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965341953308",
+    "project_id": "studentconnect-36a59",
+    "storage_bucket": "studentconnect-36a59.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965341953308:android:d709d431098bd50b660ed9",
+        "android_client_info": {
+          "package_name": "com.prince.studentconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcaF_yYS4hlfU58qDSKAF1ya6Pcevomiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

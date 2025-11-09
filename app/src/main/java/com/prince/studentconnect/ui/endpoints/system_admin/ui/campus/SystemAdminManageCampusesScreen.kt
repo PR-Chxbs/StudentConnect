@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.prince.studentconnect.data.remote.dto.campus.Campus
 import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
 import com.prince.studentconnect.ui.endpoints.system_admin.viewmodel.campus.CampusCmsViewModel
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

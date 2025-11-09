@@ -31,11 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.prince.studentconnect.data.remote.dto.campus.Campus
 import com.prince.studentconnect.data.remote.dto.campus.GetCampusesResponse
+import com.prince.studentconnect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,7 +110,7 @@ fun CampusDetailsScreen(
                     onClick = { onEditClick(campus.campus_id) },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Edit")
+                    Text(stringResource(R.string.edit))
                 }
                 OutlinedButton(
                     onClick = { showDeleteDialog = true },
@@ -117,7 +119,7 @@ fun CampusDetailsScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             }
         }
